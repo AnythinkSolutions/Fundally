@@ -1,0 +1,113 @@
+﻿/* knockout Validation */
+
+.validationMessage {
+	display: block;
+	margin-top: 1%;
+	color: rgb(219, 32, 32);
+}
+
+/* Durandal */
+
+.splash {
+	text-align: center;
+	margin: 10% 0 0 0;
+}
+
+.splash .message {
+	font-size: 5em;
+	line-height: 1.5em;
+	-webkit-text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 15px;
+	text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 15px;
+	text-transform: uppercase;
+}
+
+.splash .icon-spinner {
+	text-align: center;
+	display: inline-block;
+	font-size: 5em;
+	margin-top: 50px;
+}
+
+.page-host {
+	position: relative;
+	padding-top: 80px;
+}
+
+.loader {
+	margin: 6px 8px 4px 8px;
+	visibility: hidden;
+}
+
+.loader.active {
+	visibility: visible;
+}
+
+footer {
+	background-color:#000;
+	color : #999;    
+    display:none;
+}
+
+.footer-content {
+	padding : 3%;
+	color : #999;
+}
+	  
+footer li {
+	line-height : 2em
+}
+
+footer li a {
+	font-size : 1.5em;    
+}
+
+footer a {
+	color : #ccc;    
+}
+
+footer a:hover {
+	color : #FFF;        
+}
+
+
+/* Bootstrap overrides */
+
+.navbar-fixed-top .navbar-inner {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.navbar-fixed-top .icon-home {
+	font-size: 18px
+}
+
+.label {
+	font-size : 1em !important;
+}
+
+/* Media queries */
+
+@media (max-width: 979px) {
+	.navbar-fixed-top {
+		margin-bottom: 0;
+	}
+}
+
+
+@media (max-width: 768px) {
+	.page-host {
+		padding-left : 10px;
+		padding-right : 10px;
+	}
+
+	.brand {
+		margin-left : 10px !important;
+	}
+}
+
+
+/* Helpers */
+
+.mart5 {
+	margin-top : 5%;
+}
