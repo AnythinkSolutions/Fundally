@@ -40,7 +40,7 @@ namespace Fundally.Web
                 }
                 else
                 {
-                    WebSecurity.InitializeDatabaseConnection("DurandalAuthConnection", "DurandalAuth_UserProfiles", "UserProfileId", "UserName", autoCreateTables: true);
+                    WebSecurity.InitializeDatabaseConnection("FundallyConnection", "FundallyUsers", "UserProfileId", "UserName", autoCreateTables: true);
                 }
             }
         }

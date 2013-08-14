@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Fundally.Domain.Model;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using Fundally.Domain.UnitOfWork;
-using Fundally.Data.Repositories;
-using Fundally.Domain.Contracts;
+using Fundally.Domain.Model;
 
 namespace Fundally.Data
 {
-    public class DurandalAuthDbContext : DbContext
+    public class FundallyDbContext : DbContext
     {
-        public DurandalAuthDbContext()
-                    : base("DurandalAuthConnection")
+        public FundallyDbContext()
+                    : base("FundallyConnection")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<DurandalAuthDbContext, Migrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FundallyDbContext, Migrations.Configuration>());
         }
 
         public DbSet<Article> Articles { get; set; }

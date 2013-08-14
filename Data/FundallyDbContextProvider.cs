@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Breeze.WebApi;
-
-using Fundally.Domain.Model;
 using System.Web.Security;
+using Breeze.WebApi;
+using Fundally.Domain.Model;
 
 namespace Fundally.Data
 {
-    public class DurandalAuthDbContextProvider : EFContextProvider<DurandalAuthDbContext> 
+    public class FundallyDbContextProvider : EFContextProvider<FundallyDbContext> 
     {
-        public DurandalAuthDbContextProvider() : base() { }
+        public FundallyDbContextProvider() : base() { }
  
         protected override bool BeforeSaveEntity(EntityInfo entityInfo) {
             // Add custom logic here in order to save entities

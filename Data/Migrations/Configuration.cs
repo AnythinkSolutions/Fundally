@@ -1,26 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.Web.Security;
+using Fundally.Domain.Model;
+using WebMatrix.WebData;
+
 namespace Fundally.Data.Migrations
 {
-    using Fundally.Domain.Model;
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-    using System.Web.Security;
-    using WebMatrix.WebData;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<Fundally.Data.DurandalAuthDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<FundallyDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Fundally.Data.DurandalAuthDbContext context)
+        protected override void Seed(Fundally.Data.FundallyDbContext context)
         {
             if (!WebSecurity.Initialized)
             {
-                WebSecurity.InitializeDatabaseConnection("DurandalAuthConnection", "DurandalAuth_UserProfiles", "UserProfileId", "UserName", autoCreateTables: true);
+                WebSecurity.InitializeDatabaseConnection("FundallyConnection", "FundallyUsers", "UserProfileId", "UserName", autoCreateTables: true);
             }
 
             if (!Roles.RoleExists("Administrator"))
@@ -51,7 +49,7 @@ namespace Fundally.Data.Migrations
                 Roles.AddUsersToRoles(new string[] { "user" }, new string[] { "User" });
             }
 
-            DurandalAuthDbContext uow = new DurandalAuthDbContext();
+            FundallyDbContext uow = new FundallyDbContext();
 
             uow.Categories.AddOrUpdate(new Domain.Model.Category()
             {

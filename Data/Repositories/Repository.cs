@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.Linq.Expressions;
 using Fundally.Domain.Contracts;
 
 namespace Fundally.Data.Repositories
@@ -40,7 +37,7 @@ namespace Fundally.Data.Repositories
         /// </summary>
         /// <param name="predicate">The predicate</param>
         /// <returns></returns>
-        public IQueryable<TEntity> Find(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().Where(predicate);
         }
@@ -50,7 +47,7 @@ namespace Fundally.Data.Repositories
         /// </summary>
         /// <param name="predicate">The search predicate</param>
         /// <returns>The Entity</returns>
-        public TEntity FirstOrDefault(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().Where(predicate).FirstOrDefault();
         }
@@ -60,7 +57,7 @@ namespace Fundally.Data.Repositories
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>The Entity</returns>
-        public TEntity First(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
+        public TEntity First(Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().Where(predicate).First();
         }

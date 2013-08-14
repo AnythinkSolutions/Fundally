@@ -19,14 +19,14 @@ namespace Fundally.Data.UnitOfWork
     /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DurandalAuthDbContextProvider contextProvider;
+        private readonly FundallyDbContextProvider contextProvider;
 
         /// <summary>
         /// ctor
         /// </summary>
         public UnitOfWork()
         {
-            contextProvider = new DurandalAuthDbContextProvider();
+            contextProvider = new FundallyDbContextProvider();
 
             ArticleRepository = new Repository<Article>(contextProvider.Context);
             CategoryRepository = new Repository<Category>(contextProvider.Context);

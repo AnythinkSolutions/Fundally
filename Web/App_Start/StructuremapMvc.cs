@@ -24,12 +24,15 @@ using Fundally.DI;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(Fundally.Web.App_Start.StructuremapMvc), "Start")]
 
-namespace Fundally.Web.App_Start {
-	public static class StructuremapMvc {
-		public static void Start() {
-			IContainer container = IoC.Initialize();
-			DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
-			GlobalConfiguration.Configuration.DependencyResolver = new StructureMapDependencyResolver(container);
-		}
-	}
+namespace Fundally.Web.App_Start
+{
+    public static class StructuremapMvc
+    {
+        public static void Start()
+        {
+            IContainer container = IoC.Initialize();
+            DependencyResolver.SetResolver(new StructureMapDependencyResolver(container));
+            GlobalConfiguration.Configuration.DependencyResolver = new StructureMapDependencyResolver(container);
+        }
+    }
 }

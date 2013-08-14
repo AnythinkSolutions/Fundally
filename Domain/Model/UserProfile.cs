@@ -12,7 +12,7 @@ namespace Fundally.Domain.Model
         /// <summary>
         ///  User Profile entity
         /// </summary>
-        [Table("DurandalAuth_UserProfiles")]
+        [Table("FundallyUsers")]
         [DataContract(IsReference = true)]
         public class UserProfile
         {
