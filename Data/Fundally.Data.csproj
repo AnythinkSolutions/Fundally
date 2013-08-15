@@ -64,8 +64,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions.cs" />
     <Compile Include="FundallyDbContext.cs" />
     <Compile Include="FundallyDbContextProvider.cs" />
+    <Compile Include="Mappings\AddressMap.cs" />
+    <Compile Include="Mappings\ContactMap.cs" />
+    <Compile Include="Mappings\DefinitionMap.cs" />
+    <Compile Include="Mappings\DonorMap.cs" />
+    <Compile Include="Mappings\PhoneMap.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repository.cs" />
@@ -80,7 +86,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Fundally.Domain.csproj">
       <Project>{0a4bf6ad-f505-4c97-89ea-ee0db3bf7031}</Project>
-      <Name>DurandalAuth.Domain</Name>
+      <Name>Fundally.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

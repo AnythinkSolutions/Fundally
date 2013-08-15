@@ -224,6 +224,7 @@
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\MetadataController.cs" />
     <Compile Include="Controllers\Api\FundallyController.cs" />
+    <Compile Include="Helpers\DefinitionBundle.cs" />
     <Compile Include="Helpers\LookupBundle.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyResolver.cs" />
@@ -373,11 +374,11 @@
   <ItemGroup>
     <ProjectReference Include="..\DI\Fundally.DI.csproj">
       <Project>{6786dd5d-c7b5-4107-a048-dff45f7a1dda}</Project>
-      <Name>DurandalAuth.DI</Name>
+      <Name>Fundally.DI</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain\Fundally.Domain.csproj">
       <Project>{0a4bf6ad-f505-4c97-89ea-ee0db3bf7031}</Project>
-      <Name>DurandalAuth.Domain</Name>
+      <Name>Fundally.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

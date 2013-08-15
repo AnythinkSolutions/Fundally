@@ -34,6 +34,7 @@ namespace Fundally.DI
 									});
 							x.For<IUnitOfWork>().Use<UnitOfWork>();
 						});
+
 			return ObjectFactory.Container;
 		}
 	}

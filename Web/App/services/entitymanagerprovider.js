@@ -70,7 +70,7 @@ define(['durandal/app'],
 					}
 
 					var query = breeze.EntityQuery
-						.from('fundally/lookups');
+						.from('fundally/definitions');
 
 					return masterManager.executeQuery(query);
 				});

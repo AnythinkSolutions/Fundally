@@ -16,9 +16,12 @@ namespace Fundally.Domain.UnitOfWork
     /// </summary>
     public interface IUnitOfWork
     {
-        IRepository<Article> ArticleRepository { get; }
-        IRepository<Category> CategoryRepository { get; }
-        IRepository<Tag> TagRepository { get; }
+		//IRepository<Article> ArticleRepository { get; }
+		//IRepository<Category> CategoryRepository { get; }
+		//IRepository<Tag> TagRepository { get; }
+		IRepository<Definition> DefinitionRepository { get; }
+		IRepository<Donor> DonorRepository { get; }
+		IRepository<Contact> ContactRepository { get; }
         IRepository<UserProfile> UserProfileRepository { get; }
 
         bool DatabaseExists();

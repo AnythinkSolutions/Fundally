@@ -2,25 +2,44 @@
 	<h1>Congratulations!!</h1>
 	<p class="mart5">You manage yourself for entering this restricted route</p>
 	<p>Route restricted to users in role "User"</p>
-	<p>Now, if you got here by legal means :) ... then, a list with articles will be showed</p>
+	<p>Here are your Donors and Contacts</p>
 </div>
 
 <div class="st-table-container">
-	<table cellspacing="0" class="st-table table table-striped" id="articles">
+	<table cellspacing="0" class="st-table table table-striped" id="donors">
 		<thead>
 		  <tr>
-			 <th class="always not-selectable">Title</th>
-			 <th class="always not-selectable">Description</th>
-			 <th class="ontablet">Text</th>
-			 <th class="ontablet">Date Created</th>
+			 <th class="always not-selectable">Name</th>
+			 <th class="always not-selectable">Address</th>
+			 <th class="ontablet">Phone</th>
+			 <!--<th class="ontablet">Date Created</th>-->
 		  </tr>
 	   </thead>
-	   <tbody data-bind="foreach : articles">
+	   <tbody data-bind="foreach : donors">
 		  <tr>
-			 <td data-bind="text : title"></td>
-			 <td data-bind="text : description"></td>
+			 <td data-bind="text : name"></td>
+			 <!--<td data-bind="text : description"></td>
 			 <td data-bind="text : text"></td>
-			 <td data-bind="text : createdDate"></td>
+			 <td data-bind="text : createdDate"></td>-->
+		  </tr>      
+	   </tbody>
+	</table>
+
+    <table cellspacing="0" class="st-table table table-striped" id="contacts">
+		<thead>
+		  <tr>
+			 <th class="always not-selectable">Name</th>
+			 <th class="always not-selectable">Address</th>
+			 <th class="ontablet">Phone</th>
+			 <!--<th class="ontablet">Date Created</th>-->
+		  </tr>
+	   </thead>
+	   <tbody data-bind="foreach: contacts">
+		  <tr>
+			 <td data-bind="text: fullName"></td>
+			 <!--<td data-bind="text : description"></td>
+			 <td data-bind="text : text"></td>
+			 <td data-bind="text : createdDate"></td>-->
 		  </tr>      
 	   </tbody>
 	</table>

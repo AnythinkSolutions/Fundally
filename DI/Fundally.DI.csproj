@@ -54,18 +54,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Data\Fundally.Data.csproj">
       <Project>{11826a10-6277-40a9-83fd-ce0398077715}</Project>
-      <Name>DurandalAuth.Data</Name>
+      <Name>Fundally.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Domain\Fundally.Domain.csproj">
       <Project>{0a4bf6ad-f505-4c97-89ea-ee0db3bf7031}</Project>
-      <Name>DurandalAuth.Domain</Name>
+      <Name>Fundally.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

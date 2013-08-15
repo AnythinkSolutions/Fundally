@@ -18,20 +18,29 @@ namespace Fundally.Web.Controllers
             UnitOfWork = uow;
         }
 
-        // ~/breeze/fundally/Articles
+
+        // ~/breeze/fundally/Donors
         [HttpGet]
         [Authorize(Roles = "User")]
-        public IQueryable<Article> Articles()
+        public IQueryable<Donor> Donors()
         {
-            return UnitOfWork.ArticleRepository.All();
+            return UnitOfWork.DonorRepository.All();
         }
+
+		// ~/breeze/fundally/Contacts
+		[HttpGet]
+		[Authorize(Roles = "User")]
+		public IQueryable<Contact> Contacts()
+		{
+			return UnitOfWork.ContactRepository.All();
+		}
 
 		// ~/breeze/fundally/UserProfiles
         [HttpGet]
         [Authorize(Roles = "Administrator")]
-        public IQueryable<UserProfile> UserProfiles()
+		public IQueryable<UserProfile> UserProfiles()
         {
-            return UnitOfWork.UserProfileRepository.All();
+			return UnitOfWork.UserProfileRepository.All();
         }
 
         [HttpPost]
@@ -41,16 +50,29 @@ namespace Fundally.Web.Controllers
             return UnitOfWork.Commit(saveBundle);
         }
 
+		// ~/breeze/fundally/Definitions
+		[HttpGet]
+		[AllowAnonymous]
+		public IQueryable<Definition> Definitions()
+		{
+			return UnitOfWork.DefinitionRepository.All();
+			//return new DefinitionBundle
+			//{
+			//	AddressTypes = UnitOfWork.DefinitionRepository.All().Where(d => d.ItemType == "address_type"),
+			//	ContactPhoneTypes = UnitOfWork.DefinitionRepository.All().Where(d => d.ItemType == "phone_type" && d.SubCode == "contact"),
+			//	DonorPhoneTypes = UnitOfWork.DefinitionRepository.All().Where(d => d.ItemType == "phone_type" && d.SubCode == "donor")
+			//};
+		}
 		// ~/breeze/fundally/Lookups
-        [HttpGet]
-        [AllowAnonymous]
-        public LookupBundle Lookups()
-        {
-            return new LookupBundle
-            {
-                Categories = UnitOfWork.CategoryRepository.All().ToList(),
-                Tags = UnitOfWork.TagRepository.All().ToList()
-            };
-        }
+		//[HttpGet]
+		//[AllowAnonymous]
+		//public LookupBundle Lookups()
+		//{
+		//	return new LookupBundle
+		//	{
+		//		Categories = UnitOfWork.CategoryRepository.All().ToList(),
+		//		Tags = UnitOfWork.TagRepository.All().ToList()
+		//	};
+		//}
     }
 }
