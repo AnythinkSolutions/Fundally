@@ -75,5 +75,6 @@ namespace Fundally.Domain.Model
 
 		[DataMember]
 		public double? Longitude { get; set; }
+		
 	}
 }

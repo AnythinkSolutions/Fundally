@@ -10,6 +10,40 @@ define(['durandal/app'],
 		var serviceName = 'breeze';
 		var masterManager = new breeze.EntityManager(serviceName);
 
+		var modelBuilder = function (metadata) {
+            
+		    var initializeDonor = function (donor) {
+		        donor.errorMessage = ko.observable();
+		        donor.isEditing = ko.observable(false);
+		        donor.isWorking = ko.observable(false);
+		        donor.primaryAddress = ko.observable(null);
+
+		        if (donor.addresses().length > 0) {
+		            var pri = ko.utils.arrayFirst(donor.addresses(), function (a) { return a.isPrimary == true; });
+		            if (pri == null) {
+		                pri = donor.addresses()[0];
+		            }
+
+		            donor.primaryAddress(pri);
+		        }
+
+		        donor.primaryAddressDisplay = ko.computed(function () {
+		            if (donor.primaryAddress())
+		                return donor.primaryAddress().display();
+		            else
+		                return null;
+		        }, this);
+
+		    };
+		    var Donor = function () {
+		        //this.name = "New Donor";
+		        this.userId = -1;
+		    };
+
+		    metadata.registerEntityTypeCtor("Donor", Donor, initializeDonor);
+
+		};
+
 		/**
 		* Entity Manager ctor
 		* @constructor
@@ -41,7 +75,8 @@ define(['durandal/app'],
 
 		var self = {
 			prepare: prepare,
-			create: create
+			create: create,
+            modelBuilder : modelBuilder
 		};
 
 		return self;

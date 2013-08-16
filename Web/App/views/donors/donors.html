@@ -1,25 +1,28 @@
 ﻿<div class="jumbotron">
-	<h1>Donors</h1>
-	<p class="mart5">This is where you will manage your Fundally Donors</p>
+    <h1>Donors</h1>
+    <p class="mart5">This is where you will manage your Fundally Donors</p>
 </div>
 
-<div class="st-table-container">
-	<!--<table cellspacing="0" class="st-table table table-striped" id="articles">
-		<thead>
-		  <tr>
-			 <th class="always not-selectable">Title</th>
-			 <th class="always not-selectable">Description</th>
-			 <th class="ontablet">Text</th>
-			 <th class="ontablet">Date Created</th>
-		  </tr>
-	   </thead>
-	   <tbody data-bind="foreach: articles">
-		  <tr>
-			 <td data-bind="text: title"></td>
-			 <td data-bind="text: description"></td>
-			 <td data-bind="text: text"></td>
-			 <td data-bind="text: createdDate"></td>
-		  </tr>      
-	   </tbody>
-	</table>-->
+<i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
+
+<div> <!-- class="st-table-container"> -->
+    <table cellspacing="0" class="table table-striped" id="donors" data-bind="ifnot: isWorking"> <!-- class: st-table  -->
+        <thead>
+            <tr>
+                <th class="always not-selectable">Name</th>
+                <th class="always not-selectable">Address</th>
+                <th class="ontablet">Phone</th>
+                <!--<th class="ontablet">Date Created</th>-->
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: donors">
+            <tr>
+                <td data-bind="text: name"></td>
+                <td data-bind="text: primaryAddressDisplay()"></td>
+			    <td></td> <!--data-bind="text : text"></td>-->
+			 <!--<td data-bind="text : createdDate"></td>-->
+            </tr>
+        </tbody>
+    </table>
+    <button id="addDonorButton" class="btn btn-primary" data-bind="click: addDonor">New Donor</button>
 </div>

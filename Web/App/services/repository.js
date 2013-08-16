@@ -85,7 +85,8 @@ define(function () {
              * @param {object} values - Initial values
 		    */ 
             this.create = function(values) {
-                manager().createEntity(entityTypeName, values);
+                var entity = manager().createEntity(entityTypeName, values);
+                return entity;
             };
 
             /**
