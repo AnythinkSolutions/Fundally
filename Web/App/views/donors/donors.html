@@ -5,8 +5,10 @@
 
 <i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
 
-<div> <!-- class="st-table-container"> -->
-    <table cellspacing="0" class="table table-striped" id="donors" data-bind="ifnot: isWorking"> <!-- class: st-table  -->
+<div>
+    <!-- class="st-table-container"> -->
+    <table cellspacing="0" class="table table-striped" id="donors" data-bind="ifnot: isWorking">
+        <!-- class: st-table  -->
         <thead>
             <tr>
                 <th class="always not-selectable">Name</th>
@@ -17,10 +19,19 @@
         </thead>
         <tbody data-bind="foreach: donors">
             <tr>
-                <td data-bind="text: name"></td>
+                <td>
+                    <div data-bind="ifnot: isEditing">
+                        <h5><span data-bind="text: name"></span></h5>
+                    </div>
+                    <!-- ko if: isEditing -->
+                    <input type="text" class="input-small span3" placeholder="Donor Name" data-bind="value: name" />
+                    <!-- /ko -->
+
+                </td>
                 <td data-bind="text: primaryAddressDisplay()"></td>
-			    <td></td> <!--data-bind="text : text"></td>-->
-			 <!--<td data-bind="text : createdDate"></td>-->
+                <td></td>
+                <!--data-bind="text : text"></td>-->
+                <!--<td data-bind="text : createdDate"></td>-->
             </tr>
         </tbody>
     </table>
