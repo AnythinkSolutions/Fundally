@@ -89,6 +89,11 @@ define(function () {
                 return entity;
             };
 
+            this.createRelated = function (relatedTypeName, values) {
+                var entity = manager().createEntity(relatedTypeName, values);
+                return entity;
+            };
+
             /**
              * Set an entity as deleted
              * @method

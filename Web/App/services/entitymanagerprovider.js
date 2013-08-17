@@ -17,22 +17,23 @@ define(['durandal/app'],
 		        donor.isEditing = ko.observable(false);
 		        donor.isWorking = ko.observable(false);
 		        donor.primaryAddress = ko.observable(null);
+		        donor.primaryPhone = ko.observable(null);
 
-		        if (donor.addresses().length > 0) {
-		            var pri = ko.utils.arrayFirst(donor.addresses(), function (a) { return a.isPrimary == true; });
-		            if (pri == null) {
-		                pri = donor.addresses()[0];
-		            }
+		        //if (donor.addresses().length > 0) {
+		        //    var pri = ko.utils.arrayFirst(donor.addresses(), function (a) { return a.isPrimary == true; });
+		        //    if (pri == null) {
+		        //        pri = donor.addresses()[0];
+		        //    }
 
-		            donor.primaryAddress(pri);
-		        }
+		        //    donor.primaryAddress(pri);
+		        //}
 
-		        donor.primaryAddressDisplay = ko.computed(function () {
-		            if (donor.primaryAddress())
-		                return donor.primaryAddress().display();
-		            else
-		                return null;
-		        }, this);
+		        //donor.primaryAddressDisplay = ko.computed(function () {
+		        //    if (donor.primaryAddress())
+		        //        return donor.primaryAddress().display();
+		        //    else
+		        //        return null;
+		        //}, this);
 
 		    };
 		    var Donor = function () {

@@ -36,6 +36,8 @@ namespace Fundally.Data.UnitOfWork
 			DefinitionRepository = new Repository<Definition>(contextProvider.Context);
 			DonorRepository = new Repository<Donor>(contextProvider.Context);
 			ContactRepository = new Repository<Contact>(contextProvider.Context);
+			AddressesRepository = new Repository<Address>(contextProvider.Context);
+			PhonesRepository = new Repository<Phone>(contextProvider.Context);
         }
 
         /// <summary>
@@ -48,6 +50,8 @@ namespace Fundally.Data.UnitOfWork
 		public IRepository<Donor> DonorRepository { get; private set; }
 		public IRepository<Contact> ContactRepository { get; private set; }
 		public IRepository<UserProfile> UserProfileRepository { get; private set; }
+		public IRepository<Address> AddressesRepository { get; private set; }
+		public IRepository<Phone> PhonesRepository { get; private set; }
 
         /// <summary>
         /// Check if Database exists. 

@@ -22,6 +22,8 @@ namespace Fundally.Domain.UnitOfWork
 		IRepository<Definition> DefinitionRepository { get; }
 		IRepository<Donor> DonorRepository { get; }
 		IRepository<Contact> ContactRepository { get; }
+		IRepository<Address> AddressesRepository { get; }
+		IRepository<Phone> PhonesRepository { get; }
         IRepository<UserProfile> UserProfileRepository { get; }
 
         bool DatabaseExists();

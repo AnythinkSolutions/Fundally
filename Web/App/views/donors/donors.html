@@ -1,25 +1,24 @@
-﻿<div class="jumbotron">
+﻿<div class="page-header">
     <h1>Donors</h1>
-    <p class="mart5">This is where you will manage your Fundally Donors</p>
 </div>
 
 <i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
 
 <div>
     <!-- class="st-table-container"> -->
-    <table cellspacing="0" class="table table-striped" id="donors" data-bind="ifnot: isWorking">
-        <!-- class: st-table  -->
+    <table cellspacing="0" class="st-table table table-striped" id="donors" data-bind="ifnot: isWorking">
         <thead>
             <tr>
-                <th class="always not-selectable">Name</th>
-                <th class="always not-selectable">Address</th>
-                <th class="ontablet">Phone</th>
+                <th class="always not-selectable" style="text-align:left;">Name</th>
+                <th class="always" style="text-align:left;">Address</th>
+                <th class="always" style="text-align:left;">Phone</th>
+                <th class="always" style="text-align:left">Actions</th>
                 <!--<th class="ontablet">Date Created</th>-->
             </tr>
         </thead>
         <tbody data-bind="foreach: donors">
             <tr>
-                <td>
+                <td class="not-selectable always">
                     <div data-bind="ifnot: isEditing">
                         <h5><span data-bind="text: name"></span></h5>
                     </div>
@@ -28,8 +27,49 @@
                     <!-- /ko -->
 
                 </td>
-                <td data-bind="text: primaryAddressDisplay()"></td>
-                <td></td>
+                <td class="always" style="text-align:left;">
+                    <!-- ko ifnot: isEditing -->
+                    <div data-bind="with: primaryAddress()">
+                        <address>
+                            <span data-bind="text: streetAddress"></span><br />
+                            <span data-bind="if: streetAddress2, text:streetAddress2"></span><br data-bind="if:streetAddress2" />
+                            <span data-bind="text:city"></span>, <span data-bind="text:state"></span>&nbsp;&nbsp;<span data-bind="text:zip"></span><br />
+                        </address>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: isEditing -->
+                    <div data-bind="with: primaryAddress()">
+                        <select data-bind="options: $root.addressTypes, optionsText: 'name', value: addressType, optionsCaption: 'Choose...'" style="width: 153px;" ></select><br />
+                        <input type="text" class="input-small span5" placeholder="Street Address" data-bind="value: streetAddress" /><br />
+                        <input type="text" class="input-small span5" placeholder="Street Address 2" data-bind="value: streetAddress2" /><br />
+                        <input type="text" class="input-small span3" placeholder="City" data-bind="value: city" />,
+                        <input type="text" class="input-small span1" placeholder="State" data-bind="value: state" style="width: 50px;" />
+                        <input type="text" class="input-small span2" placeholder="Zip" data-bind="value: zip" style="width: 75px;" />
+                    </div>
+                    <!-- /ko -->
+                </td>
+                <td class="always" style="text-align:left;">
+                    <!-- ko ifnot: isEditing -->
+                        (<span data-bind="text: primaryPhone().areaCode"></span>)&nbsp<span data-bind="text: primaryPhone().number"></span>
+                    <!-- /ko -->
+                    <!-- ko if: isEditing -->
+                    <div data-bind="with: primaryPhone()">
+                        <select data-bind="options: $root.donorPhoneTypes, optionsText: 'name', value: phoneType, optionsCaption: 'Choose...'"></select>&nbsp
+                        <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: areaCode" style="width: 50px;" />&nbsp
+                        <input type="text" class="input-small span3" placeholder="Number" data-bind="value: number" />
+                    </div>
+                    <!-- /ko -->
+                </td>
+                <td class="always" style="text-align:left;">
+                    <div data-bind="ifnot: isEditing">
+                        <button class="btn btn-mini" data-bind="click: $root.editDonor">Edit</button>
+                        <button class="btn btn-mini" data-bind="click: $root.deleteDonor">Delete</button>
+                    </div>
+                    <div data-bind="if: isEditing">
+                        <button class="btn btn-small btn-success" data-bind="click: $root.saveDonor">Save</button>
+                        <button class="btn btn-small btn-warning" data-bind="click: $parent.rollbackDonor">Cancel</button>
+                    </div>
+                </td>
                 <!--data-bind="text : text"></td>-->
                 <!--<td data-bind="text : createdDate"></td>-->
             </tr>

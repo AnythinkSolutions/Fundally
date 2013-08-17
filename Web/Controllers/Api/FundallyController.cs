@@ -35,6 +35,22 @@ namespace Fundally.Web.Controllers
 			return UnitOfWork.ContactRepository.All();
 		}
 
+		// ~/breeze/fundally/Addresses
+		[HttpGet]
+		[Authorize(Roles = "User")]
+		public IQueryable<Address> Addresses()
+		{
+			return UnitOfWork.AddressesRepository.All();
+		}
+
+		// ~/breeze/fundally/Phones
+		[HttpGet]
+		[Authorize(Roles = "User")]
+		public IQueryable<Phone> Phones()
+		{
+			return UnitOfWork.PhonesRepository.All();
+		}
+
 		// ~/breeze/fundally/UserProfiles
         [HttpGet]
         [Authorize(Roles = "Administrator")]
