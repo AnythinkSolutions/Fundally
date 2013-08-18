@@ -30,6 +30,7 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
 				{ url: 'home', moduleId: 'viewmodels/home/home',  name: 'Home', visible: true  },
 				{ url: 'login', moduleId: 'viewmodels/account/login', name: 'Login', visible: false },
 				{ url: 'donors', moduleId: 'viewmodels/donors/donors', name: 'Donors', settings: { authorize: ["User"] }, visible: true },
+                { url: 'donors/:id', moduleId: 'viewmodels/donors/donor', name: 'Donor', settings: { authorize: ["User"]}, visible: false},
 				{ url: 'contacts', moduleId: 'viewmodels/contacts/contacts', name: 'Contacts', settings: { authorize: ["User"] }, visible: true },
 				{ url: 'schedule', moduleId: 'viewmodels/schedule/schedule', name: 'Schedule', settings: { authorize: ["User"] }, visible: true },
 				{ url: 'admin', moduleId: 'viewmodels/admin/admin', name: 'Admin', settings: { authorize: ["Administrator"] }, visible: true },

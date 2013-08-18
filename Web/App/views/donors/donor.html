@@ -1,0 +1,19 @@
+﻿<div class="page-header" data-bind="visible: !donor().isEditing()">
+    <h1>
+      <a href='/#donors' class="btn btn-small btn-info" style="display: inline"><i class="icon-arrow-left"></i></a>
+        <span data-bind="text: donor().name()"></span>
+    </h1>
+</div>
+<div class="page-header" data-bind="visible: donor().isEditing()">
+    <input type="text" class="input-large span3" placeholder="Donor Name" data-bind="value: donor().name()" />
+</div>
+
+<i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
+
+<div data-bind="visible: !donor().isEditing()">
+    <button id="editDonorButton" class="btn btn-primary" data-bind="click: editDonor">Edit Donor</button>
+</div>
+<div data-bind="visible: donor().isEditing()">
+    <button id="saveButton" class="btn btn-primary" data-bind="click: saveDonor">Save</button>
+    <button id="cancelButton" class="btn btn-primary" data-bind="click: rollbackDonor">Cancel</button>
+</div>

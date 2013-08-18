@@ -271,9 +271,11 @@
     <Content Include="App\services\repository.js" />
     <Content Include="App\services\unitofwork.js" />
     <Content Include="App\viewmodels\contacts\contacts.js" />
+    <Content Include="App\viewmodels\donors\donor.js" />
     <Content Include="App\viewmodels\donors\donors.js" />
     <Content Include="App\viewmodels\schedule\schedule.js" />
     <Content Include="App\views\contacts\contacts.html" />
+    <Content Include="App\views\donors\donor.html" />
     <Content Include="App\views\schedule\schedule.html" />
     <Content Include="App\views\donors\donors.html" />
     <Content Include="App\views\header.html" />
