@@ -20,7 +20,9 @@
             <tr>
                 <td class="not-selectable always">
                     <div data-bind="ifnot: isEditing">
-                        <h5><span data-bind="text: name"></span></h5>
+                        <a href="#" data-bind="attr: { href: '#/donors/' + $data.id() }">
+                            <h4><span data-bind="text: name"></span></h4>
+                        </a>
                     </div>
                     <!-- ko if: isEditing -->
                     <input type="text" class="input-small span3" placeholder="Donor Name" data-bind="value: name" />
@@ -32,7 +34,9 @@
                     <div data-bind="with: primaryAddress()">
                         <address>
                             <span data-bind="text: streetAddress"></span><br />
-                            <span data-bind="if: streetAddress2, text:streetAddress2"></span><br data-bind="if:streetAddress2" />
+                            <!-- ko if: hasStreet2 -->
+                            <span data-bind="text:streetAddress2"></span><br />
+                            <!-- /ko -->
                             <span data-bind="text:city"></span>, <span data-bind="text:state"></span>&nbsp;&nbsp;<span data-bind="text:zip"></span><br />
                         </address>
                     </div>
@@ -71,7 +75,6 @@
                     </div>
                 </td>
                 <!--data-bind="text : text"></td>-->
-                <!--<td data-bind="text : createdDate"></td>-->
             </tr>
         </tbody>
     </table>

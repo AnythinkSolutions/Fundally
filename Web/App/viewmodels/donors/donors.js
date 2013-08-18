@@ -1,8 +1,6 @@
 ﻿define(['services/unitofwork'], function (unitofwork) {
-
-
-
-    return {
+    
+    var viewModel = {
         isWorking : ko.observable(true),
         donors: ko.observableArray(),
         addressTypes: ko.observableArray(),
@@ -30,10 +28,12 @@
                 alert(error);
             });
 
-            self.uow.donors.all().then(function (data) {
+            self.uow.donors.allIncluding("Addresses, Phones").then(function (data) {
                 self.donors(data);
                 Stashy.Table("#donors", { idprefix: "dnr-", menuClass: "btn btn-primary" }).on();
                 self.isWorking(false);
+            }).fail(function (error) {
+                alert(error);
             });
                         
         },
@@ -41,41 +41,49 @@
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
         },
 
-        addDonor: function () {
-            var self = this;
-
-            var newDonor = self.uow.donors.create();
-
-            var address = self.uow.donors.createRelated("Address");
-            address.addressType(self.defaultAddressType);
-            address.isPrimary(true);
-            newDonor.addresses.push(address);
-            newDonor.primaryAddress(address);
-
-            var phone = self.uow.donors.createRelated("Phone");
-            phone.phoneType(self.defaultPhoneType);
-            phone.isPrimary(true);
-            newDonor.phones.push(phone);
-            newDonor.primaryPhone(phone);
-
-            newDonor.isEditing(true);
-            self.donors.push(newDonor);
-        },
-
-        editDonor: function (donor) {
-            donor.isEditing(true);
-        },
+        addDonor: addDonor,
+        editDonor: editDonor,
 
         deleteDonor: function (donor) {
         },
 
-        saveDonor: function (donor) {
-            donor.isEditing(false);
-        },
+        saveDonor: saveDonor,
+        rollbackDonor: rollbackDonor
+    }
 
-        rollbackDonor: function (donor) {
-            donor.isEditing(false);
-        }
+    return viewModel;
 
+    function addDonor() {
+        var self = this;
+        var newDonor = self.uow.donors.create();
+
+        var address = self.uow.donors.createRelated("Address");
+        address.addressType(self.defaultAddressType);
+        address.isPrimary(true);
+        newDonor.addresses.push(address);
+        newDonor.primaryAddress(address);
+
+        var phone = self.uow.donors.createRelated("Phone");
+        phone.phoneType(self.defaultPhoneType);
+        phone.isPrimary(true);
+        newDonor.phones.push(phone);
+        newDonor.primaryPhone(phone);
+
+        newDonor.isEditing(true);
+        self.donors.push(newDonor);
+    }
+
+    function editDonor(donor) {
+        donor.isEditing(true);
+    }
+
+    function saveDonor(donor, args) {
+        donor.isEditing(false);
+        viewModel.uow.commit();
+    }
+
+    function rollbackDonor(donor) {
+        viewModel.uow.rollback();
+        donor.isEditing(false);
     }
 });

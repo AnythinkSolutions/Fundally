@@ -54,8 +54,8 @@ define(['services/entitymanagerprovider', 'services/repository', 'durandal/app']
                 this.donors = repository.create(provider, "Donor", 'fundally/donors');
                 this.contacts = repository.create(provider, "Contact", 'fundally/contacts');
                 this.userprofiles = repository.create(provider, "UserProfile", 'fundally/userprofiles');
-                this.addresses = repository.create(provider, "Address", 'fundally/addresses');
-                this.phones = repository.create(provider, "Phone", 'fundally/phones');
+                //this.addresses = repository.create(provider, "Address", 'fundally/addresses');
+                //this.phones = repository.create(provider, "Phone", 'fundally/phones');
 
                 var definitions = repository.create(provider, "Definition", 'fundally/definitions', breeze.FetchStrategy.FromLocalCache);
                 var aPred = new breeze.Predicate("itemType", "==", "address_type");

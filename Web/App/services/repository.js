@@ -79,6 +79,14 @@ define(function () {
                 return executeQuery(query);
             };
 
+            this.allIncluding = function (includes) {
+                var query = breeze.EntityQuery
+                    .from(resourceName)
+                    .expand(includes);
+
+                return executeQuery(query);
+            };
+
             /**
              * Create a new entity and add it to the context
         	 * @method
