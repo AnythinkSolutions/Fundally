@@ -83,7 +83,16 @@
     }
 
     function rollbackDonor(donor) {
+
+        var aspect = donor.entityAspect;
+        if (aspect.entityState.isAdded()) {
+            viewModel.donors.remove(donor);
+            donor = null;
+        }
+        else {
+            donor.isEditing(false);
+        }
+
         viewModel.uow.rollback();
-        donor.isEditing(false);
     }
 });
