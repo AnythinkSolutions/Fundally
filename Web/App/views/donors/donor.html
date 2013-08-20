@@ -1,7 +1,9 @@
 ﻿<div class="page-header" data-bind="visible: !donor().isEditing()">
     <h1>
-      <a href='/#donors' class="btn btn-small btn-info" style="display: inline"><i class="icon-arrow-left"></i></a>
+        <a href='/#donors' class="btn btn-small btn-info" style="display: inline"><i class="icon-arrow-left"></i></a>
         <span data-bind="text: donor().name()"></span>
+        <button id="Button1" class="btn btn-primary pull-right" data-bind="visible: !donor().isEditing(), click: editDonor">Edit Donor</button>
+
     </h1>
 </div>
 <div class="page-header" data-bind="visible: donor().isEditing()">
@@ -10,10 +12,47 @@
 
 <i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
 
-<div data-bind="visible: !donor().isEditing()">
-    <button id="editDonorButton" class="btn btn-primary" data-bind="click: editDonor">Edit Donor</button>
+<div id="donorAddress" data-bind="with: donor().primaryAddress()">
+    <address>
+        <span data-bind="text: streetAddress"></span>
+        <br />
+        <!-- ko if: hasStreet2 -->
+        <span data-bind="text: streetAddress2"></span>
+        <br />
+        <!-- /ko -->
+        <span data-bind="text: city"></span>, <span data-bind="    text: state"></span>&nbsp;&nbsp;<span data-bind="    text: zip"></span><br />
+    </address>
+    <address>
+        <a data-bind="attr: { href: 'mailto:' + donor().emailAddress() }">
+            <span data-bind="text: donor().emailAddress"></span>
+        </a>
+    </address>
 </div>
+
+<div id="donorPhone" style="width: 35%;">
+    <table class="st-table table table-striped" id="donors">
+        <thead>
+            <tr>
+                <th class="always not-selectable" style="text-align: left;">Phone Type</th>
+                <th class="always" style="text-align: left;">Phone Number</th>
+                <!--                <th class="always" style="text-align: left">Actions</th>-->
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: donor().phones()">
+            <tr>
+                <td class="always" style="text-align: left;" data-bind="text: phoneType().name()"></td>
+                <td class="always" style="text-align: left;">(<span data-bind="text: areaCode"></span>)&nbsp<span data-bind="    text: number"></span></td>
+                <!--<td class="always" style="text-align: left;"></td>-->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--<div data-bind="visible: !donor().isEditing()">
+    <button id="editDonorButton" class="btn btn-primary" data-bind="click: editDonor">Edit Donor</button>
+</div>-->
 <div data-bind="visible: donor().isEditing()">
     <button id="saveButton" class="btn btn-primary" data-bind="click: saveDonor">Save</button>
     <button id="cancelButton" class="btn btn-primary" data-bind="click: rollbackDonor">Cancel</button>
 </div>
+

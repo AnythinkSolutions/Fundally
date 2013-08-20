@@ -21,12 +21,12 @@ define(function () {
                 getMetastore().setEntityTypeForResourceName(resourceName, entityTypeName);
             }
 
-    	    /**
+            /**
 	    	 * Get Entity by identity
     		 * @method
              * @param {int/string} key - The entity identity
 		     * @return {promise}
-		    */  
+		    */
             this.withId = function (key) {
                 if (!entityTypeName)
                     throw new Error("Repository must be created with an entity type specified");
@@ -39,12 +39,22 @@ define(function () {
                     });
             };
 
+            this.withIdIncluding = function (key, includes) {
+                var pred = new breeze.Predicate("id", "eq", key);
+                var query = breeze.EntityQuery
+                  .from(resourceName)
+                  .where(pred)
+                  .expand(includes);
+
+                return executeQuery(query);
+            };
+
             /**
 	    	 * Find Entity by predicate
     		 * @method
              * @param {string} predicate
 		     * @return {promise}
-		    */ 
+		    */
             this.find = function (predicate) {
                 var query = breeze.EntityQuery
                     .from(resourceName)
@@ -53,12 +63,22 @@ define(function () {
                 return executeQuery(query);
             };
 
+            this.findIncluding = function (predicate, includes) {
+                var query = breeze.EntityQuery
+                    .from(resourceName)
+                    .where(predicate)
+                    .expand(includes);
+
+                return executeQuery(query);
+
+            };
+
             /**
         	 * Find Entity by predicate in cache
     		 * @method
              * @param {string} predicate
 		     * @return {object}
-		    */ 
+		    */
             this.findInCache = function (predicate) {
                 var query = breeze.EntityQuery
                     .from(resourceName)
@@ -71,7 +91,7 @@ define(function () {
              * Get all entities
     		 * @method
 		     * @return {promise}
-		    */ 
+		    */
             this.all = function () {
                 var query = breeze.EntityQuery
                     .from(resourceName);
@@ -91,8 +111,8 @@ define(function () {
              * Create a new entity and add it to the context
         	 * @method
              * @param {object} values - Initial values
-		    */ 
-            this.create = function(values) {
+		    */
+            this.create = function (values) {
                 var entity = manager().createEntity(entityTypeName, values);
                 return entity;
             };
@@ -106,12 +126,12 @@ define(function () {
              * Set an entity as deleted
              * @method
              * @param {object} entity - The entity to delete
-		    */ 
-            this.delete = function(entity) {
-                ensureEntityType(entity,entityTypeName);
+		    */
+            this.delete = function (entity) {
+                ensureEntityType(entity, entityTypeName);
                 entity.entityAspect.setDeleted(entity);
             };
-            
+
             function executeQuery(query) {
                 return entityManagerProvider.manager()
                     .executeQuery(query.using(fetchStrategy || breeze.FetchStrategy.FromServer))
@@ -129,12 +149,12 @@ define(function () {
             function manager() {
                 return entityManagerProvider.manager();
             }
-            
+
             function ensureEntityType(obj, entityTypeName) {
                 if (!obj.entityType || obj.entityType.shortName !== entityTypeName) {
                     throw new Error('Object must be an entity of type ' + entityTypeName);
                 }
-            }            
+            }
         };
 
         return repository;
@@ -152,7 +172,7 @@ define(function () {
      * @param {string} resourceName
      * @param {FetchStrategy} fetchStrategy
 	 * @return {Repository}
-    */ 
+    */
     function create(entityManagerProvider, entityTypeName, resourceName, fetchStrategy) {
         return new Repository(entityManagerProvider, entityTypeName, resourceName, fetchStrategy);
     }

@@ -6,12 +6,13 @@
 
 <div>
     <!-- class="st-table-container"> -->
-    <table cellspacing="0" class="st-table table table-striped" id="donors" data-bind="ifnot: isWorking">
+    <table class="st-table table table-striped" id="donors" data-bind="ifnot: isWorking">
         <thead>
             <tr>
                 <th class="always not-selectable" style="text-align:left;">Name</th>
                 <th class="always" style="text-align:left;">Address</th>
                 <th class="always" style="text-align:left;">Phone</th>
+                <th class="always" style="text-align:left">Email</th>
                 <th class="always" style="text-align:left">Actions</th>
                 <!--<th class="ontablet">Date Created</th>-->
             </tr>
@@ -64,7 +65,17 @@
                     </div>
                     <!-- /ko -->
                 </td>
-                <td class="always" style="text-align:left;">
+                  <td class="always" style="text-align:left;">
+                    <div data-bind="ifnot: isEditing">
+                        <a data-bind="attr: { href: 'mailto:' + emailAddress() }">
+                            <span data-bind="text: emailAddress"></span>
+                        </a>
+                    </div>
+                    <!-- ko if: isEditing -->
+                    <input type="text" class="input-small span3" placeholder="Email Address" data-bind="value: emailAddress" />
+                    <!-- /ko -->
+                </td>
+              <td class="always" style="text-align:left;">
                     <div data-bind="ifnot: isEditing">
                         <button class="btn btn-mini" data-bind="click: $root.editDonor">Edit</button>
                         <button class="btn btn-mini" data-bind="click: $root.deleteDonor">Delete</button>
