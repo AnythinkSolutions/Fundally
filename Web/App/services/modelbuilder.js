@@ -47,6 +47,10 @@ define(function () {
         }, this);
     };
 
+    var initializePhone = function (phone) {
+        phone.isEditing = ko.observable(false);
+    };
+
     //Define the object to return
     var ModelBuilder = (function(){
         var modelBuilder = function () {
@@ -54,6 +58,7 @@ define(function () {
             this.initialize = function (metadata) {
                 metadata.registerEntityTypeCtor("Donor", Donor, initializeDonor);
                 metadata.registerEntityTypeCtor("Address", null, initializeAddress);
+                metadata.registerEntityTypeCtor("Phone", null, initializePhone);
             }
         };
 

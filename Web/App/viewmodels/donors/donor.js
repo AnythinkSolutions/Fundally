@@ -57,7 +57,13 @@
 
         editDonor: editDonor,
         saveDonor: saveDonor,
-        rollbackDonor: rollbackDonor
+        rollbackDonor: rollbackDonor,
+
+        addPhone: addPhone,
+        editPhone: editPhone,
+        savePhone: savePhone,
+        rollbackPhone: rollbackPhone,
+        deletePhone: deletePhone
     };
 
     return viewModel;
@@ -75,5 +81,30 @@
     function rollbackDonor() {
         var self = this;
         viewModel.donor().isEditing(false);
+    }
+
+    function addPhone() {
+        var self = this;
+
+        var phone = self.uow.donors.createRelated("Phone");
+        phone.isEditing(true);
+        viewModel.donor().phones.push(phone);
+    }
+
+    function editPhone(phone) {
+        phone.isEditing(true);
+    }
+
+    function savePhone(phone) {
+        phone.isEditing(false);
+    }
+
+    function rollbackPhone(phone) {
+        phone.isEditing(false);
+    }
+
+    function deletePhone(phone) {
+        viewModel.donor().phones.remove(phone);
+
     }
 });

@@ -22,6 +22,9 @@
         <!-- /ko -->
         <span data-bind="text: city"></span>, <span data-bind="    text: state"></span>&nbsp;&nbsp;<span data-bind="    text: zip"></span><br />
     </address>
+</div>
+
+<div id="donorEmails">
     <address>
         <a data-bind="attr: { href: 'mailto:' + donor().emailAddress() }">
             <span data-bind="text: donor().emailAddress"></span>
@@ -29,23 +32,48 @@
     </address>
 </div>
 
-<div id="donorPhone" style="width: 35%;">
+<div id="donorPhone" style="width: 45%;">
     <table class="st-table table table-striped" id="donors">
         <thead>
             <tr>
                 <th class="always not-selectable" style="text-align: left;">Phone Type</th>
                 <th class="always" style="text-align: left;">Phone Number</th>
-                <!--                <th class="always" style="text-align: left">Actions</th>-->
+                <th class="always" style="text-align: left">Actions</th>
             </tr>
         </thead>
         <tbody data-bind="foreach: donor().phones()">
             <tr>
-                <td class="always" style="text-align: left;" data-bind="text: phoneType().name()"></td>
-                <td class="always" style="text-align: left;">(<span data-bind="text: areaCode"></span>)&nbsp<span data-bind="    text: number"></span></td>
-                <!--<td class="always" style="text-align: left;"></td>-->
+                <td class="always" style="text-align: left;">
+                    <!-- ko if: isEditing -->
+                        <select data-bind="options: $root.phoneTypes, optionsText: 'name', value: phoneType, optionsCaption: 'Choose...'"></select>&nbsp
+                    <!-- /ko -->
+                    <!-- ko ifnot: isEditing -->
+                        <span data-bind="text: phoneType().name()" />
+                    <!-- /ko -->
+                </td>
+                <td class="always" style="text-align: left;">
+                    <!-- ko if: isEditing -->
+                        <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: areaCode" style="width: 50px;" />&nbsp
+                        <input type="text" class="input-small span3" placeholder="Number" data-bind="value: number" />
+                    <!-- /ko -->
+                    <!-- ko ifnot: isEditing -->
+                        (<span data-bind="text: areaCode"></span>)&nbsp<span data-bind="    text: number"></span>
+                    <!-- /ko -->
+                </td>
+                <td class="always" style="text-align: left;">
+                    <!-- ko ifnot: isEditing -->
+                        <button id="editPhoneButton" class="btn btn-mini btn-info" data-bind="click: $root.editPhone">Edit</button>
+                        <button id="deletePhoneButton" class="btn btn-mini btn-info" data-bind="click: $root.deletePhone">Delete</button>
+                    <!-- /ko -->
+                    <!-- ko if: isEditing -->
+                        <button id="savePhoneButton" class="btn btn-mini btn-primary" data-bind="click: $root.savePhone">Save</button>
+                        <button id="rollbackPhoneButton" class="btn btn-mini btn-inverse" data-bind="click: $root.rollbackPhone">Cancel</button>
+                    <!-- /ko -->
+                </td>
             </tr>
         </tbody>
     </table>
+    <button id="addPhoneButton" class="btn btn-small btn-info" data-bind="click: addPhone">New Phone</button>
 </div>
 
 <!--<div data-bind="visible: !donor().isEditing()">
