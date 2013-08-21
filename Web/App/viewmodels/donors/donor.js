@@ -97,14 +97,25 @@
 
     function savePhone(phone) {
         phone.isEditing(false);
+        viewModel.uow.commit();
     }
 
     function rollbackPhone(phone) {
-        phone.isEditing(false);
+        var aspect = phone.entityAspect;
+        if (aspect.entityState.isAdded()) {
+            viewModel.donor().phones.remove(phone);
+            phone = null;
+        }
+        else {
+            phone.isEditing(false);
+        }
+
+        viewModel.uow.rollback();
     }
 
     function deletePhone(phone) {
+        phone.entityAspect.setDeleted();
+        viewModel.uow.commit();
         viewModel.donor().phones.remove(phone);
-
     }
 });

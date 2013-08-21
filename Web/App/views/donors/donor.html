@@ -62,12 +62,12 @@
                 </td>
                 <td class="always" style="text-align: left;">
                     <!-- ko ifnot: isEditing -->
-                        <button id="editPhoneButton" class="btn btn-mini btn-info" data-bind="click: $root.editPhone">Edit</button>
-                        <button id="deletePhoneButton" class="btn btn-mini btn-info" data-bind="click: $root.deletePhone">Delete</button>
+                        <button id="editPhoneButton" class="btn btn-small btn-info" data-bind="click: $root.editPhone">Edit</button>
+                        <button id="deletePhoneButton" class="btn btn-small btn-info" data-bind="click: $root.deletePhone">Delete</button>
                     <!-- /ko -->
                     <!-- ko if: isEditing -->
-                        <button id="savePhoneButton" class="btn btn-mini btn-primary" data-bind="click: $root.savePhone">Save</button>
-                        <button id="rollbackPhoneButton" class="btn btn-mini btn-inverse" data-bind="click: $root.rollbackPhone">Cancel</button>
+                        <button id="savePhoneButton" class="btn btn-small btn-primary" data-bind="click: $root.savePhone">Save</button>
+                        <button id="rollbackPhoneButton" class="btn btn-small btn-inverse" data-bind="click: $root.rollbackPhone">Cancel</button>
                     <!-- /ko -->
                 </td>
             </tr>
