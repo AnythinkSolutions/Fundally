@@ -54,8 +54,6 @@ define(['services/entitymanagerprovider', 'services/repository', 'durandal/app']
                 this.donors = repository.create(provider, "Donor", 'fundally/donors');
                 this.contacts = repository.create(provider, "Contact", 'fundally/contacts');
                 this.userprofiles = repository.create(provider, "UserProfile", 'fundally/userprofiles');
-                //this.addresses = repository.create(provider, "Address", 'fundally/addresses');
-                //this.phones = repository.create(provider, "Phone", 'fundally/phones');
 
                 var definitions = repository.create(provider, "Definition", 'fundally/definitions', breeze.FetchStrategy.FromLocalCache);
                 var aPred = new breeze.Predicate("itemType", "==", "address_type");
@@ -69,9 +67,8 @@ define(['services/entitymanagerprovider', 'services/repository', 'durandal/app']
                 var dPred2 = new breeze.Predicate("itemSubType", "==", "donor");
                 this.donorPhoneTypes = definitions.find(dPred1.and(dPred2));
 
-                //this.articles = repository.create(provider, "Article", 'fundally/articles');
-                //this.categories = repository.create(provider, "Category", 'fundally/lookups', breeze.FetchStrategy.FromLocalCache);
-                //this.tags = repository.create(provider, "Tag", 'fundally/lookups', breeze.FetchStrategy.FromLocalCache);
+                var ctPred = new breeze.Predicate("itemType", "==", "contact_type");
+                this.contactTypes = definitions.find(ctPred);
             };
 
             return unitofwork;

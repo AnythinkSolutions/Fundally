@@ -8,14 +8,16 @@
         donor: ko.observable(),
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
+        contactTypes: ko.observableArray(),
         defaultAddressType: null,
         defaultPhoneType: null,
+        defaultContactType: null,
 
         canActivate: function (params) {
             var self = this;
 
             //var pred = new breeze.Predicate("Id", "eq", params.id);
-            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones")
+            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, Contacts.Phones")
                 .then(function (data) {
                     self.donor(data[0]);
                     self.isWorking(false);
@@ -49,11 +51,21 @@
             }).fail(function (error) {
                 alert(error);
             });
-        },
 
-        //viewAttached: function (params) {
-            
-        //},
+            self.uow.contactTypes.then(function (data) {
+
+                //Populate the available types and the defaults
+                self.contactTypes(data);
+                self.defaultContactType = $.grep(data, function (ct) { return ct.isDefault() == true; })[0];
+
+                //Assign the right definition to each of the existing contacts
+                $.each(self.donor().contacts(), function (c) {
+                    var cType = $.grep(self.contactTypes, function (ct) { return ct.id = c.contactTypeId; })[0];
+                    if (cType)
+                        c.contactType(cType);
+                });
+            });
+        },
 
         editDonor: editDonor,
         saveDonor: saveDonor,
@@ -63,7 +75,13 @@
         editPhone: editPhone,
         savePhone: savePhone,
         rollbackPhone: rollbackPhone,
-        deletePhone: deletePhone
+        deletePhone: deletePhone,
+
+        addContact: addContact,
+        editContact: editContact,
+        saveContact: saveContact,
+        rollbackContact: rollbackContact,
+        deleteContact: deleteContact
     };
 
     return viewModel;
@@ -117,5 +135,53 @@
         phone.entityAspect.setDeleted();
         viewModel.uow.commit();
         viewModel.donor().phones.remove(phone);
+    }
+
+    function addContact() {
+        var self = this;
+
+        var contact = self.uow.contacts.create();
+        contact.isEditing(true);
+
+        if (viewModel.donor().contacts().length == 0) {
+            contact.contactType(self.defaultContactType);
+            contact.isPrimary(true);
+        }
+
+        var phone = self.uow.contacts.createRelated("Phone");
+        phone.phoneType(self.defaultPhoneType);
+        phone.isPrimary(true);
+        contact.phones.push(phone);
+        contact.primaryPhone(phone);
+
+        viewModel.donor().contacts.push(contact);
+    }
+
+    function editContact(contact) {
+        contact.isEditing(true);
+    }
+
+    function saveContact(contact) {
+        contact.isEditing(false);
+        viewModel.uow.commit();
+    }
+
+    function rollbackContact(contact) {
+        var aspect = contact.entityAspect;
+        if (aspect.entityState.isAdded()) {
+            viewModel.donor().contacts.remove(contact);
+            contact = null;
+        }
+        else {
+            contact.isEditing(false);
+        }
+
+        viewModel.uow.rollback();
+    }
+
+    function deleteContact(contact) {
+        contact.entityAspect.setDeleted();
+        viewModel.uow.commit();
+        viewModel.donor().contacts.remove(contact);
     }
 });

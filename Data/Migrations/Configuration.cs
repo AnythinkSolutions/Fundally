@@ -64,6 +64,13 @@ namespace Fundally.Data.Migrations
 				context.Definitions.Add(new Definition("donor_type", "Individual", "Individual"));
 			}
 
+			if (!context.Definitions.Any(d => d.ItemType == "contact_type"))
+			{
+				context.Definitions.Add(new Definition("contact_type", "grants", "Grants") { IsDefault = true });
+				context.Definitions.Add(new Definition("contact_type", "legal", "Legal"));
+				context.Definitions.Add(new Definition("contact_type", "marketing", "Marketing"));
+			}
+
 			if (context.HasAnyChanges())
 			{
 				context.SaveChanges();

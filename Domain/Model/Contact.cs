@@ -32,6 +32,14 @@ namespace Fundally.Domain.Model
 
 		[DataMember]
 		[Required]
+		[ForeignKey("ContactType")]
+		public int ContactTypeId { get; set; }
+
+		[DataMember]
+		public virtual Definition ContactType { get; set; }
+
+		[DataMember]
+		[Required]
 		public string FirstName { get; set; }
 
 		[DataMember]
