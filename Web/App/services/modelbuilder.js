@@ -74,7 +74,9 @@ define(function () {
         }
 
         contact.fullName = ko.computed(function () {
-            return contact.firstName() + ' ' + contact.lastName();
+            var name = contact.firstName() != null ? contact.firstName() : '?';
+            name += contact.lastName() != null ? contact.lastName() : '';
+            return name;
         }, self);
     };
 

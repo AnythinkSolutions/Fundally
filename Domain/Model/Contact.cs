@@ -67,7 +67,7 @@ namespace Fundally.Domain.Model
 		{
 			get
 			{
-				return string.Format("{0} {1}", FirstName.Trim(), LastName.Trim());
+				return string.Format("{0} {1}", string.IsNullOrWhiteSpace(FirstName) ? "" : FirstName.Trim(), string.IsNullOrWhiteSpace(LastName) ? "" : LastName.Trim());
 			}
 		}
 	}

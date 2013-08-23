@@ -82,15 +82,26 @@
     <table class="st-table table table-striped" id="contacts">
         <thead>
             <tr>
+                <th class="always not-selectable" style="text-align: left;">Name</th>
                 <th class="always not-selectable" style="text-align: left;">Contact Type</th>
                 <th class="always" style="text-align: left;">Primary</th>
-                <th class="always not-selectable" style="text-align: left;">Name</th>
                 <th class="always" style="text-align: left">Email</th>
                 <th class="always" style="text-align: left">Primary Phone</th>
             </tr>
         </thead>
         <tbody data-bind="foreach: donor().contacts()">
             <tr>
+                <td class="always" style="text-align: left;">
+                    <!-- ko if: isEditing -->
+                    <input type="text" class="input-small span3" placeholder="First Name" data-bind="value: firstName" />
+                    <input type="text" class="input-small span3" placeholder="Last Name" data-bind="value: lastName" />
+                    <!-- /ko -->
+                    <!-- ko ifnot: isEditing -->
+                    <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
+                        <span data-bind="text: fullName"></span>
+                    </a>
+                    <!-- /ko -->
+                </td>
                 <td class="always" style="text-align: left;">
                     <!-- ko if: isEditing -->
                     <select data-bind="options: $root.contactTypes, optionsText: 'name', value: contactType, optionsCaption: 'Choose...'"></select>&nbsp
@@ -109,21 +120,10 @@
                 </td>
                 <td class="always" style="text-align: left;">
                     <!-- ko if: isEditing -->
-                    <input type="text" class="input-small span3" placeholder="First Name" data-bind="value: firstName" />
-                    <input type="text" class="input-small span3" placeholder="Last Name" data-bind="value: lastName" />
-                    <!-- /ko -->
-                    <!-- ko ifnot: isEditing -->
-                    <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
-                        <span data-bind="text: fullName"></span>
-                    </a>
-                    <!-- /ko -->
-                </td>
-                <td class="always" style="text-align: left;">
-                    <!-- ko if: isEditing -->
                     <input type="text" class="input-small span1" placeholder="Email Address" data-bind="value: emailBusiness" />
                     <!-- /ko -->
                     <!-- ko ifnot: isEditing -->
-                    <a data-bind="attr: { href: 'mailto:' + emailBusiness }">
+                    <a data-bind="attr: { href: 'mailto:' + emailBusiness() }">
                         <span data-bind="text: emailBusiness" />
                     </a>
 
