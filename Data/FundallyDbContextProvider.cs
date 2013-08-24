@@ -29,44 +29,44 @@ namespace Fundally.Data
                 throw new EntityErrorsException(errors);
             }
 
-            List<EntityInfo> articles;
-            if (saveMap.TryGetValue(typeof(Article), out articles))
-            {
-                if (articles.Any() && !Roles.IsUserInRole("Administrator"))
-                {
-                    var errors = articles.Select(oi =>
-                    {
-                        return new EFEntityError(oi, "Save Failed", "Only administrators can save articles", "ArticleId");
-                    });
-                    throw new EntityErrorsException(errors);
-                }
-            }
+            //List<EntityInfo> articles;
+            //if (saveMap.TryGetValue(typeof(Article), out articles))
+            //{
+            //    if (articles.Any() && !Roles.IsUserInRole("Administrator"))
+            //    {
+            //        var errors = articles.Select(oi =>
+            //        {
+            //            return new EFEntityError(oi, "Save Failed", "Only administrators can save articles", "ArticleId");
+            //        });
+            //        throw new EntityErrorsException(errors);
+            //    }
+            //}
 
-            List<EntityInfo> categories;
-            if (saveMap.TryGetValue(typeof(Category), out categories))
-            {
-                if (categories.Any() && !Roles.IsUserInRole("Administrator"))
-                {
-                    var errors = categories.Select(oi =>
-                    {
-                        return new EFEntityError(oi, "Save Failed", "Only administrators can save categories", "CategoryId");
-                    });
-                    throw new EntityErrorsException(errors);
-                }
-            }
+            //List<EntityInfo> categories;
+            //if (saveMap.TryGetValue(typeof(Category), out categories))
+            //{
+            //    if (categories.Any() && !Roles.IsUserInRole("Administrator"))
+            //    {
+            //        var errors = categories.Select(oi =>
+            //        {
+            //            return new EFEntityError(oi, "Save Failed", "Only administrators can save categories", "CategoryId");
+            //        });
+            //        throw new EntityErrorsException(errors);
+            //    }
+            //}
 
-            List<EntityInfo> tags;
-            if (saveMap.TryGetValue(typeof(Tag), out tags))
-            {
-                if (categories.Any() && !Roles.IsUserInRole("Administrator"))
-                {
-                    var errors = userprofiles.Select(oi =>
-                    {
-                        return new EFEntityError(oi, "Save Failed", "Only administrators can save tags", "TagId");
-                    });
-                    throw new EntityErrorsException(errors);
-                }
-            }
+            //List<EntityInfo> tags;
+            //if (saveMap.TryGetValue(typeof(Tag), out tags))
+            //{
+            //    if (categories.Any() && !Roles.IsUserInRole("Administrator"))
+            //    {
+            //        var errors = userprofiles.Select(oi =>
+            //        {
+            //            return new EFEntityError(oi, "Save Failed", "Only administrators can save tags", "TagId");
+            //        });
+            //        throw new EntityErrorsException(errors);
+            //    }
+            //}
             return saveMap;
         }
     }

@@ -71,6 +71,13 @@ namespace Fundally.Data.Migrations
 				context.Definitions.Add(new Definition("contact_type", "marketing", "Marketing"));
 			}
 
+            if (!context.Definitions.Any(d => d.ItemType == "activity_type"))
+            {
+                context.Definitions.Add(new Definition("activity_type", "note", "Note") { IsDefault = true });
+                context.Definitions.Add(new Definition("activity_type", "phonecall", "Phone Call"));
+                context.Definitions.Add(new Definition("activity_type", "task", "Task"));
+            }
+
 			if (context.HasAnyChanges())
 			{
 				context.SaveChanges();

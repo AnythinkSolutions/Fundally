@@ -61,6 +61,9 @@ namespace Fundally.Domain.Model
 		[DataMember]
 		public string EmailOther { get; set; }
 
+        [DataMember]
+        public virtual IList<Activity> Activities { get; set; }
+
 		[DataMember]
 		[NotMapped]
 		public string FullName
