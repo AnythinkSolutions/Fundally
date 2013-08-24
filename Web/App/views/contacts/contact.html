@@ -1,0 +1,91 @@
+﻿<div class="page-header" data-bind="visible: !contact().isEditing()">
+    <h1>
+        <a href='/#contacts' class="btn btn-small btn-info" style="display: inline"><i class="icon-arrow-left"></i></a>
+        <span data-bind="text: contact().fullName"></span>
+        <button id="addPhoneButton" class="btn btn-small btn-info pull-right" data-bind="click: addPhone" style="margin-right: 5px;">New Phone</button>
+        <button id="addAddressButton" class="btn btn-small btn-info pull-right" data-bind="click: addAddress" style="margin-right: 5px;">New Address</button>
+        <button id="editButton" class="btn btn-primary btn-small pull-right" data-bind="click: editContact" style="margin-right: 5px;">Edit Contact</button>
+        <h2 style="display: inline">
+            at 
+            <a href="#" data-bind="attr: { href: '/#donors/' + contact().donor().id() }">
+            <span data-bind="text: contact().donor().name"></span>
+        </a>
+         (<span data-bind="    text: contact().contactType().name"></span>)
+        </h2>
+    </h1>
+    <h2>
+        
+    </h2>
+</div>
+<div class="page-header" data-bind="visible: contact().isEditing()">
+    <input type="text" class="input-large span3" placeholder="First Name" data-bind="value: contact().firstName" />
+    <input type="text" class="input-large span3" placeholder="Last Name" data-bind="value: contact().lastName"/>
+    <button id="saveButton" class="btn btn-primary pull-right" data-bind="click: saveContact" style="margin-left: 10px;">Save</button>
+    <button id="cancelButton" class="btn btn-primary pull-right" data-bind="click: rollbackContact">Cancel</button>
+</div>
+
+<i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
+
+<div id="contactAddress" data-bind="with: contact().primaryAddress()">
+    <address>
+        <span data-bind="text: streetAddress"></span>
+        <br />
+        <!-- ko if: hasStreet2 -->
+        <span data-bind="text: streetAddress2"></span>
+        <br />
+        <!-- /ko -->
+        <span data-bind="text: city"></span>, <span data-bind="    text: state"></span>&nbsp;&nbsp;<span data-bind="    text: zip"></span><br />
+    </address>
+</div>
+
+<div id="contactEmails">
+    <address>
+        <a data-bind="attr: { href: 'mailto:' + contact().emailBusiness() }">
+            <span data-bind="text: contact().emailBusiness"></span>
+        </a>
+    </address>
+</div>
+
+<div id="contactPhone" style="width: 45%;">
+    <table class="st-table table table-striped" id="phones">
+        <thead>
+            <tr>
+                <th class="always not-selectable" style="text-align: left;">Phone Type</th>
+                <th class="always" style="text-align: left;">Phone Number</th>
+                <th class="always" style="text-align: left">Actions</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: contact().phones()">
+            <tr>
+                <td class="always" style="text-align: left;">
+                    <!-- ko if: isEditing -->
+                    <select data-bind="options: $root.phoneTypes, optionsText: 'name', value: phoneType, optionsCaption: 'Choose...'"></select>&nbsp
+                    <!-- /ko -->
+                    <!-- ko ifnot: isEditing -->
+                    <span data-bind="text: phoneType().name()" />
+                    <!-- /ko -->
+                </td>
+                <td class="always" style="text-align: left;">
+                    <!-- ko if: isEditing -->
+                    <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: areaCode" style="width: 50px;" />&nbsp
+                        <input type="text" class="input-small span3" placeholder="Number" data-bind="value: number" />
+                    <!-- /ko -->
+                    <!-- ko ifnot: isEditing -->
+                    (<span data-bind="text: areaCode"></span>)&nbsp<span data-bind="    text: number"></span>
+                    <!-- /ko -->
+                </td>
+                <td class="always" style="text-align: left;">
+                    <!-- ko ifnot: isEditing -->
+                    <button id="editPhoneButton" class="btn btn-small btn-info" data-bind="click: $root.editPhone">Edit</button>
+                    <button id="deletePhoneButton" class="btn btn-small btn-info" data-bind="click: $root.deletePhone">Delete</button>
+                    <!-- /ko -->
+                    <!-- ko if: isEditing -->
+                    <button id="savePhoneButton" class="btn btn-small btn-primary" data-bind="click: $root.savePhone">Save</button>
+                    <button id="rollbackPhoneButton" class="btn btn-small btn-inverse" data-bind="click: $root.rollbackPhone">Cancel</button>
+                    <!-- /ko -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
