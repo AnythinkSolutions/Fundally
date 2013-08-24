@@ -69,6 +69,9 @@ define(['services/entitymanagerprovider', 'services/repository', 'durandal/app']
 
                 var ctPred = new breeze.Predicate("itemType", "==", "contact_type");
                 this.contactTypes = definitions.find(ctPred);
+
+                var actPred = new breeze.Predicate("itemType", "==", "activity_type");
+                this.activityTypes = definitions.find(actPred);
             };
 
             return unitofwork;

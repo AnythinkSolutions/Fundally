@@ -9,6 +9,7 @@
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
         contactTypes: ko.observableArray(),
+        activityTypes : ko.observableArray(),
         defaultAddressType: null,
         defaultPhoneType: null,
         defaultContactType: null,
@@ -17,7 +18,7 @@
             var self = this;
 
             //var pred = new breeze.Predicate("Id", "eq", params.id);
-            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, Contacts.Phones")
+            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, Contacts.Phones, Activities, Activities.ActivityType")
                 .then(function (data) {
                     self.donor(data[0]);
                     self.isWorking(false);
@@ -64,6 +65,11 @@
                     if (cType)
                         c.contactType(cType);
                 });
+            });
+
+            self.uow.activityTypes.then(function (data) {
+                self.activityTypes(data);
+                self.defaultActivityType = $.grep(data, function (at) { return at.isDfault() == true; })[0];
             });
 
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
