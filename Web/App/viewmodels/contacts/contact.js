@@ -50,6 +50,8 @@
             }).fail(function (error) {
                 alert(error);
             });
+
+            ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
         },
 
         editContact: editContact,

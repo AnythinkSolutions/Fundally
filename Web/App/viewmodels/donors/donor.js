@@ -65,6 +65,8 @@
                         c.contactType(cType);
                 });
             });
+
+            ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
         },
 
         editDonor: editDonor,

@@ -1,25 +1,75 @@
-﻿<div class="jumbotron">
-	<h1>Contacts</h1>
-	<p class="mart5">This is where you will manage your Fundally Contacts</p>
+﻿<div class="page-header">
+    <h1>Contacts</h1>
 </div>
 
-<div class="st-table-container">
-	<!--<table cellspacing="0" class="st-table table table-striped" id="articles">
-		<thead>
-		  <tr>
-			 <th class="always not-selectable">Title</th>
-			 <th class="always not-selectable">Description</th>
-			 <th class="ontablet">Text</th>
-			 <th class="ontablet">Date Created</th>
-		  </tr>
-	   </thead>
-	   <tbody data-bind="foreach: articles">
-		  <tr>
-			 <td data-bind="text: title"></td>
-			 <td data-bind="text: description"></td>
-			 <td data-bind="text: text"></td>
-			 <td data-bind="text: createdDate"></td>
-		  </tr>      
-	   </tbody>
-	</table>-->
+<i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
+
+<div>
+    <!-- class="st-table-container"> -->
+    <table class="st-table table table-striped" id="contacts" data-bind="ifnot: isWorking">
+        <thead>
+            <tr>
+                <th class="always not-selectable" style="text-align:left;">Name</th>
+                <th class="always" style="text-align:left">Donor</th>
+                <th class="always" style="text-align:left;">Phone</th>
+                <th class="always" style="text-align:left">Email</th>
+                <th class="always" style="text-align:left">Actions</th>
+                <!--<th class="ontablet">Date Created</th>-->
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: contacts">
+            <tr>
+                <td class="not-selectable always">
+                    <div data-bind="ifnot: isEditing">
+                        <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
+                            <h4><span data-bind="text: fullName"></span></h4>
+                        </a>
+                    </div>
+                    <!-- ko if: isEditing -->
+                    <input type="text" class="input-small span3" placeholder="First Name" data-bind="value: firstName" />
+                    <input type="text" class="input-small span3" placeholder="Last Name" data-bind="value: lastName" />
+                    <!-- /ko -->
+                </td>
+                <td class="not-selectable always" style="text-align:left;">
+                    <a href="#" data-bind="attr: { href: '/#donors/' + donor().id() }">
+                        <span data-bind="text: donor().name"></span>
+                    </a>
+                    &nbsp;&nbsp;(<span data-bind="text: contactType().name" />)
+                </td>
+                <td class="always" style="text-align:left;">
+                    <!-- ko ifnot: isEditing -->
+                        (<span data-bind="text: primaryPhone().areaCode"></span>)&nbsp<span data-bind="text: primaryPhone().number"></span>
+                    <!-- /ko -->
+                    <!-- ko if: isEditing -->
+                    <div data-bind="with: primaryPhone()">
+                        <select data-bind="options: $root.contactPhoneTypes, optionsText: 'name', value: phoneType, optionsCaption: 'Choose...'"></select>&nbsp
+                        <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: areaCode" style="width: 50px;" />&nbsp
+                        <input type="text" class="input-small span3" placeholder="Number" data-bind="value: number" />
+                    </div>
+                    <!-- /ko -->
+                </td>
+                  <td class="always" style="text-align:left;">
+                    <div data-bind="ifnot: isEditing">
+                        <a data-bind="attr: { href: 'mailto:' + emailBusiness() }">
+                            <span data-bind="text: emailBusiness"></span>
+                        </a>
+                    </div>
+                    <!-- ko if: isEditing -->
+                    <input type="text" class="input-small span3" placeholder="Email Address" data-bind="value: emailBusiness" />
+                    <!-- /ko -->
+                </td>
+              <td class="always" style="text-align:left;">
+                    <div data-bind="ifnot: isEditing">
+                        <button class="btn btn-mini" data-bind="click: $root.editContact">Edit</button>
+                        <button class="btn btn-mini" data-bind="click: $root.deleteContact">Delete</button>
+                    </div>
+                    <div data-bind="if: isEditing">
+                        <button class="btn btn-small btn-success" data-bind="click: $root.saveContact">Save</button>
+                        <button class="btn btn-small btn-warning" data-bind="click: $parent.rollbackContact">Cancel</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!--<button id="addContactButton" class="btn btn-primary" data-bind="click: addContact">New Contact</button>-->
 </div>
