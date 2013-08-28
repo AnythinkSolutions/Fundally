@@ -91,8 +91,13 @@
     <div class="clearfix" />
 
     <div id="donorContacts">
+        
+        <div class="section-header" style="border-bottom: 0px;">
+            <h4>Contacts</h4>
+        </div>
+
         <table class="st-table table table-condensed table-striped" id="contacts">
-            <thead>
+            <!--<thead>
                 <tr>
                     <th class="always not-selectable" style="text-align: left;">Name</th>
                     <th class="always not-selectable" style="text-align: left;">Contact Type</th>
@@ -100,7 +105,7 @@
                     <th class="always" style="text-align: left">Email</th>
                     <th class="always" style="text-align: left">Primary Phone</th>
                 </tr>
-            </thead>
+            </thead>-->
             <tbody data-bind="foreach: donor().contacts()">
                 <tr>
                     <td class="always" style="text-align: left;">
@@ -166,14 +171,23 @@
     </div>
 
     <div id="donorNotes">
-        <h4 style="border-bottom: 1px solid #eeeeee;">Notes</h4>
-        <textarea rows="8" style="width: 100%" data-bind="text: donor().notes" />
+        <div class="section-header">
+            <h4>
+                Notes
+                <button class="btn btn-mini btn-info pull-right" title="Save Notes" data-bind="click: saveNotes"><i class="icon-save"></i></button>
+            </h4>
+        </div>
+        
+        <textarea rows="8" style="width: 100%" data-bind="value: donor().notes" />
     </div>
 </div>
 
 <div id="rightColumn" class="span6 pull-left" style="margin-left: 10px;">
     <div class="section-header">
-        <h4>Activities</h4>
+        <h4>
+            Activities
+            <button class="btn btn-info btn-mini pull-right" title="Add Activity" data-bind="click: addActivity"><i class="icon-plus"></i></button>
+        </h4>
     </div>
     <div id="donorActivities">
         <table class="st-table table table-condensed table-striped" id="tableActivities">
@@ -187,7 +201,14 @@
             <tbody data-bind="foreach: donor().activities()">
                 <tr>
                     <td class="always" style="text-align: left;">
+                        <!-- ko if: isEditing -->
+                        <select data-bind="options: $root.activityType, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>&nbsp
+                        <!-- /ko -->
+                        <!-- ko ifnot: isEditing -->
                         <span data-bind="text: activityType().name()" />
+                        <!-- /ko -->
+
+                        <!--<span data-bind="text: activityType().name()" />-->
                     </td>
                     <td class="always" style="text-align: left;">
                         <span data-bind="text: activityDate"></span>

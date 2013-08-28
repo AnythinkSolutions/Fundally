@@ -89,7 +89,11 @@
         editContact: editContact,
         saveContact: saveContact,
         rollbackContact: rollbackContact,
-        deleteContact: deleteContact
+        deleteContact: deleteContact,
+
+        saveNotes: saveNotes,
+
+        addActivity: addActivity
     };
 
     return viewModel;
@@ -191,5 +195,24 @@
         contact.entityAspect.setDeleted();
         viewModel.uow.commit();
         viewModel.donor().contacts.remove(contact);
+    }
+
+    function saveNotes() {
+        viewModel.uow.commit()
+            .then(function(){
+                toastr.success('Donor Saved', 'Success');
+            })
+            .fail(function (error){
+                toastr.error(error, 'Error', { timeOut: 0, positionClass: "toast-bottom-full-width" });
+            });
+    }
+
+    function addActivity() {
+        var self = this;
+
+        var activity = self.uow.donors.createRelated('Activity');
+        activity.isEditing(true);
+
+        viewModel.donor().activities.push(activity);
     }
 });

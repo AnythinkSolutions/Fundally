@@ -51,6 +51,10 @@ define(function () {
         phone.isEditing = ko.observable(false);
     };
 
+    var initializeActivity = function (activity) {
+        activity.isEditing = ko.observable(false);
+    };
+
     var initializeContact = function (contact) {
         contact.isEditing = ko.observable(false);
         contact.isWorking = ko.observable(false);
@@ -89,6 +93,7 @@ define(function () {
                 metadata.registerEntityTypeCtor("Contact", null, initializeContact);
                 metadata.registerEntityTypeCtor("Address", null, initializeAddress);
                 metadata.registerEntityTypeCtor("Phone", null, initializePhone);
+                metadata.registerEntityTypeCtor("Activity", null, initializeActivity);
             }
         };
 
