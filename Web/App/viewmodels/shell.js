@@ -16,7 +16,11 @@
             $.when(appsecurity.getAuthInfo(), entitymanagerprovider.prepare())
                 .then(function (authinfo, entitymanagerinfo) {
                     appsecurity.user(authinfo[0]);
-                    return router.activate('home');
+
+                    entitymanagerinfo.then(function () {
+                        return router.activate('home');
+                    });
+
                 })
                 .fail(self.handlevalidationerrors);
         }
