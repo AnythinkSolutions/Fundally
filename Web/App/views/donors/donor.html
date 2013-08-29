@@ -91,7 +91,7 @@
     <div class="clearfix" />
 
     <div id="donorContacts">
-        
+
         <div class="section-header" style="border-bottom: 0px;">
             <h4>Contacts</h4>
         </div>
@@ -172,54 +172,44 @@
 
     <div id="donorNotes">
         <div class="section-header">
-            <h4>
-                Notes
+            <h4>Notes
                 <button class="btn btn-mini btn-info pull-right" title="Save Notes" data-bind="click: saveNotes"><i class="icon-save"></i></button>
             </h4>
         </div>
-        
+
         <textarea rows="8" style="width: 100%" data-bind="value: donor().notes" />
     </div>
 </div>
 
 <div id="rightColumn" class="span6 pull-left" style="margin-left: 10px;">
     <div class="section-header">
-        <h4>
-            Activities
+        <h4>Activities
             <button class="btn btn-info btn-mini pull-right" title="Add Activity" data-bind="click: addActivity"><i class="icon-plus"></i></button>
         </h4>
     </div>
     <div id="donorActivities">
-        <table class="st-table table table-condensed table-striped" id="tableActivities">
-            <thead>
-                <tr>
-                    <th class="always not-selectable" style="text-align: left; width:20%;">Type</th>
-                    <th class="always" style="text-align: left; width:20%;">Date</th>
-                    <th class="always" style="text-align: left;"></th>
-                </tr>
-            </thead>
-            <tbody data-bind="foreach: donor().activities()">
-                <tr>
-                    <td class="always" style="text-align: left;">
-                        <!-- ko if: isEditing -->
-                        <select data-bind="options: $root.activityType, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>&nbsp
-                        <!-- /ko -->
-                        <!-- ko ifnot: isEditing -->
-                        <span data-bind="text: activityType().name()" />
-                        <!-- /ko -->
 
-                        <!--<span data-bind="text: activityType().name()" />-->
-                    </td>
-                    <td class="always" style="text-align: left;">
-                        <span data-bind="text: activityDate"></span>
-                    </td>
-                    <td class="always" style="text-align: left;">
-                        <h5><span data-bind="text: subject"></span></h5>
-                        <span data-bind="text: body" style="text-wrap: normal;" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <ul data-bind="foreach: donor().activities()" class="list-unstyled">
+            <li>
+                <div class="activity">
+                    <div class="activity-existing" data-bind="ifnot: isEditing">
+                        <strong><span data-bind="text: activityType().name()" style="vertical-align: top"></span></strong>
+                        <span data-bind="text: moment(activityDate()).format('M/D/YYYY')" class="comment-date"></span><br />
+                        <span data-bind="text: subject" style="vertical-align: top"></span>
+                        <span data-bind="text: body" style="vertical-align: top"></span>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="activity-editing" data-bind="if: isEditing">
+                        <select data-bind="options: $root.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>
+                        <input type="text" class="span2" data-bind="datepicker: activityDate, datepickerOptions: { format: 'M/D/YYYY' }">
+                        <select data-bind="options: $root.donor().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Optional Contact'"></select>
+                        <button class="btn btn-mini btn-info pull-right" title="Save Notes" data-bind="click: $root.saveActivity"><i class="icon-save"></i></button><br />
+                        <input type="text" data-bind="text: subject" style="width:100%" placeholder="Subject"/>
+                        <textarea data-bind="value: body" rows="3" style="width:100%;" placeholder="Body" />
+                    </div>
+                </div>
+            </li>
+        </ul>
 
     </div>
 </div>

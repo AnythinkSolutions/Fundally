@@ -19,6 +19,9 @@ namespace Fundally.Web {
 		  .Include("~/Scripts/Stashy.js")
 		  .Include("~/Scripts/Q.js")
 		  .Include("~/Scripts/breeze.js")
+          .Include("~/Scripts/moment.js")
+          .Include("~/Scripts/moment-datepicker.js")
+          .Include("~/Scripts/moment-datepicker-ko.js")
 		);
 
 	  bundles.Add(
@@ -29,6 +32,7 @@ namespace Fundally.Web {
 		  .Include("~/Content/durandal.css")
 		  .Include("~/Content/toastr.css")
 		  .Include("~/Content/Stashy.css")
+          .Include("~/Content/datepicker.css")
 		);
 
 	  bundles.Add(

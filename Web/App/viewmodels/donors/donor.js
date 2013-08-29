@@ -13,6 +13,7 @@
         defaultAddressType: null,
         defaultPhoneType: null,
         defaultContactType: null,
+        defaultActivityType: null,
 
         canActivate: function (params) {
             var self = this;
@@ -69,7 +70,7 @@
 
             self.uow.activityTypes.then(function (data) {
                 self.activityTypes(data);
-                self.defaultActivityType = $.grep(data, function (at) { return at.isDfault() == true; })[0];
+                self.defaultActivityType = $.grep(data, function (at) { return at.isDefault() == true; })[0];
             });
 
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
@@ -92,6 +93,7 @@
         deleteContact: deleteContact,
 
         saveNotes: saveNotes,
+        saveActivity: saveActivity,
 
         addActivity: addActivity
     };
@@ -211,8 +213,15 @@
         var self = this;
 
         var activity = self.uow.donors.createRelated('Activity');
+        activity.activityType(self.defaultActivityType);
         activity.isEditing(true);
+        activity.activityDate(new Date());
 
         viewModel.donor().activities.push(activity);
+    }
+
+    function saveActivity(activity) {
+        activity.isEditing(false);
+        viewModel.uow.commit();
     }
 });

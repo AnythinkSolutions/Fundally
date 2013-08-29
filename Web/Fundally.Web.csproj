@@ -310,6 +310,7 @@
     <Content Include="Content\bootstrap\bootstrap-theme.css" />
     <Content Include="Content\bootstrap\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\datepicker.css" />
     <Content Include="Content\durandal.css" />
     <Content Include="Content\font-awesome-ie7.css" />
     <Content Include="Content\font-awesome-ie7.min.css" />
@@ -355,6 +356,11 @@
     <Content Include="Scripts\knockout.validation.debug.js" />
     <Content Include="Scripts\knockout.validation.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-datepicker-ko.js" />
+    <Content Include="Scripts\moment-datepicker.js" />
+    <Content Include="Scripts\moment-datepicker.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\q.js" />
     <Content Include="Scripts\q.min.js" />
     <Content Include="Scripts\sammy-0.7.4.js" />

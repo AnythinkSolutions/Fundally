@@ -251,7 +251,7 @@ namespace Fundally.Web.Controllers.Api
                     return response;
                 }
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 var response = Request.CreateResponse(HttpStatusCode.Redirect);
                 response.Headers.Location = new Uri("http://" + Request.RequestUri.Authority + "/#/externalloginfailure");
