@@ -77,7 +77,6 @@
         },
 
         editDonor: editDonor,
-        saveDonor: saveDonor,
         rollbackDonor: rollbackDonor,
 
         addPhone: addPhone,
@@ -86,16 +85,19 @@
         rollbackPhone: rollbackPhone,
         deletePhone: deletePhone,
 
+        deleteAddress: deleteAddress,
+
         addContact: addContact,
         editContact: editContact,
         saveContact: saveContact,
         rollbackContact: rollbackContact,
         deleteContact: deleteContact,
 
-        saveNotes: saveNotes,
+        addActivity: addActivity,
+        cancelActivity: cancelActivity,
         saveActivity: saveActivity,
 
-        addActivity: addActivity
+        saveChanges: saveChanges
     };
 
     return viewModel;
@@ -105,13 +107,21 @@
         viewModel.donor().isEditing(true);
     }
 
-    function saveDonor() {
-        var self = this;
-        viewModel.donor().isEditing(false);
+
+    function saveChanges() {
+        viewModel.uow.commit()
+            .then(function () {
+                toastr.success('Donor Saved', 'Success');
+                viewModel.donor().isEditing(false);
+            })
+            .fail(function (error) {
+                toastr.error(error, 'Error', { timeOut: 0, positionClass: "toast-bottom-full-width" });
+            });
     }
 
     function rollbackDonor() {
         var self = this;
+        viewModel.uow.rollback();
         viewModel.donor().isEditing(false);
     }
 
@@ -149,6 +159,12 @@
         phone.entityAspect.setDeleted();
         viewModel.uow.commit();
         viewModel.donor().phones.remove(phone);
+    }
+
+    function deleteAddress(address) {
+        address.entityAspect.setDeleted();
+        viewModel.uow.commit();
+        viewmodel.donor().addresses.remove(address);
     }
 
     function addContact() {
@@ -199,16 +215,6 @@
         viewModel.donor().contacts.remove(contact);
     }
 
-    function saveNotes() {
-        viewModel.uow.commit()
-            .then(function(){
-                toastr.success('Donor Saved', 'Success');
-            })
-            .fail(function (error){
-                toastr.error(error, 'Error', { timeOut: 0, positionClass: "toast-bottom-full-width" });
-            });
-    }
-
     function addActivity() {
         var self = this;
 
@@ -217,7 +223,15 @@
         activity.isEditing(true);
         activity.activityDate(new Date());
 
-        viewModel.donor().activities.push(activity);
+        viewModel.donor().activities.unshift(activity);
+    }
+
+    function cancelActivity(activity) {
+        var self = this;
+        activity.isEditing(false);
+
+        viewModel.donor().activities.remove(activity);
+        activity = null;
     }
 
     function saveActivity(activity) {

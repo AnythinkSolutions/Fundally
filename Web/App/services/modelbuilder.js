@@ -53,6 +53,21 @@ define(function () {
 
     var initializeActivity = function (activity) {
         activity.isEditing = ko.observable(false);
+
+        activity.iconName = ko.computed(function () {
+            if (activity.activityTypeId() == 16)
+                return 'icon-comment';
+            else if (activity.activityTypeId() == 17)
+                return 'icon-phone-sign';
+            else if (activity.activityTypeId() == 18) {
+                if (activity.isComplete())
+                    return 'icon-check';
+                else
+                    return 'icon-check-empty';
+            }
+            else
+                return 'icon-question';
+        }, this);
     };
 
     var initializeContact = function (contact) {
