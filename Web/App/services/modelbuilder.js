@@ -1,43 +1,54 @@
 ﻿
 define(function () {
 
-    //Private Stuff
+    //Donor Ctor & Initializer
+    var Donor = function () {
+        //this.name = "New Donor";
+        this.userId = -1;
+        this.donorTypeId = 11;
+        this.isEditing = ko.observable(false);      //Defining this in the constructor allows it to be serialized with Export for Mobile...
+    };
     var initializeDonor = function (donor) {
-        donor.isEditing = ko.observable(false);
         donor.isWorking = ko.observable(false);
         donor.primaryAddress = ko.observable(null);
         donor.primaryPhone = ko.observable(null);
 
         if (donor.addresses().length > 0) {
-            var pri = ko.utils.arrayFirst(donor.addresses(), function (a) { return a.isPrimary == true; });
+            var pri = ko.utils.arrayFirst(donor.addresses(), function (a) { return a.isPrimary() == true; });
             if (pri == null) {
                 pri = donor.addresses()[0];
             }
 
             donor.primaryAddress(pri);
+
+            $.each(donor.addresses(), function (index, address) {
+                address.isPrimary.subscribe(function (newValue) {
+                    if (newValue == true) {
+
+                        //make the old one not primary
+                        if (donor.primaryAddress() != null) {
+                            donor.primaryAddress().isPrimary(false);
+                        }
+
+                        //move the new one to the primary
+                        donor.primaryAddress(address);
+                    }
+                });
+            });
         }
 
         if (donor.phones().length > 0) {
-            var pri = ko.utils.arrayFirst(donor.phones(), function (a) { return a.isPrimary == true; });
+            var pri = ko.utils.arrayFirst(donor.phones(), function (a) { return a.isPrimary() == true; });
             if (pri == null) pri = donor.phones()[0];
 
             donor.primaryPhone(pri);
         }
-
-        //donor.primaryAddressDisplay = ko.computed(function () {
-        //    if (donor.primaryAddress())
-        //        return donor.primaryAddress().display();
-        //    else
-        //        return null;
-        //}, this);
-
-    };
-    var Donor = function () {
-        //this.name = "New Donor";
-        this.userId = -1;
-        this.donorTypeId = 11;
     };
 
+    //Address Ctor & Initializer
+    var Address = function () {
+        this.isEditing = ko.observable(false);
+    }
     var initializeAddress = function (address) {
         address.hasStreet2 = ko.computed(function () {
             if (address.streetAddress2() === null)
@@ -47,12 +58,20 @@ define(function () {
         }, this);
     };
 
-    var initializePhone = function (phone) {
-        phone.isEditing = ko.observable(false);
-    };
+    //Phone Ctor & Initializer
+    var Phone = function () {
+        this.isEditing = ko.observable(false);
+    }
+    //var initializePhone = function (phone) {
+    //    phone.isEditing = ko.observable(false);
+    //};
 
+    //Activity Ctor & Initializer
+    var Activity = function () {
+        this.isEditing = ko.observable(false);
+    }
     var initializeActivity = function (activity) {
-        activity.isEditing = ko.observable(false);
+        //activity.isEditing = ko.observable(false);
 
         activity.iconName = ko.computed(function () {
             if (activity.activityTypeId() == 16)
@@ -70,8 +89,12 @@ define(function () {
         }, this);
     };
 
+    //Contact Ctor & Initializer
+    var Contact = function () {
+        this.isEditing = ko.observable(false);
+    }
     var initializeContact = function (contact) {
-        contact.isEditing = ko.observable(false);
+        //contact.isEditing = ko.observable(false);
         contact.isWorking = ko.observable(false);
         contact.primaryAddress = ko.observable(null);
         contact.primaryPhone = ko.observable(null);
@@ -105,10 +128,10 @@ define(function () {
 
             this.initialize = function (metadata) {
                 metadata.registerEntityTypeCtor("Donor", Donor, initializeDonor);
-                metadata.registerEntityTypeCtor("Contact", null, initializeContact);
-                metadata.registerEntityTypeCtor("Address", null, initializeAddress);
-                metadata.registerEntityTypeCtor("Phone", null, initializePhone);
-                metadata.registerEntityTypeCtor("Activity", null, initializeActivity);
+                metadata.registerEntityTypeCtor("Contact", Contact, initializeContact);
+                metadata.registerEntityTypeCtor("Address", Address, initializeAddress);
+                metadata.registerEntityTypeCtor("Phone", Phone);
+                metadata.registerEntityTypeCtor("Activity", Activity, initializeActivity);
             }
         };
 

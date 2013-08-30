@@ -9,7 +9,7 @@
     </h1>
 </div>
 <div class="page-header" data-bind="visible: donor().isEditing()">
-    <input type="text" class="input-large span3" placeholder="Donor Name" data-bind="value: donor().name()" />
+    <input type="text" class="input-large" style="font-size: 38px;" placeholder="Donor Name" data-bind="value: donor().name()" />
     <button id="saveButton" class="btn btn-small btn-primary pull-right" data-bind="click: saveChanges" style="margin-left: 5px;">Save</button>
     <button id="cancelButton" class="btn btn-small btn-primary pull-right" data-bind="click: rollbackDonor">Cancel</button>
 </div>
@@ -67,7 +67,8 @@
                     <!-- ko foreach: donor().addresses() -->
                     <tr>
                         <td class="always" style="text-align: left;">
-                            <select data-bind="options: $root.addressTypes, optionsText: 'name', value: addressType, optionsCaption: 'Choose...'"></select>
+                            <select data-bind="options: $root.addressTypes, optionsText: 'name', value: addressType, optionsCaption: 'Choose...'"></select><br />
+                            <span><input type="checkbox" data-bind="checked: isPrimary" />&nbsp;Primary</span>
                         </td>
                         <td class="always" style="text-align: left;">
                             <input type="text" class="input-small span5" placeholder="Street Address" data-bind="value: streetAddress" /><br />
@@ -163,10 +164,10 @@
         <table class="st-table table table-condensed table-striped" id="contactsTable">
             <tbody data-bind="foreach: donor().contacts()">
                 <tr>
-                    <td class="always" style="text-align: left;">
+                    <td class="always" style="text-align: left;width: 100px;">
                         <!-- ko if: isEditing -->
-                        <input type="text" class="input-small span3" placeholder="First Name" data-bind="value: firstName" />
-                        <input type="text" class="input-small span3" placeholder="Last Name" data-bind="value: lastName" />
+                        <input type="text" class="input-small span2" placeholder="First Name" data-bind="value: firstName" />
+                        <input type="text" class="input-small span2" placeholder="Last Name" data-bind="value: lastName" />
                         <!-- /ko -->
                         <!-- ko ifnot: isEditing -->
                         <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
@@ -192,7 +193,7 @@
                     </td>
                     <td class="always" style="text-align: left;">
                         <!-- ko if: isEditing -->
-                        <input type="text" class="input-small span1" placeholder="Email Address" data-bind="value: emailBusiness" />
+                        <input type="text" class="input-small span2" placeholder="Email Address" data-bind="value: emailBusiness" />
                         <!-- /ko -->
                         <!-- ko ifnot: isEditing -->
                         <a data-bind="attr: { href: 'mailto:' + emailBusiness() }">
@@ -204,7 +205,7 @@
                     <td class="always" style="text-align: left;">
                         <!-- ko if: isEditing -->
                         <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: primaryPhone().areaCode" style="width: 50px;" />&nbsp
-                            <input type="text" class="input-small span3" placeholder="Number" data-bind="value: primaryPhone().number" />
+                            <input type="text" class="input-small" style="width: 100px;" placeholder="Number" data-bind="value: primaryPhone().number" />
                         <!-- /ko -->
                         <!-- ko ifnot: isEditing -->
                         (<span data-bind="text: primaryPhone().areaCode"></span>)&nbsp<span data-bind="    text: primaryPhone().number"></span>
@@ -212,12 +213,12 @@
                     </td>
                     <td class="always" style="text-align: left;">
                         <!-- ko ifnot: isEditing -->
-                        <button id="editContactButton" class="btn btn-mini btn-info" data-bind="click: $root.editContact">Edit</button>
-                        <button id="deleteContactButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteContact">Delete</button>
+                        <!--<button id="editContactButton" class="btn btn-mini btn-info" data-bind="click: $root.editContact">Edit</button>
+                        <button id="deleteContactButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteContact">Delete</button>-->
                         <!-- /ko -->
                         <!-- ko if: isEditing -->
                         <button id="saveContactButton" class="btn btn-mini btn-primary" data-bind="click: $root.saveContact">Save</button>
-                        <button id="cancelContactButton" class="btn btn-mini btn-inverse" data-bind="click: $root.rollbackContact">Cancel</button>
+                        <button id="cancelContactButton" class="btn btn-mini btn-info" data-bind="click: $root.rollbackContact">Cancel</button>
                         <!-- /ko -->
                     </td>
                 </tr>
@@ -228,7 +229,7 @@
     <div id="donorNotes">
         <div class="section-header">
             <h4>Notes
-                <button class="btn btn-mini btn-info pull-right" title="Save Notes" data-bind="click: saveChanges"><i class="icon-save"></i></button>
+                <!--<button class="btn btn-mini btn-info pull-right" title="Save Notes" data-bind="click: saveChanges"><i class="icon-save"></i></button>-->
             </h4>
         </div>
 

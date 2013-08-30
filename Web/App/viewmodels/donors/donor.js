@@ -22,6 +22,10 @@
             return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, Contacts.Phones, Activities, Activities.ActivityType")
                 .then(function (data) {
                     self.donor(data[0]);
+                    self.donor().entityAspect.propertyChanged.subscribe(handlePropertyChanged);
+                    //self.donor().notes.subscribe(function (value) {
+                    //    self.uow.commit();
+                    //});
                     self.isWorking(false);
                     return true;
                 }).fail(function (error) {
@@ -85,6 +89,7 @@
         rollbackPhone: rollbackPhone,
         deletePhone: deletePhone,
 
+        addAddress : addAddress,
         deleteAddress: deleteAddress,
 
         addContact: addContact,
@@ -102,11 +107,16 @@
 
     return viewModel;
 
+    function handlePropertyChanged(args) {
+        if (args.propertyName == 'notes') {
+            self.uow.commit();
+        }
+    }
+
     function editDonor() {
         var self = this;
         viewModel.donor().isEditing(true);
     }
-
 
     function saveChanges() {
         viewModel.uow.commit()
@@ -161,10 +171,19 @@
         viewModel.donor().phones.remove(phone);
     }
 
+    function addAddress() {
+        var self = this;
+
+        var address = self.uow.donors.createRelated("Address");
+        address.isEditing(true);
+        viewModel.donor().addresses.push(address);
+    }
+
     function deleteAddress(address) {
         address.entityAspect.setDeleted();
+        viewModel.donor().addresses.remove(address);
         viewModel.uow.commit();
-        viewmodel.donor().addresses.remove(address);
+        address = null;
     }
 
     function addContact() {
