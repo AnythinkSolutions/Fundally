@@ -78,6 +78,17 @@ namespace Fundally.Data.Migrations
                 context.Definitions.Add(new Definition("activity_type", "task", "Task"));
             }
 
+			if (!context.Definitions.Any(d => d.ItemType == "funding_area"))
+			{
+				context.Definitions.Add(new Definition("funding_area", "social_needs", "Unmet Social Needs"));
+				context.Definitions.Add(new Definition("funding_area", "human_needs", "Unmet Human Needs"));
+				context.Definitions.Add(new Definition("funding_area", "families", "Families"));
+				context.Definitions.Add(new Definition("funding_area", "children", "Children"));
+				context.Definitions.Add(new Definition("funding_area", "health", "Health Care"));
+				context.Definitions.Add(new Definition("funding_area", "mental_health", "Mental Health"));
+				context.Definitions.Add(new Definition("funding_area", "policy", "Policy"));
+			}
+
 			if (context.HasAnyChanges())
 			{
 				context.SaveChanges();

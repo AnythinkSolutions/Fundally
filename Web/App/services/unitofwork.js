@@ -50,28 +50,40 @@ define(['services/entitymanagerprovider', 'services/repository', 'durandal/app']
                     provider.manager().rejectChanges();
                 };
 
+                this.getDefinitions = function (itemType, itemSubType) {
+
+                    var predicate = new breeze.Predicate("itemType", "==", itemType);
+
+                    if (itemSubType) {
+                        var predicate2 = new breeze.Predicate("itemSubType", "==", itemSubType);
+                        predicate = predicate.and(predicate2);
+                    }
+
+                    return this.definitions.find(predicate);
+                };
+
                 // Repositories
                 this.donors = repository.create(provider, "Donor", 'fundally/donors');
                 this.contacts = repository.create(provider, "Contact", 'fundally/contacts');
                 this.userprofiles = repository.create(provider, "UserProfile", 'fundally/userprofiles');
 
-                var definitions = repository.create(provider, "Definition", 'fundally/definitions', breeze.FetchStrategy.FromLocalCache);
+                this.definitions = repository.create(provider, "Definition", 'fundally/definitions', breeze.FetchStrategy.FromLocalCache);
                 var aPred = new breeze.Predicate("itemType", "==", "address_type");
-                this.addressTypes = definitions.find(aPred);                
+                this.addressTypes = this.definitions.find(aPred);
 
                 var cPred1 = new breeze.Predicate("itemType", "==", "phone_type");
                 var cPred2 = new breeze.Predicate("itemSubType", "==", "contact");
-                this.contactPhoneTypes = definitions.find(cPred1.and(cPred2));
+                this.contactPhoneTypes = this.definitions.find(cPred1.and(cPred2));
 
                 var dPred1 = new breeze.Predicate("itemType", "==", "phone_type");
                 var dPred2 = new breeze.Predicate("itemSubType", "==", "donor");
-                this.donorPhoneTypes = definitions.find(dPred1.and(dPred2));
+                this.donorPhoneTypes = this.definitions.find(dPred1.and(dPred2));
 
                 var ctPred = new breeze.Predicate("itemType", "==", "contact_type");
-                this.contactTypes = definitions.find(ctPred);
+                this.contactTypes = this.definitions.find(ctPred);
 
                 var actPred = new breeze.Predicate("itemType", "==", "activity_type");
-                this.activityTypes = definitions.find(actPred);
+                this.activityTypes = this.definitions.find(actPred);
             };
 
             return unitofwork;

@@ -9,7 +9,8 @@
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
         contactTypes: ko.observableArray(),
-        activityTypes : ko.observableArray(),
+        activityTypes: ko.observableArray(),
+        fundingAreas : ko.observableArray(),
         defaultAddressType: null,
         defaultPhoneType: null,
         defaultContactType: null,
@@ -76,6 +77,11 @@
                 self.activityTypes(data);
                 self.defaultActivityType = $.grep(data, function (at) { return at.isDefault() == true; })[0];
             });
+
+            self.uow.getDefinitions('funding_area')
+                .then(function (areas) {
+                    self.fundingAreas(areas);
+                });
 
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
         },
