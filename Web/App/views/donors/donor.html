@@ -248,7 +248,7 @@
         <ul data-bind="foreach: donor().activities()" class="list-unstyled">
             <li>
                 <div class="activity">
-                    <div class="activity-existing" data-bind="ifnot: isEditing">
+                    <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3}">
                         <i data-bind="css: iconName, attr: { title: activityType().name() }" style="margin-right: 10px;"></i>
                         <span data-bind="text: moment(activityDate()).format('M/D/YYYY')" class="comment-date" style="margin-right: 10px;"></span>
                         <span data-bind="text: subject" style="vertical-align: top; font-weight: bold;"></span>

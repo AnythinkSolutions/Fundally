@@ -87,6 +87,20 @@ define(function () {
             else
                 return 'icon-question';
         }, this);
+
+        activity.daysUntilDue = ko.computed(function () {
+            if (activity.activityTypeId() == 18 && activity.dueDate() != null && !activity.isComplete()) {
+                var momentDue = moment(activity.dueDate());
+                var days = momentDue.diff(moment(), 'days');
+                return days;
+            }
+
+            return 1000;
+        }, this);
+
+        activity.isTask = ko.computed(function () {
+            return activity.activityTypeId() == 18;
+        }, this);
     };
 
     //Contact Ctor & Initializer
