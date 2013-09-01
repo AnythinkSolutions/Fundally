@@ -21,6 +21,7 @@ define(function () {
 
             donor.primaryAddress(pri);
 
+            //Deal with changes to the primary address
             $.each(donor.addresses(), function (index, address) {
                 address.isPrimary.subscribe(function (newValue) {
                     if (newValue == true) {
@@ -42,6 +43,22 @@ define(function () {
             if (pri == null) pri = donor.phones()[0];
 
             donor.primaryPhone(pri);
+
+            //Deal with changes to the primary phone
+            $.each(donor.phones(), function (index, phone) {
+                phone.isPrimary.subscribe(function (newValue) {
+                    if (newValue == true) {
+
+                        //make the old one not primary
+                        if (donor.primaryPhone() != null) {
+                            donor.primaryPhone().isPrimary(false);
+                        }
+
+                        //move the new one to the primary
+                        donor.primaryPhone(phone);
+                    }
+                });
+            });
         }
     };
 
@@ -63,7 +80,9 @@ define(function () {
         this.isEditing = ko.observable(false);
     }
     //var initializePhone = function (phone) {
-    //    phone.isEditing = ko.observable(false);
+    //    phone.isPrimary = ko.computed(function () {
+    //        return phone.phoneType() != null && phone.phoneType().code() == 'main';
+    //    }, this);
     //};
 
     //Activity Ctor & Initializer
@@ -133,7 +152,26 @@ define(function () {
             var name = contact.firstName() != null ? contact.firstName() : '?';
             name += contact.lastName() != null ? ' ' + contact.lastName() : '';
             return name;
-        }, self);
+        }, this);
+    };
+
+    var initializeFundingArea = function (area) {
+
+        area.isOther = ko.computed(function () {
+            return area.areaType() != null && area.areaType().code() == 'other';
+        }, this);
+
+        area.displayName = ko.computed(function () {
+            if (area.areaType() != null) {
+                if (area.areaType().code() == 'other')
+                    return area.otherName();
+                else
+                    return area.areaType().name();
+            }
+            else
+                return null;
+        }, this);
+
     };
 
     //Define the object to return
@@ -146,6 +184,7 @@ define(function () {
                 metadata.registerEntityTypeCtor("Address", Address, initializeAddress);
                 metadata.registerEntityTypeCtor("Phone", Phone);
                 metadata.registerEntityTypeCtor("Activity", Activity, initializeActivity);
+                metadata.registerEntityTypeCtor("FundingArea", null, initializeFundingArea);
             }
         };
 

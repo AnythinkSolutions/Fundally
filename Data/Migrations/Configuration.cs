@@ -69,6 +69,7 @@ namespace Fundally.Data.Migrations
 				context.Definitions.Add(new Definition("contact_type", "grants", "Grants") { IsDefault = true });
 				context.Definitions.Add(new Definition("contact_type", "legal", "Legal"));
 				context.Definitions.Add(new Definition("contact_type", "marketing", "Marketing"));
+				context.Definitions.Add(new Definition("contact_type", "trustee", "Trustee"));
 			}
 
             if (!context.Definitions.Any(d => d.ItemType == "activity_type"))

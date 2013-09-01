@@ -44,11 +44,11 @@
                     <!-- ko if: isEditing -->
                     <div data-bind="with: primaryAddress()">
                         <select data-bind="options: $root.addressTypes, optionsText: 'name', value: addressType, optionsCaption: 'Choose...'" style="width: 153px;" ></select><br />
-                        <input type="text" class="input-small span5" placeholder="Street Address" data-bind="value: streetAddress" /><br />
-                        <input type="text" class="input-small span5" placeholder="Street Address 2" data-bind="value: streetAddress2" /><br />
-                        <input type="text" class="input-small span3" placeholder="City" data-bind="value: city" />,
-                        <input type="text" class="input-small span1" placeholder="State" data-bind="value: state" style="width: 50px;" />
-                        <input type="text" class="input-small span2" placeholder="Zip" data-bind="value: zip" style="width: 75px;" />
+                        <input type="text" class="input-small span3" placeholder="Street Address" data-bind="value: streetAddress" /><br />
+                        <input type="text" class="input-small span3" placeholder="Street Address 2" data-bind="value: streetAddress2" /><br />
+                        <input type="text" class="input-small span2" placeholder="City" data-bind="value: city" style="width: 100px;"/>,
+                        <input type="text" class="input-small" placeholder="State" data-bind="value: state" style="width: 35px;" />
+                        <input type="text" class="input-small" placeholder="Zip" data-bind="value: zip" style="width: 75px;" />
                     </div>
                     <!-- /ko -->
                 </td>
@@ -60,7 +60,7 @@
                     <div data-bind="with: primaryPhone()">
                         <select data-bind="options: $root.donorPhoneTypes, optionsText: 'name', value: phoneType, optionsCaption: 'Choose...'"></select>&nbsp
                         <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: areaCode" style="width: 50px;" />&nbsp
-                        <input type="text" class="input-small span3" placeholder="Number" data-bind="value: number" />
+                        <input type="text" class="input-small" placeholder="Number" style="width: 100px;" data-bind="value: number" />
                     </div>
                     <!-- /ko -->
                 </td>

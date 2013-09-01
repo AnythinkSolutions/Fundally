@@ -14,3 +14,40 @@
 {
 	margin-left: 10px;
 }
+
+.primary-address
+{
+	/*font-weight: bolder;*/
+	font-style:italic;
+}
+
+.primary-phone
+{
+	/*font-weight: bolder;*/
+	font-style:italic;
+}
+
+.space-left
+{
+	margin-left: 10px;
+}
+
+.space-left-small
+{
+	margin-left: 5px;
+}
+
+.space-right
+{
+	margin-right: 10px;
+}
+
+.space-right-small
+{
+	margin-right: 5px;
+}
+
+.subtle
+{
+	color: #707070;
+}

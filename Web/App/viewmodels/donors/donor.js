@@ -20,13 +20,10 @@
             var self = this;
 
             //var pred = new breeze.Predicate("Id", "eq", params.id);
-            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, FundingAreas, Contacts.Phones, Activities, Activities.ActivityType, FundingAreas.AreaType")
+            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, FundingAreas, Contacts.Phones, Activities, Phones.PhoneType, Contacts.ContactType, Activities.ActivityType, FundingAreas.AreaType")
                 .then(function (data) {
                     self.donor(data[0]);
                     self.donor().entityAspect.propertyChanged.subscribe(handlePropertyChanged);
-                    //self.donor().notes.subscribe(function (value) {
-                    //    self.uow.commit();
-                    //});
                     self.isWorking(false);
                     return true;
                 }).fail(function (error) {
@@ -38,45 +35,50 @@
         activate: function (params) {
             var self = this;
 
-            self.uow.addressTypes.then(function (data) {
-                self.addressTypes(data);
-                self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            }).fail(function (error) {
-                alert(error);
-            });
-
-            self.uow.donorPhoneTypes.then(function (data) {
-                self.phoneTypes(data);
-                self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-
-                $.each(self.donor().phones(), function (p) {
-                    var pType = $.grep(self.phoneTypes, function (pt) { return pt.id = p.phoneTypeId; })[0];
-                    if(pType)
-                        p.phoneType(pType);
+            self.uow.getDefinitions('address_type')
+                .then(function (data) {
+                    self.addressTypes(data);
+                    self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+                    })
+                .fail(function (error) {
+                    alert(error);
                 });
 
-            }).fail(function (error) {
-                alert(error);
-            });
+            self.uow.getDefinitions('phone_type', 'contact')
+                .then(function (data) {
+                    self.phoneTypes(data);
+                    self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
 
-            self.uow.contactTypes.then(function (data) {
+                    //$.each(self.donor().phones(), function (p) {
+                    //    var pType = $.grep(self.phoneTypes, function (pt) { return pt.id = p.phoneTypeId; })[0];
+                    //    if(pType)
+                    //        p.phoneType(pType);
+                    //});
 
-                //Populate the available types and the defaults
-                self.contactTypes(data);
-                self.defaultContactType = $.grep(data, function (ct) { return ct.isDefault() == true; })[0];
-
-                //Assign the right definition to each of the existing contacts
-                $.each(self.donor().contacts(), function (c) {
-                    var cType = $.grep(self.contactTypes, function (ct) { return ct.id = c.contactTypeId; })[0];
-                    if (cType)
-                        c.contactType(cType);
+                }).fail(function (error) {
+                    alert(error);
                 });
-            });
 
-            self.uow.activityTypes.then(function (data) {
-                self.activityTypes(data);
-                self.defaultActivityType = $.grep(data, function (at) { return at.isDefault() == true; })[0];
-            });
+            self.uow.getDefinitions('contact_type')
+                .then(function (data) {
+
+                    //Populate the available types and the defaults
+                    self.contactTypes(data);
+                    self.defaultContactType = $.grep(data, function (ct) { return ct.isDefault() == true; })[0];
+
+                    //Assign the right definition to each of the existing contacts
+                    //$.each(self.donor().contacts(), function (c) {
+                    //    var cType = $.grep(self.contactTypes, function (ct) { return ct.id = c.contactTypeId; })[0];
+                    //    if (cType)
+                    //        c.contactType(cType);
+                    //});
+                });
+
+            self.uow.getDefinitions('activity_type')
+                .then(function (data) {
+                    self.activityTypes(data);
+                    self.defaultActivityType = $.grep(data, function (at) { return at.isDefault() == true; })[0];
+                });
 
             self.uow.getDefinitions('funding_area')
                 .then(function (areas) {

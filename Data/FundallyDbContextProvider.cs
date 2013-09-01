@@ -30,6 +30,7 @@ namespace Fundally.Data
                 throw new EntityErrorsException(errors);
             }
 
+			DateTime now = DateTime.Now;
             //Set the OwnerId of any modified rows
             foreach (var etyType in saveMap.Values)
             {
@@ -38,7 +39,15 @@ namespace Fundally.Data
                     AuditableModelBase amb = ety.Entity as AuditableModelBase;
                     if (amb != null)
                     {
+						//Need to set the auditable properties on the object
                         amb.OwnerId = WebSecurity.CurrentUserId;
+						amb.DateModified = now;
+						if (ety.EntityState == EntityState.Added)
+							amb.DateCreated = now;
+						else if (ety.EntityState == EntityState.Deleted)
+							amb.DateDeactivated = now;
+						//else
+						//	amb.RowVersion++;
                     }
                 }
             }
@@ -56,32 +65,7 @@ namespace Fundally.Data
             //        throw new EntityErrorsException(errors);
             //    }
             //}
-
-            //List<EntityInfo> categories;
-            //if (saveMap.TryGetValue(typeof(Category), out categories))
-            //{
-            //    if (categories.Any() && !Roles.IsUserInRole("Administrator"))
-            //    {
-            //        var errors = categories.Select(oi =>
-            //        {
-            //            return new EFEntityError(oi, "Save Failed", "Only administrators can save categories", "CategoryId");
-            //        });
-            //        throw new EntityErrorsException(errors);
-            //    }
-            //}
-
-            //List<EntityInfo> tags;
-            //if (saveMap.TryGetValue(typeof(Tag), out tags))
-            //{
-            //    if (categories.Any() && !Roles.IsUserInRole("Administrator"))
-            //    {
-            //        var errors = userprofiles.Select(oi =>
-            //        {
-            //            return new EFEntityError(oi, "Save Failed", "Only administrators can save tags", "TagId");
-            //        });
-            //        throw new EntityErrorsException(errors);
-            //    }
-            //}
+            
             return saveMap;
         }
     }
