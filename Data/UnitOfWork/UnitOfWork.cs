@@ -28,30 +28,25 @@ namespace Fundally.Data.UnitOfWork
         {
             contextProvider = new FundallyDbContextProvider();
 
-			//ArticleRepository = new Repository<Article>(contextProvider.Context);
-			//CategoryRepository = new Repository<Category>(contextProvider.Context);
-			//TagRepository = new Repository<Tag>(contextProvider.Context);
-
             UserProfileRepository = new Repository<UserProfile>(contextProvider.Context);
 			DefinitionRepository = new Repository<Definition>(contextProvider.Context);
 			DonorRepository = new Repository<Donor>(contextProvider.Context);
 			ContactRepository = new Repository<Contact>(contextProvider.Context);
 			AddressesRepository = new Repository<Address>(contextProvider.Context);
 			PhonesRepository = new Repository<Phone>(contextProvider.Context);
+            FundingAreasRepository = new Repository<FundingArea>(contextProvider.Context);
         }
 
         /// <summary>
         /// Reporitories
         /// </summary>
-		//public IRepository<Article> ArticleRepository {get; private set;}        
-		//public IRepository<Category> CategoryRepository { get; private set; }
-		//public IRepository<Tag> TagRepository { get; private set; }
 		public IRepository<Definition> DefinitionRepository { get; private set; }
 		public IRepository<Donor> DonorRepository { get; private set; }
 		public IRepository<Contact> ContactRepository { get; private set; }
 		public IRepository<UserProfile> UserProfileRepository { get; private set; }
 		public IRepository<Address> AddressesRepository { get; private set; }
 		public IRepository<Phone> PhonesRepository { get; private set; }
+        public IRepository<FundingArea> FundingAreasRepository { get; private set; }
 
         /// <summary>
         /// Check if Database exists. 

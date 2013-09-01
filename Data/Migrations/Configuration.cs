@@ -87,6 +87,7 @@ namespace Fundally.Data.Migrations
 				context.Definitions.Add(new Definition("funding_area", "health", "Health Care"));
 				context.Definitions.Add(new Definition("funding_area", "mental_health", "Mental Health"));
 				context.Definitions.Add(new Definition("funding_area", "policy", "Policy"));
+                context.Definitions.Add(new Definition("funding_area", "other", "Other"));
 			}
 
 			if (context.HasAnyChanges())

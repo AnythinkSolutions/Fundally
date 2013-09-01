@@ -20,7 +20,7 @@
             var self = this;
 
             //var pred = new breeze.Predicate("Id", "eq", params.id);
-            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, Contacts.Phones, Activities, Activities.ActivityType")
+            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, FundingAreas, Contacts.Phones, Activities, Activities.ActivityType, FundingAreas.AreaType")
                 .then(function (data) {
                     self.donor(data[0]);
                     self.donor().entityAspect.propertyChanged.subscribe(handlePropertyChanged);
@@ -97,6 +97,9 @@
 
         addAddress : addAddress,
         deleteAddress: deleteAddress,
+
+        addFundingArea: addFundingArea,
+        deleteFundingArea: deleteFundingArea,
 
         addContact: addContact,
         editContact: editContact,
@@ -175,6 +178,20 @@
         phone.entityAspect.setDeleted();
         viewModel.uow.commit();
         viewModel.donor().phones.remove(phone);
+    }
+
+    function addFundingArea() {
+        var self = this;
+
+        var fundingArea = self.uow.donors.createRelated("FundingArea");
+        viewModel.donor().fundingAreas.push(fundingArea);
+    }
+
+    function deleteFundingArea(area){
+        area.entityAspect.setDeleted();
+        viewModel.donor().fundingAreas.remove(area);
+        viewModel.uow.commit();
+        area = null;
     }
 
     function addAddress() {

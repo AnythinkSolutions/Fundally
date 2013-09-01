@@ -51,6 +51,13 @@ namespace Fundally.Web.Controllers
 			return UnitOfWork.PhonesRepository.All();
 		}
 
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public IQueryable<FundingArea> FundingAreas()
+        {
+            return UnitOfWork.FundingAreasRepository.All();
+        }
+
 		// ~/breeze/fundally/UserProfiles
         [HttpGet]
         [Authorize(Roles = "Administrator")]

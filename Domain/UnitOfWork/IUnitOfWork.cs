@@ -25,6 +25,7 @@ namespace Fundally.Domain.UnitOfWork
 		IRepository<Address> AddressesRepository { get; }
 		IRepository<Phone> PhonesRepository { get; }
         IRepository<UserProfile> UserProfileRepository { get; }
+        IRepository<FundingArea> FundingAreasRepository { get; }
 
         bool DatabaseExists();
         void DatabaseInitialize();

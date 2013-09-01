@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Security;
 using Breeze.WebApi;
 using Fundally.Domain.Model;
+using WebMatrix.WebData;
 
 namespace Fundally.Data
 {
@@ -28,6 +29,20 @@ namespace Fundally.Data
                 });
                 throw new EntityErrorsException(errors);
             }
+
+            //Set the OwnerId of any modified rows
+            foreach (var etyType in saveMap.Values)
+            {
+                foreach (var ety in etyType)
+                {
+                    AuditableModelBase amb = ety.Entity as AuditableModelBase;
+                    if (amb != null)
+                    {
+                        amb.OwnerId = WebSecurity.CurrentUserId;
+                    }
+                }
+            }
+            //saveMap.OfType<AuditableModelBase>().ForEach(amb => amb.OwnerId = WebSecurity.CurrentUserId);
 
             //List<EntityInfo> articles;
             //if (saveMap.TryGetValue(typeof(Article), out articles))

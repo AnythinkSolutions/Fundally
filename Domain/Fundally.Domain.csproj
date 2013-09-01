@@ -57,6 +57,7 @@
     <Compile Include="Model\Definition.cs" />
     <Compile Include="Model\Donor.cs" />
     <Compile Include="Model\Extensions.cs" />
+    <Compile Include="Model\FundingArea.cs" />
     <Compile Include="Model\ModelBase.cs" />
     <Compile Include="Model\Phone.cs" />
     <Compile Include="Model\UserProfile.cs" />

@@ -86,7 +86,7 @@
                         <td class="always" colspan="2">
                             <button id="addAddressButton" class="btn btn-mini btn-info" data-bind="click: $root.addAddress">Add Address</button>
                         </td>
-                        <td></td>
+                        <td></td><td></td>
                     </tr>
                 </tbody>
             </table>
@@ -139,12 +139,42 @@
                     </tr>
                     <!-- /ko-->
                     <tr>
-                        <td class="always" colspan="2">
+                        <td class="always">
                             <button id="addPhoneButton" class="btn btn-mini btn-info" data-bind="click: $root.addPhone">Add Phone</button>
                         </td>
-                        <td></td>
+                        <td></td><td></td>
                     </tr>
 
+                </tbody>
+            </table>
+        </div>
+        <div id="donorAreaEditing">
+            <div class="section-header" style="border-bottom: 0px;">
+                <h5>Funding Areas</h5>
+            </div>
+            <table class="st-table table table-condensed table-striped" id="areasEditTable">
+                <tbody>
+                    <!-- ko foreach: donor().fundingAreas() -->
+                    <tr>
+                        <td class="always">
+                            <span>Funding Area</span>
+                        </td>
+                        <td class="always" style="text-align: left;">
+                            <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select>
+                        </td>
+                        <td class="always" style="text-align: left;">
+                            <input type="text" class="input-small span3" placeholder="Other Area" data-bind="value: otherName"/>
+                        </td>
+                        <td class="always">
+                           <button id="deleteFundingAreaButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteFundingArea">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                    <tr>
+                        <td class="always">
+                            <button id="addFundingAreaButton" class="btn btn-mini btn-info" data-bind="click: $root.addFundingArea">Add Funding Area</button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

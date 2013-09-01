@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fundally.Domain.Model
 {
@@ -45,8 +43,9 @@ namespace Fundally.Domain.Model
 
 		[DataMember]
 		public string Notes { get; set; }
+
 		[DataMember]
-		public virtual IList<Definition> FundingAreas { get; set; }
+		public virtual IList<FundingArea> FundingAreas { get; set; }
 
 		[NotMapped]
 		public Address PrimaryAddress
