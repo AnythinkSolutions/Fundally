@@ -47,6 +47,9 @@ namespace Fundally.Domain.Model
 		[DataMember]
 		public virtual IList<FundingArea> FundingAreas { get; set; }
 
+		[DataMember]
+		public virtual IList<FundingCycle> FundingCycles { get; set; }
+
 		[NotMapped]
 		public Address PrimaryAddress
 		{

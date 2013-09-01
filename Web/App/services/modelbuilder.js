@@ -4,7 +4,7 @@ define(function () {
     //Donor Ctor & Initializer
     var Donor = function () {
         //this.name = "New Donor";
-        this.userId = -1;
+        this.userId = -1;       //TODO: Don't think this is used yet.
         this.donorTypeId = 11;
         this.isEditing = ko.observable(false);      //Defining this in the constructor allows it to be serialized with Export for Mobile...
     };
@@ -79,11 +79,6 @@ define(function () {
     var Phone = function () {
         this.isEditing = ko.observable(false);
     }
-    //var initializePhone = function (phone) {
-    //    phone.isPrimary = ko.computed(function () {
-    //        return phone.phoneType() != null && phone.phoneType().code() == 'main';
-    //    }, this);
-    //};
 
     //Activity Ctor & Initializer
     var Activity = function () {
@@ -93,18 +88,19 @@ define(function () {
         //activity.isEditing = ko.observable(false);
 
         activity.iconName = ko.computed(function () {
-            if (activity.activityTypeId() == 16)
-                return 'icon-comment';
-            else if (activity.activityTypeId() == 17)
-                return 'icon-phone-sign';
-            else if (activity.activityTypeId() == 18) {
-                if (activity.isComplete())
-                    return 'icon-check';
-                else
-                    return 'icon-check-empty';
+            if (activity.activityType() != null) {
+                if (activity.activityType().code() == 'phonecall')
+                    return 'icon-phone-sign';
+                else if (activity.activityType().code() == 'task') {
+                    if (activity.isComplete())
+                        return 'icon-check';
+                    else
+                        return 'icon-check-empty';
+                }
             }
-            else
-                return 'icon-question';
+
+            return 'icon-comment';
+
         }, this);
 
         activity.daysUntilDue = ko.computed(function () {
@@ -118,7 +114,7 @@ define(function () {
         }, this);
 
         activity.isTask = ko.computed(function () {
-            return activity.activityTypeId() == 18;
+            return activity.activityType() != null && activity.activityType().code() == 'task';
         }, this);
     };
 
@@ -155,6 +151,7 @@ define(function () {
         }, this);
     };
 
+    //Funding Area
     var initializeFundingArea = function (area) {
 
         area.isOther = ko.computed(function () {
@@ -174,6 +171,25 @@ define(function () {
 
     };
 
+    //Funding Cycle
+    var FundingCycle = function () {
+        this.isEditing = ko.observable(false);
+    }
+
+    var initializeFundingCycle = function (cycle) {
+        cycle.daysUntilDue = ko.computed(function () {
+            if (cycle.dueDate() != null){
+                var dueMoment = moment(cycle.dueDate());            
+                if(dueMoment >= moment().startOf('day')) {
+                    var days = dueMoment.diff(moment(), 'days');
+                    return days;
+                }
+            }
+
+            return -999;
+        }, this);
+    }
+
     //Define the object to return
     var ModelBuilder = (function(){
         var modelBuilder = function () {
@@ -185,6 +201,7 @@ define(function () {
                 metadata.registerEntityTypeCtor("Phone", Phone);
                 metadata.registerEntityTypeCtor("Activity", Activity, initializeActivity);
                 metadata.registerEntityTypeCtor("FundingArea", null, initializeFundingArea);
+                metadata.registerEntityTypeCtor("FundingCycle", FundingCycle, initializeFundingCycle);
             }
         };
 

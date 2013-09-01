@@ -165,7 +165,7 @@
                         <input type="text" class="input-small span2" placeholder="Last Name" data-bind="value: lastName" />
                         <!-- /ko -->
                         <!-- ko ifnot: isEditing -->
-                        <i class="icon-user space-right-small"></i>
+                        <!--<i class="icon-user space-right-small"></i>-->
                         <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
                             <span data-bind="text: fullName"></span>
                         </a>
@@ -233,13 +233,42 @@
 
 <div id="rightColumn" class="span6 pull-left">
     <div class="rightColumnNotEditing" data-bind="ifnot: donor().isEditing">
-        <div id="donorAreas" style="padding-bottom:5px;border-bottom:1px solid #eeeeee;margin-bottom:5px;">
+        <div id="donorAreas" class="separator">
             <h4 style="display: inline;"><i class="icon-compass icon-3 space-right-small"></i><span class="subtle">Funding Areas:</span>&nbsp;</h4>
             <!-- ko foreach: donor().fundingAreas() -->
             <div style="display: inline;">
                 <span data-bind="text: displayName" /><span style="margin-right: 10px;">, </span>
             </div>
             <!-- /ko -->
+        </div>
+        <div id="fundingCycles" class="separator">
+            <h4 style="display: inline;"><i class="icon-usd icon-3 space-right-small"></i><span class="subtle">Funding Cycles:</span>&nbsp;</h4>
+
+           <table class="st-table table table-condensed" id="fundingCyclesTable">
+                <tbody>
+                    <!-- ko foreach: activeCycles() -->
+                   <tr  data-bind="css: { 'alert-danger': daysUntilDue() < 15, 'alert-warning': daysUntilDue() <= 45 }">
+                        <td class="always" style="text-align: left;">
+                            <span style="font-style:italic" data-bind="text: name" />
+                        </td>
+                        <td class="always" style="text-align: left;">
+                            <span data-bind="visible: !isParticipating">Not&nbsp;</span>Participating
+                        </td>
+                        <td class="always" style="text-align: left;">
+                            Due: <span data-bind="text: moment(dueDate()).format('M/D/YYYY')"></span>
+                        </td>
+                        <td class="always" style="text-align: left;">
+                            End: <span data-bind="text: moment(endDate()).format('M/D/YYYY')"></span>
+                        </td>
+                    </tr>
+                    <tr data-bind="visible: notes() != null">
+                        <td class="always" colspan="4">
+                            <span style="margin-left: 25px;" data-bind="text: notes" />
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                </tbody>
+            </table>
         </div>
         <div id="donorActivities">
             <div class="section-header">
@@ -290,7 +319,7 @@
         </div>
     </div>
     <div class="rightColumnEditing" data-bind="if: donor().isEditing">
-        <div id="donorAreaEditing">
+        <div id="donorAreasEditing">
             <div class="section-header" style="border-bottom: 0px;">
                 <h4 style="margin-bottom:0px;">
                     <i class="icon-compass space-right-small"></i>
@@ -303,13 +332,13 @@
                     <!-- ko foreach: donor().fundingAreas() -->
                     <tr>
                         <td class="always">
-                            <span>Funding Area</span>
+                            <span>Area</span>
                         </td>
                         <td class="always" style="text-align: left;">
                             <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select>
                         </td>
                         <td class="always" style="text-align: left;">
-                            <input type="text" class="input-small span3" placeholder="Other Area" data-bind="value: otherName, visible: isOther()"/>
+                            <input type="text" class="input-small span2" placeholder="Other Area" data-bind="value: otherName, visible: isOther()"/>
                         </td>
                         <td class="always">
                            <button id="deleteFundingAreaButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteFundingArea">Delete</button>
@@ -323,6 +352,52 @@
                     </tr>-->
                 </tbody>
             </table>
+        </div>
+        <div id="fundingCyclesEditing">
+            <div class="section-header" style="border-bottom: 0px;">
+                <h4 style="margin-bottom:0px;">
+                    <i class="icon-usd space-right-small"></i>
+                    <span class="subtle">Funding Cycles</span>
+                    <button class="btn btn-info btn-mini space-left" title="Add Funding Cycle" data-bind="click: $root.addFundingCycle">New...</button>
+                </h4>
+            </div>
+            <ul data-bind="foreach: donor().fundingCycles()" class="list-unstyled">
+                <li>
+                    <div class="fundingCycleEdit">
+                        <h4 style="margin-bottom:5px;">
+                            <input type="text" style="width: 75%;" data-bind="value: name" placeholder="Cycle Name" />
+                            <div class="pull-right">
+                                <button class="btn btn-mini btn-info" title="Cancel" data-bind="click: $root.deleteFundingCycle"><i class="icon-remove"></i></button>
+                            </div>
+                        </h4>
+                        <span class="subtle">End Date: </span>
+                        <input type="text" class="span2 space-right-small" data-bind="datepicker: endDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
+                        <span class="subtle">Due Date: </span>
+                        <input type="text" class="span2 space-right-small" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
+                        <span>Participating: <input type="checkbox" data-bind="checked: isParticipating" /></span>
+                        <br />
+                        <textarea rows="3" style="width: 100%; margin-top:5px;" data-bind="value: notes" placeholder="Notes"/>
+                        
+                        <!--<span class="subtle">Funding Areas</span>
+                        <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addCycleFundingArea">New...</button>                        
+                        <table class="st-table table table-condensed table-striped" id="Table1">
+                            <tbody data-bind="foreach: fundingAreas()">
+                                <tr>
+                                    <td class="always" style="text-align: left;">
+                                        <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select>
+                                    </td>
+                                    <td class="always" style="text-align: left;">
+                                        <input type="text" class="input-small span2" placeholder="Other Area" data-bind="value: otherName, visible: isOther()"/>
+                                    </td>
+                                    <td class="always">
+                                        <button id="deleteCycleFundingArea" class="btn btn-mini btn-info" data-bind="click: $root.deleteCycleFundingArea">Delete</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>-->
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-﻿define(['services/unitofwork'], function (unitofwork) {
+﻿define(['services/unitofwork', 'durandal/app'], function (unitofwork, app) {
     
     var myUow = unitofwork.create();
 
@@ -6,6 +6,7 @@
         isWorking: ko.observable(true),
         uow: myUow,
         donor: ko.observable(),
+        activeCycles: ko.observable(),
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
         contactTypes: ko.observableArray(),
@@ -20,9 +21,13 @@
             var self = this;
 
             //var pred = new breeze.Predicate("Id", "eq", params.id);
-            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, FundingAreas, Contacts.Phones, Activities, Phones.PhoneType, Contacts.ContactType, Activities.ActivityType, FundingAreas.AreaType")
+            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, FundingAreas, FundingCycles, Contacts.Phones, Activities, Phones.PhoneType, Contacts.ContactType, Activities.ActivityType, FundingAreas.AreaType, FundingCycles.FundingAreas, FundingCycles.FundingAreas.AreaType")
                 .then(function (data) {
                     self.donor(data[0]);
+
+                    //Get the list of active cycles
+                    getActiveFundingCycles();
+
                     self.donor().entityAspect.propertyChanged.subscribe(handlePropertyChanged);
                     self.isWorking(false);
                     return true;
@@ -44,17 +49,10 @@
                     alert(error);
                 });
 
-            self.uow.getDefinitions('phone_type', 'contact')
+            self.uow.getDefinitions('phone_type', 'donor')
                 .then(function (data) {
                     self.phoneTypes(data);
                     self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-
-                    //$.each(self.donor().phones(), function (p) {
-                    //    var pType = $.grep(self.phoneTypes, function (pt) { return pt.id = p.phoneTypeId; })[0];
-                    //    if(pType)
-                    //        p.phoneType(pType);
-                    //});
-
                 }).fail(function (error) {
                     alert(error);
                 });
@@ -113,6 +111,9 @@
         cancelActivity: cancelActivity,
         saveActivity: saveActivity,
 
+        addFundingCycle: addFundingCycle,
+        deleteFundingCycle: deleteFundingCycle,
+
         saveChanges: saveChanges
     };
 
@@ -134,6 +135,9 @@
             .then(function () {
                 toastr.success('Donor Saved', 'Success');
                 viewModel.donor().isEditing(false);
+
+                getActiveFundingCycles();
+
             })
             .fail(function (error) {
                 toastr.error(error, 'Error', { timeOut: 0, positionClass: "toast-bottom-full-width" });
@@ -144,6 +148,8 @@
         var self = this;
         viewModel.uow.rollback();
         viewModel.donor().isEditing(false);
+
+        getActiveFundingCycles();
     }
 
     function addPhone() {
@@ -195,6 +201,52 @@
         viewModel.uow.commit();
         area = null;
     }
+
+    function addFundingCycle() {
+        var self = this;
+
+        var cycle = self.uow.donors.createRelated("FundingCycle");
+        cycle.donor(viewModel.donor());
+        cycle.donorId(viewModel.donor().id());
+        cycle.isParticipating(true);
+        cycle.dueDate(new Date());
+        cycle.endDate(new Date());
+        viewModel.donor().fundingCycles.push(cycle);
+    }
+
+    function getActiveFundingCycles() {
+        viewModel.activeCycles($.grep(viewModel.donor().fundingCycles(), function (c) { return c.daysUntilDue() >= 0 && c.daysUntilDue() <= 356; }));
+    }
+
+    function deleteFundingCycle(cycle) {
+
+        if (!cycle.entityAspect.entityState.isAdded()) {
+            //Confirm with user they want to delete this item
+            app.showMessage('Are you sure you want to delete this funding cycle?', 'Delete Funding Cycle', ['Yes', 'No'])
+            .then(function (args) {
+                if (args == 'Yes') {
+                    deleteItemCore(cycle, viewModel.donor().fundingCycles);
+                }
+                else
+                    return;
+            });
+        }
+        else
+            deleteItemCore(cycle, viewModel.donor().fundingCycles);
+
+        getActiveFundingCycles();
+    }
+
+    function deleteItemCore(item, itemCollection, delayedCommit) {
+        item.entityAspect.setDeleted();
+        itemCollection.remove(item);
+
+        if (!delayedCommit)
+            viewModel.uow.commit();
+
+        item = null;
+    }
+
 
     function addAddress() {
         var self = this;

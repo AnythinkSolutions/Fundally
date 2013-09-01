@@ -33,5 +33,6 @@ namespace Fundally.Data
 		public DbSet<Donor> Donors { get; set; }
 		public DbSet<Contact> Contacts { get; set; }
 		public DbSet<Definition> Definitions { get; set; }
+		public DbSet<FundingCycle> FundingCycles { get; set; }
     }
 }

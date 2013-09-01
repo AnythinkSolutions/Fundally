@@ -58,6 +58,13 @@ namespace Fundally.Web.Controllers
             return UnitOfWork.FundingAreasRepository.All();
         }
 
+		[HttpGet]
+		[Authorize(Roles = "User")]
+		public IQueryable<FundingCycle> FundingCycles()
+		{
+			return UnitOfWork.FundingCyclesRepository.All();
+		}
+
 		// ~/breeze/fundally/UserProfiles
         [HttpGet]
         [Authorize(Roles = "Administrator")]

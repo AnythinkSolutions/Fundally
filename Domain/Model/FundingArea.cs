@@ -15,7 +15,7 @@ namespace Fundally.Domain.Model
         [DataMember]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [DataMember]
         [Required]
