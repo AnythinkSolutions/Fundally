@@ -62,6 +62,14 @@ define(['services/entitymanagerprovider', 'services/repository', 'durandal/app']
                     return this.definitions.find(predicate);
                 };
 
+                this.getDefaultDefinition = function (itemType, itemSubType) {
+                    var defaultDefinition = null;
+                    return (this.getDefinitions(itemType, itemSubType)
+                        .done(function (definitions) {
+                            defaultDefinition = $.grep(definitions, function (d) { return d.isDefault() == true; })[0];
+                        }), defaultDefinition);
+                };
+
                 // Repositories
                 this.donors = repository.create(provider, "Donor", 'fundally/donors');
                 this.contacts = repository.create(provider, "Contact", 'fundally/contacts');

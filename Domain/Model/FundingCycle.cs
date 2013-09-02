@@ -29,6 +29,9 @@ namespace Fundally.Domain.Model
 		[DataMember]
 		public DateTime DueDate { get; set; }
 
+        [DataMember]
+        public DateTime DateSubmitted { get; set; }
+
 		[DataMember]
 		public bool IsParticipating { get; set; }
 
@@ -48,5 +51,17 @@ namespace Fundally.Domain.Model
 
 		[DataMember]
 		public virtual IList<Activity> Activities { get; set; }
+
+        [DataMember]
+        public decimal? AmountRequested { get; set; }
+
+        [DataMember]
+        public decimal? AmountGranted { get; set; }
+
+        [DataMember]
+        public int GrantStatusId { get; set; }
+
+        [DataMember]
+        public Definition GranStatus { get; set; }
 	}
 }

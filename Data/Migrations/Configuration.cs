@@ -91,6 +91,16 @@ namespace Fundally.Data.Migrations
                 context.Definitions.Add(new Definition("funding_area", "other", "Other"));
 			}
 
+            if (!context.Definitions.Any(d => d.ItemType == "grant_status"))
+            {
+                context.Definitions.Add(new Definition("grant_status", "considering", "Considering"));
+                context.Definitions.Add(new Definition("grant_status", "loi", "LOI"));
+                context.Definitions.Add(new Definition("grant_status", "proposal", "Proposal") { IsDefault = true });
+                context.Definitions.Add(new Definition("grant_status", "waiting", "Waiting"));
+                context.Definitions.Add(new Definition("grant_status", "accepted", "Accepted"));
+                context.Definitions.Add(new Definition("grant_status", "denied", "Denied"));
+            }
+
 			if (context.HasAnyChanges())
 			{
 				context.SaveChanges();

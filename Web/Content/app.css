@@ -30,7 +30,7 @@
 
 .page-host {
 	position: relative;
-	padding-top: 80px;
+	padding-top: 50px;
 }
 
 .loader {
@@ -110,11 +110,4 @@ footer a:hover {
 
 .mart5 {
 	margin-top : 5%;
-}
-
-
-.section-header {
-  padding-bottom: 4px;
-  margin: 10px 0 5px;
-  border-bottom: 1px solid #eeeeee;
 }

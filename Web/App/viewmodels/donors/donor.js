@@ -40,47 +40,21 @@
         activate: function (params) {
             var self = this;
 
-            self.uow.getDefinitions('address_type')
+            self.uow.definitions.all()
                 .then(function (data) {
-                    self.addressTypes(data);
-                    self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-                    })
-                .fail(function (error) {
-                    alert(error);
-                });
 
-            self.uow.getDefinitions('phone_type', 'donor')
-                .then(function (data) {
-                    self.phoneTypes(data);
-                    self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+                    self.addressTypes(getDefinitions(data, 'address_type'));
+                    self.phoneTypes(getDefinitions(data, 'phone_type', 'donor'));
+                    self.contactTypes(getDefinitions(data, 'contact_type'));
+                    self.activityTypes(getDefinitions(data, 'activity_type'));
+                    self.fundingAreas(getDefinitions(data, 'funding_area'));
+
+                    self.defaultAddressType = getDefaultDefinition(self.addressTypes());
+                    self.defaultPhoneType = getDefaultDefinition(self.phoneTypes());
+                    self.defaultActivityType = getDefaultDefinition(self.activityTypes());
+
                 }).fail(function (error) {
                     alert(error);
-                });
-
-            self.uow.getDefinitions('contact_type')
-                .then(function (data) {
-
-                    //Populate the available types and the defaults
-                    self.contactTypes(data);
-                    self.defaultContactType = $.grep(data, function (ct) { return ct.isDefault() == true; })[0];
-
-                    //Assign the right definition to each of the existing contacts
-                    //$.each(self.donor().contacts(), function (c) {
-                    //    var cType = $.grep(self.contactTypes, function (ct) { return ct.id = c.contactTypeId; })[0];
-                    //    if (cType)
-                    //        c.contactType(cType);
-                    //});
-                });
-
-            self.uow.getDefinitions('activity_type')
-                .then(function (data) {
-                    self.activityTypes(data);
-                    self.defaultActivityType = $.grep(data, function (at) { return at.isDefault() == true; })[0];
-                });
-
-            self.uow.getDefinitions('funding_area')
-                .then(function (areas) {
-                    self.fundingAreas(areas);
                 });
 
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
@@ -123,6 +97,14 @@
         if (args.propertyName == 'notes') {
             self.uow.commit();
         }
+    }
+
+    function getDefinitions(data, itemType, itemSubType){
+        return $.grep(data, function (a) { return a.itemType() == itemType && (itemSubType == null || a.itemSubType() == itemSubType); });
+    }
+
+    function getDefaultDefinition(data){
+        return $.grep(data, function (a) { return a.isDefault() == true; })[0];
     }
 
     function editDonor() {

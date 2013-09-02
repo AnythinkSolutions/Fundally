@@ -1,9 +1,9 @@
-﻿<div class="page-header" data-bind="visible: !donor().isEditing()">
+﻿<div class="page-header" style="margin-top:10px;" data-bind="visible: !donor().isEditing()">
     <h1>
         <a href='/#donors' class="btn btn-small btn-info" style="display: inline"><i class="icon-arrow-left"></i></a>
         <span data-bind="text: donor().name()"></span>
-<!--        <button id="addContactButton" class="btn btn-small btn-info pull-right" data-bind="click: addContact">New Contact</button>-->
-<!--        <button id="addPhoneButton" class="btn btn-small btn-info pull-right" data-bind="click: addPhone" style="margin-right: 5px;">New Phone</button>-->
+        <!--        <button id="addContactButton" class="btn btn-small btn-info pull-right" data-bind="click: addContact">New Contact</button>-->
+        <!--        <button id="addPhoneButton" class="btn btn-small btn-info pull-right" data-bind="click: addPhone" style="margin-right: 5px;">New Phone</button>-->
         <button id="saveChangesButton" class="btn btn-small btn-info pull-right" data-bind="click: saveChanges" style="margin-right: 5px;">Save Donor</button>
         <button id="editButton" class="btn btn-primary btn-small pull-right" data-bind="click: editDonor" style="margin-right: 5px;">Edit Donor</button>
     </h1>
@@ -16,10 +16,9 @@
 
 <i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
 
-<div id="leftColumn" class="span8 pull-left">
-
-    <div id="donorInfo" data-bind="ifnot: donor().isEditing" style="border-bottom: 1px solid #eeeeee;padding-bottom:5px;margin-bottom:5px;">
-        <div id="donorAddress" class="pull-left" style="margin-right: 10px;">
+<div id="leftColumn" class="pull-left span3">
+    <div id="donorInfo">
+        <div id="donorAddress" style="margin-bottom: 10px;">
             <!-- ko foreach: donor().addresses() -->
             <address data-bind="css: { 'primary-address': isPrimary }">
                 <span data-bind="text: streetAddress"></span>
@@ -32,8 +31,8 @@
             </address>
             <!-- /ko -->
         </div>
-        <div id="donorEmails" class="pull-left" style="margin-left: 10px; margin-right: 10px;">
-            <address style="margin-bottom:0px;">
+        <div id="donorEmails" style="margin-bottom: 10px;">
+            <address style="margin-bottom: 0px;">
                 <a data-bind="attr: { href: 'mailto:' + donor().emailAddress() }">
                     <span data-bind="text: donor().emailAddress"></span>
                 </a>
@@ -44,33 +43,112 @@
                 </a>
             </address>
         </div>
-        <div id="donorPhones2" class="pull-left" style="margin-left: 10px;">
+        <div id="donorPhones2">
             <!-- ko foreach: donor().phones() -->
             <div data-bind="css: { 'primary-phone': isPrimary }">
-                <span data-bind="text: phoneType().name()" />:&nbsp(<span data-bind="text: areaCode"></span>)&nbsp<span data-bind="    text: number"></span>
+                <span data-bind="text: phoneType().name()" />:&nbsp(<span data-bind="    text: areaCode"></span>)&nbsp<span data-bind="    text: number"></span>
             </div>
             <!-- /ko -->
         </div>
-        <div class="clearfix" />
-
+        <div id="donorAreas">
+            <h4 class="section-header">
+                Funding Areas
+                <i class="icon-compass icon-3 space-left-small pull-right"></i>
+                <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea, visible: donor().isEditing">New...</button>
+            </h4>
+            <div data-bind="ifnot: donor().isEditing">
+                <ul class="list-unstyled space-left-small" data-bind="foreach: donor().fundingAreas()">
+                    <li data-bind="text: displayName"></li>
+                </ul>
+            </div>
+            <table class="st-table table table-condensed" id="Table1" data-bind="if: donor().isEditing">
+                <tbody data-bind="foreach: donor().fundingAreas">
+                    <tr>
+                        <td class="always" style="text-align: left;">
+                            <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select><br />
+                            <input type="text" class="input-small" placeholder="Other Area" data-bind="value: otherName, visible: isOther()" />
+                        </td>
+                        <td class="always">
+                            <button id="Button1" class="btn btn-mini btn-info" data-bind="click: $root.deleteFundingArea"><i class="icon-remove"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    
+</div>
+
+<div id="centerColumn" class="pull-left" style="width:50%;">
+    <div id="donorNotes" data-bind="ifnot: donor().isEditing">
+        <h4 class="section-header" style="margin-top:0px;">
+            Notes
+            <i class="icon-file-text pull-right"></i>
+
+        </h4>
+        <textarea rows="5" style="width: 100%" data-bind="value: donor().notes" />
+    </div>
+    <div id="donorActivities" data-bind="ifnot: donor().isEditing">
+        <h4 class="section-header">
+            Activities
+            <i class="icon-calendar pull-right"></i>
+            <button class="btn btn-info btn-mini space-left" title="Add Activity" data-bind="click: addActivity">New...</button>
+        </h4>
+        <ul data-bind="foreach: donor().activities()" class="list-unstyled">
+            <li>
+                <div class="activity" data-bind="with: $data">
+                    <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">
+                        <span data-bind="text: moment(activityDate()).format('M/D/YYYY')" class="comment-date" style="margin-right: 10px;"></span>
+                        <i data-bind="css: iconName, attr: { title: activityType().name() }" style="margin-right: 10px;"></i>
+                        <span data-bind="text: subject" style="vertical-align: top; font-weight: bold;"></span>
+                        <div data-bind="if: dueDate() != null" style="display: inline;">
+                            <span data-bind="text: 'by ' + moment(dueDate()).format('M/D/YYYY')"></span>
+                            <input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />
+                        </div>
+                        <br />
+                        <span data-bind="text: body" style="vertical-align: top"></span>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="activity-editing" data-bind="if: isEditing">
+                        <div class=" alert alert-info">
+                            <h4 style="border-bottom: 1px solid DarkGray; margin-bottom: 5px; padding-bottom: 7.5px;">New Note
+                                    <div class="pull-right">
+                                        <button class="btn btn-mini" title="Cancel" data-bind="click: $root.cancelActivity"><i class="icon-remove"></i></button>
+                                        <button class="btn btn-mini btn-info" title="Save" data-bind="click: $root.saveActivity"><i class="icon-save"></i></button>
+                                    </div>
+                            </h4>
+                            <select data-bind="options: $root.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>
+                            <input type="text" class="span2" data-bind="datepicker: activityDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
+                            <select data-bind="options: $root.donor().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Optional...'"></select>
+                            <input type="text" class="span2" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;" placeholder="Due Date">
+
+                            <br />
+
+                            <input type="text" data-bind="value: subject" style="width: 100%" placeholder="Subject" />
+                            <textarea data-bind="value: body" rows="3" style="width: 100%;" placeholder="Body" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
     <div id="donorInfoEditing" data-bind="if: donor().isEditing">
         <div id="donorAddressEditing">
             <div class="section-header" style="border-bottom: 0px;">
-                <h4 style="margin-bottom:0px;">
+                <h4 style="margin-bottom: 0px;">
                     <i class="icon-map-marker space-right-small"></i>
                     <span class="subtle">Addresses</span>
                     <button class="btn btn-info btn-mini space-left" title="Add Address" data-bind="click: $root.addAddress">New...</button>
                 </h4>
             </div>
-            <table class="st-table table table-condensed table-striped" id="addressEditTable">
-                <tbody >
+            <table class="st-table table table-condensed" id="addressEditTable">
+                <tbody>
                     <!-- ko foreach: donor().addresses() -->
                     <tr>
                         <td class="always" style="text-align: left;">
                             <select data-bind="options: $root.addressTypes, optionsText: 'name', value: addressType, optionsCaption: 'Choose...'"></select><br />
-                            <span><input type="checkbox" data-bind="checked: isPrimary" />&nbsp;Primary</span>
+                            <span>
+                                <input type="checkbox" data-bind="checked: isPrimary" />&nbsp;Primary</span>
                         </td>
                         <td class="always" style="text-align: left;">
                             <input type="text" class="input-small span5" placeholder="Street Address" data-bind="value: streetAddress" /><br />
@@ -89,12 +167,12 @@
         </div>
         <div id="donorEmailEditing">
             <div class="section-header" style="border-bottom: 0px;">
-                <h4 style="margin-bottom:0px;">
+                <h4 style="margin-bottom: 0px;">
                     <i class="icon-envelope space-right-small"></i>
                     <span class="subtle">Email Addresses</span>
                 </h4>
             </div>
-            <table class="st-table table table-condensed table-striped" id="emailEditTable">
+            <table class="st-table table table-condensed" id="emailEditTable">
                 <tbody>
                     <tr>
                         <td class="always" style="text-align: left;">
@@ -117,23 +195,24 @@
 
         </div>
         <div id="donorPhoneEditing">
-             <div class="section-header" style="border-bottom: 0px;">
-                <h4 style="margin-bottom:0px;">
+            <div class="section-header" style="border-bottom: 0px;">
+                <h4 style="margin-bottom: 0px;">
                     <i class="icon-phone-sign space-right-small"></i>
                     <span class="subtle">Phone Numbers</span>
                     <button class="btn btn-info btn-mini space-left" title="Add Phone Number" data-bind="click: $root.addPhone">New...</button>
-               </h4>
+                </h4>
             </div>
-            <table class="st-table table table-condensed table-striped" id="phones">
+            <table class="st-table table table-condensed" id="phones">
                 <tbody>
-                     <!-- ko foreach: donor().phones() -->
-                   <tr>
+                    <!-- ko foreach: donor().phones() -->
+                    <tr>
                         <td class="always" style="text-align: left;">
                             <select data-bind="options: $root.phoneTypes, optionsText: 'name', value: phoneType, optionsCaption: 'Choose...'"></select>&nbsp
                         </td>
-                       <td class="always" style="text-align: left;">
-                            <span><input type="checkbox" data-bind="checked: isPrimary" />&nbsp;Primary</span>
-                       </td>
+                        <td class="always" style="text-align: left;">
+                            <span>
+                                <input type="checkbox" data-bind="checked: isPrimary" />&nbsp;Primary</span>
+                        </td>
                         <td class="always" style="text-align: left;">
                             <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: areaCode" style="width: 50px;" />&nbsp
                             <input type="text" class="input-small span3" placeholder="Number" data-bind="value: number" />
@@ -147,215 +226,77 @@
             </table>
         </div>
     </div>
-    <div id="donorContacts">
 
-        <div class="section-header" style="border-bottom: 0px;">
-            <h4 style="margin-bottom:0px;">
-                <i class="icon-group space-right-small"></i><span class="subtle">Contacts</span>
-                <button class="btn btn-info btn-mini space-left" title="Add Contact" data-bind="click: addContact">New...</button>
-            </h4>
-        </div>
-
-        <table class="st-table table table-condensed table-striped" id="contactsTable">
-            <tbody data-bind="foreach: donor().contacts()">
-                <tr>
-                    <td class="always" style="text-align: left;width: 100px;">
-                        <!-- ko if: isEditing -->
-                        <input type="text" class="input-small span2" placeholder="First Name" data-bind="value: firstName" />
-                        <input type="text" class="input-small span2" placeholder="Last Name" data-bind="value: lastName" />
-                        <!-- /ko -->
-                        <!-- ko ifnot: isEditing -->
-                        <!--<i class="icon-user space-right-small"></i>-->
-                        <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
-                            <span data-bind="text: fullName"></span>
-                        </a>
-                        <!-- /ko -->
-                    </td>
-                    <td class="always" style="text-align: left;">
-                        <!-- ko if: isEditing -->
-                        <select data-bind="options: $root.contactTypes, optionsText: 'name', value: contactType, optionsCaption: 'Choose...'"></select>&nbsp
-                        <!-- /ko -->
-                        <!-- ko ifnot: isEditing -->
-                        <span data-bind="text: contactType().name()" />
-                        <!-- /ko -->
-                    </td>
-                    <td class="always" style="text-align: left;">
-                        <!-- ko if: isEditing -->
-                        <input type="checkbox" data-bind="checked: isPrimary" />
-                        <!-- /ko -->
-                        <!-- ko ifnot: isEditing -->
-                        <span data-bind="visible: isPrimary">Primary</span>
-                        <!-- /ko -->
-                    </td>
-                    <td class="always" style="text-align: left;">
-                        <!-- ko if: isEditing -->
-                        <input type="text" class="input-small span2" placeholder="Email Address" data-bind="value: emailBusiness" />
-                        <!-- /ko -->
-                        <!-- ko ifnot: isEditing -->
-                        <a data-bind="attr: { href: 'mailto:' + emailBusiness() }">
-                            <span data-bind="text: emailBusiness" />
-                        </a>
-
-                        <!-- /ko -->
-                    </td>
-                    <td class="always" style="text-align: left;">
-                        <!-- ko if: isEditing -->
-                        <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: primaryPhone().areaCode" style="width: 50px;" />&nbsp
-                            <input type="text" class="input-small" style="width: 100px;" placeholder="Number" data-bind="value: primaryPhone().number" />
-                        <!-- /ko -->
-                        <!-- ko ifnot: isEditing -->
-                        (<span data-bind="text: primaryPhone().areaCode"></span>)&nbsp<span data-bind="    text: primaryPhone().number"></span>
-                        <!-- /ko -->
-                    </td>
-                    <td class="always" style="text-align: left;">
-                        <!-- ko ifnot: isEditing -->
-                        <!--<button id="editContactButton" class="btn btn-mini btn-info" data-bind="click: $root.editContact">Edit</button>
-                        <button id="deleteContactButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteContact">Delete</button>-->
-                        <!-- /ko -->
-                        <!-- ko if: isEditing -->
-                        <button id="saveContactButton" class="btn btn-mini btn-primary" data-bind="click: $root.saveContact">Save</button>
-                        <button id="cancelContactButton" class="btn btn-mini btn-info" data-bind="click: $root.rollbackContact">Cancel</button>
-                        <!-- /ko -->
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div id="donorNotes" data-bind="ifnot: donor().isEditing">
-        <div class="section-header">
-            <h4><i class="icon-file-text space-right-small"></i><span class="subtle">Notes</span></h4>
-        </div>
-
-        <textarea rows="8" style="width: 100%" data-bind="value: donor().notes" />
-    </div>
 </div>
 
-<div id="rightColumn" class="span6 pull-left">
+<div id="rightColumn" class="pull-left span4">
     <div class="rightColumnNotEditing" data-bind="ifnot: donor().isEditing">
-        <div id="donorAreas" class="separator">
-            <h4 style="display: inline;"><i class="icon-compass icon-3 space-right-small"></i><span class="subtle">Funding Areas:</span>&nbsp;</h4>
-            <!-- ko foreach: donor().fundingAreas() -->
-            <div style="display: inline;">
-                <span data-bind="text: displayName" /><span style="margin-right: 10px;">, </span>
-            </div>
-            <!-- /ko -->
-        </div>
-        <div id="fundingCycles" class="separator">
-            <h4 style="display: inline;"><i class="icon-usd icon-3 space-right-small"></i><span class="subtle">Funding Cycles:</span>&nbsp;</h4>
-
-           <table class="st-table table table-condensed" id="fundingCyclesTable">
-                <tbody>
-                    <!-- ko foreach: activeCycles() -->
-                   <tr  data-bind="css: { 'alert-danger': daysUntilDue() < 15, 'alert-warning': daysUntilDue() <= 45 }">
-                        <td class="always" style="text-align: left;">
-                            <span style="font-style:italic" data-bind="text: name" />
-                        </td>
-                        <td class="always" style="text-align: left;">
-                            <span data-bind="visible: !isParticipating">Not&nbsp;</span>Participating
-                        </td>
-                        <td class="always" style="text-align: left;">
-                            Due: <span data-bind="text: moment(dueDate()).format('M/D/YYYY')"></span>
-                        </td>
-                        <td class="always" style="text-align: left;">
-                            End: <span data-bind="text: moment(endDate()).format('M/D/YYYY')"></span>
-                        </td>
-                    </tr>
-                    <tr data-bind="visible: notes() != null">
-                        <td class="always" colspan="4">
-                            <span style="margin-left: 25px;" data-bind="text: notes" />
-                        </td>
-                    </tr>
-                    <!-- /ko -->
-                </tbody>
-            </table>
-        </div>
-        <div id="donorActivities">
-            <div class="section-header">
-                <h4>
-                    <i class="icon-calendar space-right-small"></i>
-                    <span class="subtle">Activities</span>
-                    <button class="btn btn-info btn-mini space-left" title="Add Activity" data-bind="click: addActivity">New...</button>
-                </h4>
-            </div>
-            <ul data-bind="foreach: donor().activities()" class="list-unstyled">
-                <li>
-                    <div class="activity" data-bind="with: $data">
-                        <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">
-                            <span data-bind="text: moment(activityDate()).format('M/D/YYYY')" class="comment-date" style="margin-right: 10px;"></span>
-                            <i data-bind="css: iconName, attr: { title: activityType().name() }" style="margin-right: 10px;"></i>
-                            <span data-bind="text: subject" style="vertical-align: top; font-weight: bold;"></span>
-                            <div data-bind="if: dueDate() != null" style="display: inline;">
-                                <span data-bind="text: 'by ' + moment(dueDate()).format('M/D/YYYY')"></span>
-                                <input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />
-                            </div>
-                            <br />
-                            <span data-bind="text: body" style="vertical-align: top"></span>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="activity-editing" data-bind="if: isEditing">
-                            <div class=" alert alert-info">
-                                <h4 style="border-bottom:1px solid DarkGray;margin-bottom:5px;padding-bottom:7.5px;">
-                                    New Note
-                                    <div class="pull-right">
-                                        <button class="btn btn-mini" title="Cancel" data-bind="click: $root.cancelActivity"><i class="icon-remove"></i></button>
-                                        <button class="btn btn-mini btn-info" title="Save" data-bind="click: $root.saveActivity"><i class="icon-save"></i></button>
-                                    </div>
-                                </h4>
-                                <select data-bind="options: $root.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>
-                                <input type="text" class="span2" data-bind="datepicker: activityDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
-                                <select data-bind="options: $root.donor().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Optional...'"></select>
-                                <input type="text" class="span2" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;" placeholder="Due Date">
-
-                                <br />
-
-                                <input type="text" data-bind="value: subject" style="width: 100%" placeholder="Subject" />
-                                <textarea data-bind="value: body" rows="3" style="width: 100%;" placeholder="Body" />
-                            </div>
-                        </div>
-                    </div>
+        <div id="fundingCycles">
+            <h4 class="section-header">
+                <span class="subtle">Funding Cycles</span>
+                <i class="icon-usd icon-3 space-left-small pull-right"></i>
+            </h4>
+            <ul class="list-unstyled" data-bind="foreach: activeCycles">
+                <li data-bind="css: { 'alert-danger': daysUntilDue() < 15, 'alert-warning': daysUntilDue() <= 45 }">
+                    <h4 style="margin-bottom:0px;"><span data-bind="text: name"></span><span style="font-size: 14px;" class="pull-right" data-bind="text: moment(dueDate()).format('M/D/YYYY')" /></h4>
+                    
+                    <span data-bind="visible: notes() != null, text: notes"></span>
                 </li>
             </ul>
         </div>
-    </div>
-    <div class="rightColumnEditing" data-bind="if: donor().isEditing">
-        <div id="donorAreasEditing">
-            <div class="section-header" style="border-bottom: 0px;">
-                <h4 style="margin-bottom:0px;">
-                    <i class="icon-compass space-right-small"></i>
-                    <span class="subtle">Funding Areas</span>
-                    <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea">New...</button>
-                </h4>
-            </div>
-            <table class="st-table table table-condensed table-striped" id="areasEditTable">
-                <tbody>
-                    <!-- ko foreach: donor().fundingAreas() -->
+        <div id="donorContacts" data-bind="ifnot: donor().isEditing">
+            <h4 class="section-header" >
+                Contacts
+                <button class="btn btn-info btn-mini space-left" title="Add Contact" data-bind="click: addContact">New...</button>
+                <i class="icon-group space-left-small pull-right"></i>
+            </h4>
+            <table class="st-table table table-condensed" id="contactsTable">
+                <tbody data-bind="foreach: donor().contacts()">
                     <tr>
-                        <td class="always">
-                            <span>Area</span>
+                        <td class="always" style="text-align: left; width: 100px;">
+                            <!-- ko if: isEditing -->
+                            <input type="text" class="input-small span2" placeholder="First Name" data-bind="value: firstName" /><br />
+                            <input type="text" class="input-small span2" placeholder="Email Address" data-bind="value: emailBusiness" /><br />
+                            <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: primaryPhone().areaCode" style="width: 50px;" />&nbsp
+                            <!-- /ko -->
+                            <!-- ko ifnot: isEditing -->
+                            <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
+                                <span data-bind="text: fullName"></span>
+                            </a>
+                            <!-- /ko -->
                         </td>
                         <td class="always" style="text-align: left;">
-                            <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select>
+                            <!-- ko if: isEditing -->
+                            <!--<select data-bind="options: $root.contactTypes, optionsText: 'name', value: contactType, optionsCaption: 'Choose...'"></select>-->
+                            <input type="text" class="input-small span2" placeholder="Last Name" data-bind="value: lastName" /><br />
+                            <span>Primary: <input type="checkbox" data-bind="checked: isPrimary" /></span><br />
+                            <input type="text" class="input-small" style="width: 100px;" placeholder="Number" data-bind="value: primaryPhone().number" />
+                            <!-- /ko -->
+                            <!-- ko ifnot: isEditing -->
+                            <a data-bind="attr: { href: 'mailto:' + emailBusiness() }">
+                                <i class="icon-envelope" title="Send Email"></i><!--<span data-bind="text: emailBusiness" />-->
+                            </a>
+                            <!-- /ko -->
                         </td>
                         <td class="always" style="text-align: left;">
-                            <input type="text" class="input-small span2" placeholder="Other Area" data-bind="value: otherName, visible: isOther()"/>
-                        </td>
-                        <td class="always">
-                           <button id="deleteFundingAreaButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteFundingArea">Delete</button>
+                            <!-- ko if: isEditing -->
+                            <button id="saveContactButton" class="btn btn-mini btn-primary" data-bind="click: $root.saveContact"><i class="icon-save"></i></button>
+                            <button id="cancelContactButton" class="btn btn-mini btn-info" data-bind="click: $root.rollbackContact"><i class="icon-remove"></i></button>
+                            <!-- /ko -->
+                            <!-- ko ifnot: isEditing -->
+                            <i class="icon-phone" data-bind="attr: { title: primaryPhone().phoneType().name() }"></i>
+                            (<span data-bind="text: primaryPhone().areaCode"></span>)&nbsp<span data-bind="    text: primaryPhone().number"></span>
+                            <!-- /ko -->
                         </td>
                     </tr>
-                    <!-- /ko -->
-                    <!--<tr>
-                        <td class="always">
-                            <button id="addFundingAreaButton" class="btn btn-mini btn-info" data-bind="click: $root.addFundingArea">Add Funding Area</button>
-                        </td>
-                    </tr>-->
                 </tbody>
             </table>
         </div>
+    </div>
+    <div class="rightColumnEditing" data-bind="if: donor().isEditing">
         <div id="fundingCyclesEditing">
             <div class="section-header" style="border-bottom: 0px;">
-                <h4 style="margin-bottom:0px;">
+                <h4 style="margin-bottom: 0px;">
                     <i class="icon-usd space-right-small"></i>
                     <span class="subtle">Funding Cycles</span>
                     <button class="btn btn-info btn-mini space-left" title="Add Funding Cycle" data-bind="click: $root.addFundingCycle">New...</button>
@@ -364,37 +305,20 @@
             <ul data-bind="foreach: donor().fundingCycles()" class="list-unstyled">
                 <li>
                     <div class="fundingCycleEdit">
-                        <h4 style="margin-bottom:5px;">
+                        <h4 style="margin-bottom: 5px;">
                             <input type="text" style="width: 75%;" data-bind="value: name" placeholder="Cycle Name" />
                             <div class="pull-right">
                                 <button class="btn btn-mini btn-info" title="Cancel" data-bind="click: $root.deleteFundingCycle"><i class="icon-remove"></i></button>
                             </div>
                         </h4>
-                        <span class="subtle">End Date: </span>
-                        <input type="text" class="span2 space-right-small" data-bind="datepicker: endDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
                         <span class="subtle">Due Date: </span>
-                        <input type="text" class="span2 space-right-small" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
-                        <span>Participating: <input type="checkbox" data-bind="checked: isParticipating" /></span>
+                        <input type="text" class="span2 space-right-small" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;"><br />
+                        <span class="subtle">End Date: </span>
+                        <input type="text" class="span2 space-right-small" data-bind="datepicker: endDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;"><br />
+                        <span>Participating:
+                            <input type="checkbox" data-bind="checked: isParticipating" /></span>
                         <br />
-                        <textarea rows="3" style="width: 100%; margin-top:5px;" data-bind="value: notes" placeholder="Notes"/>
-                        
-                        <!--<span class="subtle">Funding Areas</span>
-                        <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addCycleFundingArea">New...</button>                        
-                        <table class="st-table table table-condensed table-striped" id="Table1">
-                            <tbody data-bind="foreach: fundingAreas()">
-                                <tr>
-                                    <td class="always" style="text-align: left;">
-                                        <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select>
-                                    </td>
-                                    <td class="always" style="text-align: left;">
-                                        <input type="text" class="input-small span2" placeholder="Other Area" data-bind="value: otherName, visible: isOther()"/>
-                                    </td>
-                                    <td class="always">
-                                        <button id="deleteCycleFundingArea" class="btn btn-mini btn-info" data-bind="click: $root.deleteCycleFundingArea">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>-->
+                        <textarea rows="3" style="width: 100%; margin-top: 5px;" data-bind="value: notes" placeholder="Notes" />
                     </div>
                 </li>
             </ul>
