@@ -43,14 +43,14 @@
 }
 
 footer {
-	background-color:#000;
-	color : #999;    
+	background-color:#3B5E44; /*#000;*/
+	color : #B8CDD2; /*#999;*/    
     display:none;
 }
 
 .footer-content {
 	padding : 3%;
-	color : #999;
+	color : #B8CDD2; /*#999;*/
 }
 	  
 footer li {

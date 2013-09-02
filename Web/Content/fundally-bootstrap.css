@@ -1,0 +1,72 @@
+﻿/*Color Theme:
+	Primary:	Secondary:	Tertiary:
+		#9EBAC2		#B8CDD2		#84A7B2
+		#559599		#87B9BC		#467A7E
+		#3B5E44		#4B7857		#2B4431
+		#C8B59F		#A98B69		#D7CABA
+		#BDC1C6		#EBECED		#A6ACB2
+*/
+
+/* -----Nav Bar ---------- */
+.navbar-inverse {
+  background-color: #3B5E44;
+}
+
+.navbar-inverse .navbar-brand {
+  color: #BDC1C6;
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+  color: #EBECED;
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-text {
+  color: #BDC1C6;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #BDC1C6;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #EBECED;
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+  color: #EBECED;
+  background-color: #4B7857;
+}
+
+.navbar-inverse .navbar-nav > .disabled > a,
+.navbar-inverse .navbar-nav > .disabled > a:hover,
+.navbar-inverse .navbar-nav > .disabled > a:focus {
+  color: #2B4431;
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-toggle {
+  border-color: #2B4431;
+}
+
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+  background-color: #2B4431;
+}
+
+.navbar-inverse .navbar-toggle .icon-bar {
+  background-color: #EBECED;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+  color: #EBECED;
+  background-color: #4B7857;
+}
+/* --------------- */

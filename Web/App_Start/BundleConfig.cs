@@ -33,6 +33,7 @@ namespace Fundally.Web {
 		  .Include("~/Content/toastr.css")
 		  .Include("~/Content/Stashy.css")
           .Include("~/Content/datepicker.css")
+		  .Include("~/Content/fundally-bootstrap.css")
 		  .Include("~/Content/fundally.css")
 		);
 

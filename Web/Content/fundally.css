@@ -1,4 +1,23 @@
-﻿.activity-existing
+﻿/*Color Theme:
+	Primary:	Secondary:
+		#9EBAC2		#B8CDD2
+		#559599		#87B9BC
+		#3B5E44		#4B7857
+		#C8B59F		#A98B69
+		#BDC1C6		#EBECED
+*/
+
+.header
+{
+	background-color:#3B5E44; /*#000;*/
+	color : #B8CDD2; /*#999;*/    
+}
+
+.header .navbar-nav > .active > a {
+  background-color: #4B7857; /*#222222;*/
+}
+
+.activity-existing
 {
 	margin-bottom: 10px;
 	padding-bottom: 5px;
