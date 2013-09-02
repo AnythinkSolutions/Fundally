@@ -7,16 +7,6 @@
 		#BDC1C6		#EBECED
 */
 
-.header
-{
-	background-color:#3B5E44; /*#000;*/
-	color : #B8CDD2; /*#999;*/    
-}
-
-.header .navbar-nav > .active > a {
-  background-color: #4B7857; /*#222222;*/
-}
-
 .activity-existing
 {
 	margin-bottom: 10px;
@@ -44,20 +34,6 @@
     margin-left: 5px;
     margin-right: 5px;
     /*width: 50%;*/
-}
-
-.section-header {
-  padding-bottom: 5px;
-  margin: 10px 0 5px;
-  color: #3a87ad;
-  background-color: #f9f9f9;
-}
-
-.section-header-bordered {
-  padding-bottom: 4px;
-  margin: 10px 0 5px;
-  border-bottom: 1px solid #eeeeee;
-  color: #3a87ad;
 }
 
 .primary-address

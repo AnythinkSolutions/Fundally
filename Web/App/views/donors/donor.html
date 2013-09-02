@@ -1,11 +1,8 @@
 ﻿<div class="page-header" style="margin-top:10px;" data-bind="visible: !donor().isEditing()">
     <h1>
-        <a href='/#donors' class="btn btn-small btn-info" style="display: inline"><i class="icon-arrow-left"></i></a>
+        <a href='/#donors' class="btn btn-small btn-primary" style="display: inline"><i class="icon-arrow-left"></i></a>
         <span data-bind="text: donor().name()"></span>
-        <!--        <button id="addContactButton" class="btn btn-small btn-info pull-right" data-bind="click: addContact">New Contact</button>-->
-        <!--        <button id="addPhoneButton" class="btn btn-small btn-info pull-right" data-bind="click: addPhone" style="margin-right: 5px;">New Phone</button>-->
-        <button id="saveChangesButton" class="btn btn-small btn-info pull-right" data-bind="click: saveChanges" style="margin-right: 5px;">Save Donor</button>
-        <button id="editButton" class="btn btn-primary btn-small pull-right" data-bind="click: editDonor" style="margin-right: 5px;">Edit Donor</button>
+        <button id="saveChangesButton" class="btn btn-small btn-info pull-right" data-bind="click: saveChanges, visible: donor().isEditing" style="margin-right: 5px;">Save Donor</button>
     </h1>
 </div>
 <div class="page-header" data-bind="visible: donor().isEditing()">
@@ -75,6 +72,7 @@
                 </tbody>
             </table>
         </div>
+        <button id="editButton" class="btn btn-primary btn-small" data-bind="click: editDonor" style="margin-right: 5px;">Edit Donor</button>
     </div>
 </div>
 
