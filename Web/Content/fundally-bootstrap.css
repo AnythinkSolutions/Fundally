@@ -178,4 +178,24 @@ fieldset[disabled] .btn-info.active {
   background-color: #467A7E;
   border-color: #467A7E;
 }
+
+.btn-clear {
+  color: #87B9BC;
+  background-color: #FFFFFF;
+  border-color: #87B9BC;
+}
+
+    .btn-clear i {
+        color: #559599;
+    }
+
+.btn-clear:hover,
+.btn-clear:focus,
+.btn-clear:active,
+.btn-clear.active {
+  background-color: #EBECED;
+  border-color: #559599;
+}
+
+
 /* --------------- */

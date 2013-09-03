@@ -49,8 +49,8 @@
         </div>
         <div id="donorAreas">
             <h4 class="section-header">
+                <i class="icon-compass icon-3 space-right-small"></i>
                 Funding Areas
-                <i class="icon-compass icon-3 space-left-small pull-right"></i>
                 <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea, visible: donor().isEditing">New...</button>
             </h4>
             <div data-bind="ifnot: donor().isEditing">
@@ -79,29 +79,37 @@
 <div id="centerColumn" class="pull-left" style="width:50%;">
     <div id="donorNotes" data-bind="ifnot: donor().isEditing">
         <h4 class="section-header" style="margin-top:0px;">
+            <i class="icon-file-text space-right-small"></i>
             Notes
-            <i class="icon-file-text pull-right"></i>
-
         </h4>
         <textarea rows="5" style="width: 100%" data-bind="value: donor().notes" />
     </div>
     <div id="donorActivities" data-bind="ifnot: donor().isEditing">
         <h4 class="section-header">
+            <i class="icon-calendar space-right-small"></i>
             Activities
-            <i class="icon-calendar pull-right"></i>
-            <button class="btn btn-info btn-mini space-left" title="Add Activity" data-bind="click: addActivity">New...</button>
+<!--            <div class="icon-stack" style="font-size:12px;font-weight:200;" data-bind="click: addActivity" title="Add Activity">
+                <i class="icon-circle-blank icon-stack-base"></i>
+                <i class="icon-plus" style="padding-top:1px;"></i>
+            </div>-->
+            <!--<button class="btn btn-mini btn-clear pull-right" title="Add Activity" data-bind="click: addActivity">
+                <i class="icon-plus"></i>
+            </button>-->
         </h4>
+        <button class="btn btn-mini btn-info" style="margin-bottom:5px;" title="Add Activity" data-bind="click: addActivity">
+           <i class="icon-plus"></i>&nbsp;&nbsp;Add New
+        </button>
         <ul data-bind="foreach: donor().activities()" class="list-unstyled">
             <li>
                 <div class="activity" data-bind="with: $data">
                     <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">
-                        <span data-bind="text: moment(activityDate()).format('M/D/YYYY')" class="comment-date" style="margin-right: 10px;"></span>
-                        <i data-bind="css: iconName, attr: { title: activityType().name() }" style="margin-right: 10px;"></i>
+                        <i data-bind="css: iconName, attr: { title: activityType().name() }, click: $root.completeTask" style="margin-right: 10px;"></i>
                         <span data-bind="text: subject" style="vertical-align: top; font-weight: bold;"></span>
                         <div data-bind="if: dueDate() != null" style="display: inline;">
                             <span data-bind="text: 'by ' + moment(dueDate()).format('M/D/YYYY')"></span>
-                            <input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />
+                            <!--<input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />-->
                         </div>
+                        <span data-bind="text: moment(activityDate()).format('M/D')" class="comment-date pull-right" style="margin-right: 10px;"></span>
                         <br />
                         <span data-bind="text: body" style="vertical-align: top"></span>
                         <div class="clearfix"></div>
@@ -231,8 +239,8 @@
     <div class="rightColumnNotEditing" data-bind="ifnot: donor().isEditing">
         <div id="fundingCycles">
             <h4 class="section-header" style="margin-top:0px;">
-                <span class="subtle">Funding Cycles</span>
-                <i class="icon-usd icon-3 space-left-small pull-right"></i>
+                <i class="icon-usd icon-3 space-right-small"></i>
+                Funding Cycles
             </h4>
             <ul class="list-unstyled" data-bind="foreach: activeCycles">
                 <li data-bind="css: { 'alert-danger': daysUntilDue() < 15, 'alert-warning': daysUntilDue() <= 45 }">
@@ -244,9 +252,9 @@
         </div>
         <div id="donorContacts" data-bind="ifnot: donor().isEditing">
             <h4 class="section-header" >
+                <i class="icon-group space-right-small"></i>
                 Contacts
                 <button class="btn btn-info btn-mini space-left" title="Add Contact" data-bind="click: addContact">New...</button>
-                <i class="icon-group space-left-small pull-right"></i>
             </h4>
             <table class="st-table table table-condensed" id="contactsTable">
                 <tbody data-bind="foreach: donor().contacts()">

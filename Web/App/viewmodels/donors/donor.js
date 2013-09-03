@@ -88,6 +88,8 @@
         addFundingCycle: addFundingCycle,
         deleteFundingCycle: deleteFundingCycle,
 
+        completeTask: completeTask,
+
         saveChanges: saveChanges
     };
 
@@ -229,6 +231,12 @@
         item = null;
     }
 
+    function completeTask(activity) {
+        if (activity.isTask()) {
+            var isComplete = activity.isComplete();
+            activity.isComplete(!isComplete);
+        }
+    }
 
     function addAddress() {
         var self = this;
