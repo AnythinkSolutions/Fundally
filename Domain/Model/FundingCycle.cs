@@ -59,9 +59,11 @@ namespace Fundally.Domain.Model
         public decimal? AmountGranted { get; set; }
 
         [DataMember]
+        [ForeignKey("GrantStatus")]
+        [Required]
         public int GrantStatusId { get; set; }
 
         [DataMember]
-        public Definition GranStatus { get; set; }
+        public virtual Definition GrantStatus { get; set; }
 	}
 }

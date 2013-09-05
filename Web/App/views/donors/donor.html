@@ -244,7 +244,12 @@
             </h4>
             <ul class="list-unstyled" data-bind="foreach: activeCycles">
                 <li data-bind="css: { 'alert-danger': daysUntilDue() < 15, 'alert-warning': daysUntilDue() <= 45 }">
-                    <h4 style="margin-bottom:0px;"><span data-bind="text: name"></span><span style="font-size: 14px;" class="pull-right" data-bind="text: moment(dueDate()).format('M/D/YYYY')" /></h4>
+                    <h4 style="margin-bottom:0px;">
+                        <a href="#" data-bind="attr: { href: '/#donors/' + $root.donor().id() + '/cycles/' + id() }">
+                            <span data-bind="text: name"></span>
+                        </a>
+                        <span style="font-size: 14px;" class="pull-right" data-bind="text: moment(dueDate()).format('M/D/YYYY')" />
+                    </h4>
                     
                     <span data-bind="visible: notes() != null, text: notes"></span>
                 </li>

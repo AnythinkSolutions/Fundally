@@ -7,7 +7,9 @@ define(function () {
         getCurrentDate: getCurrentDate,
         getSaveValidationErrorMessage: getSaveValidationErrorMessage,
         getEntityValidationErrorMessage: getEntityValidationErrorMessage,
-        getURLParameter: getURLParameter
+        getURLParameter: getURLParameter,
+        getDefinitions: getDefinitions,
+        getDefaultDefinition: getDefaultDefinition
     }
 
     /**
@@ -57,5 +59,13 @@ define(function () {
         } catch (e) {
             return "not an entity";
         }
+    }
+
+    function getDefinitions(data, itemType, itemSubType) {
+        return $.grep(data, function (a) { return a.itemType() == itemType && (itemSubType == null || a.itemSubType() == itemSubType); });
+    }
+
+    function getDefaultDefinition(data) {
+        return $.grep(data, function (a) { return a.isDefault() == true; })[0];
     }
 });

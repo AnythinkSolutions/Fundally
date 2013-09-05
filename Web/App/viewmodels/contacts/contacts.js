@@ -1,10 +1,13 @@
-﻿define(['services/unitofwork'], function (unitofwork) {
+﻿define(['services/unitofwork', 'services/utils'], function (unitofwork, utils) {
 
     var viewModel = {
         isWorking: ko.observable(true),
         donors: ko.observableArray(),
         contacts: ko.observableArray(),
         contactPhoneTypes: ko.observableArray(),
+        addressTypes: ko.observableArray(),
+        defaultAddressType: null,
+        defaultPhoneType: null,
         uow: null,
         defaultPhoneType: null,
 
@@ -13,12 +16,25 @@
 
             self.uow = unitofwork.create();
 
-            self.uow.donorPhoneTypes.then(function (data) {
-                self.contactPhoneTypes(data);
-                self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            }).fail(function (error) {
-                alert(error);
-            });
+            self.uow.definitions.all()
+                .then(function (data) {
+
+                    self.addressTypes(utils.getDefinitions(data, 'address_type'));
+                    self.contactPhoneTypes(utils.getDefinitions(data, 'phone_type', 'contact'));
+                    //self.activityTypes(getDefinitions(data, 'activity_type'));
+                    self.defaultPhoneType = utils.getDefaultDefinition(self.contactPhoneTypes());
+                    self.defaultAddressType = utils.getDefaultDefinition(self.addressTypes());
+
+                }).fail(function (error) {
+                    alert(error);
+                });
+
+            //self.uow.donorPhoneTypes.then(function (data) {
+            //    self.contactPhoneTypes(data);
+            //    self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+            //}).fail(function (error) {
+            //    alert(error);
+            //});
 
             self.uow.donors.all().then(function (data) {
                 self.donors(data);

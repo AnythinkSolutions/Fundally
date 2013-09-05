@@ -1,4 +1,4 @@
-﻿define(['services/unitofwork', 'durandal/app'], function (unitofwork, app) {
+﻿define(['services/unitofwork', 'durandal/app', 'services/utils'], function (unitofwork, app, utils) {
     
     var myUow = unitofwork.create();
 
@@ -43,15 +43,15 @@
             self.uow.definitions.all()
                 .then(function (data) {
 
-                    self.addressTypes(getDefinitions(data, 'address_type'));
-                    self.phoneTypes(getDefinitions(data, 'phone_type', 'donor'));
-                    self.contactTypes(getDefinitions(data, 'contact_type'));
-                    self.activityTypes(getDefinitions(data, 'activity_type'));
-                    self.fundingAreas(getDefinitions(data, 'funding_area'));
+                    self.addressTypes(utils.getDefinitions(data, 'address_type'));
+                    self.phoneTypes(utils.getDefinitions(data, 'phone_type', 'donor'));
+                    self.contactTypes(utils.getDefinitions(data, 'contact_type'));
+                    self.activityTypes(utils.getDefinitions(data, 'activity_type'));
+                    self.fundingAreas(utils.getDefinitions(data, 'funding_area'));
 
-                    self.defaultAddressType = getDefaultDefinition(self.addressTypes());
-                    self.defaultPhoneType = getDefaultDefinition(self.phoneTypes());
-                    self.defaultActivityType = getDefaultDefinition(self.activityTypes());
+                    self.defaultAddressType = utils.getDefaultDefinition(self.addressTypes());
+                    self.defaultPhoneType = utils.getDefaultDefinition(self.phoneTypes());
+                    self.defaultActivityType = utils.getDefaultDefinition(self.activityTypes());
 
                 }).fail(function (error) {
                     alert(error);
@@ -101,13 +101,13 @@
         }
     }
 
-    function getDefinitions(data, itemType, itemSubType){
-        return $.grep(data, function (a) { return a.itemType() == itemType && (itemSubType == null || a.itemSubType() == itemSubType); });
-    }
+    //function getDefinitions(data, itemType, itemSubType){
+    //    return $.grep(data, function (a) { return a.itemType() == itemType && (itemSubType == null || a.itemSubType() == itemSubType); });
+    //}
 
-    function getDefaultDefinition(data){
-        return $.grep(data, function (a) { return a.isDefault() == true; })[0];
-    }
+    //function getDefaultDefinition(data){
+    //    return $.grep(data, function (a) { return a.isDefault() == true; })[0];
+    //}
 
     function editDonor() {
         var self = this;
@@ -231,13 +231,6 @@
         item = null;
     }
 
-    function completeTask(activity) {
-        if (activity.isTask()) {
-            var isComplete = activity.isComplete();
-            activity.isComplete(!isComplete);
-        }
-    }
-
     function addAddress() {
         var self = this;
 
@@ -324,4 +317,12 @@
         activity.isEditing(false);
         viewModel.uow.commit();
     }
+
+    function completeTask(activity) {
+        if (activity.isTask()) {
+            var isComplete = activity.isComplete();
+            activity.isComplete(!isComplete);
+        }
+    }
+
 });

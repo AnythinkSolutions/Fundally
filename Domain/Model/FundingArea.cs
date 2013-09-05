@@ -37,5 +37,12 @@ namespace Fundally.Domain.Model
 
         [DataMember]
         public virtual Donor Donor { get; set; }
+
+        [DataMember]
+        [ForeignKey("FundingCycle")]
+        public int? FundingCycleId { get; set; }
+
+        [DataMember]
+        public virtual FundingCycle FundingCycle { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 ﻿/*Color Theme:
-	Primary:	Secondary:
-		#9EBAC2		#B8CDD2
-		#559599		#87B9BC
-		#3B5E44		#4B7857
-		#C8B59F		#A98B69
-		#BDC1C6		#EBECED
+	Primary:	Secondary:	Tertiary:
+		#9EBAC2		#B8CDD2		#84A7B2
+		#559599		#87B9BC		#467A7E
+		#3B5E44		#4B7857		#2B4431
+		#C8B59F		#A98B69		#D7CABA
+		#BDC1C6		#EBECED		#A6ACB2
 */
 
 .activity-existing
@@ -18,7 +18,7 @@
 {
 	margin-right: 10px;
     /*width: 15%;*/
-    /*border-right: 1px solid #eeeeee;*/
+    border-right: 1px solid #BDC1C6;
     padding-right: 5px;
 }
 
@@ -26,7 +26,7 @@
 {
 	margin-left: 10px;
     /*width: 30%;*/
-    /*border-left: 1px solid #eeeeee;*/
+    border-left: 1px solid #BDC1C6;
     padding-left: 5px;
 }
 

@@ -1,4 +1,4 @@
-﻿define(['services/unitofwork'], function (unitofwork) {
+﻿define(['services/unitofwork', 'services/utils'], function (unitofwork, utils) {
     
     var viewModel = {
         isWorking : ko.observable(true),
@@ -14,19 +14,34 @@
 
             self.uow = unitofwork.create();
 
-            self.uow.addressTypes.then(function (data) {
-                self.addressTypes(data);
-                self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            }).fail(function (error) {
-                alert(error);
-            });
+            self.uow.definitions.all()
+                .then(function (data) {
 
-            self.uow.donorPhoneTypes.then(function (data) {
-                self.donorPhoneTypes(data);
-                self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            }).fail(function (error) {
-                alert(error);
-            });
+                    self.addressTypes(utils.getDefinitions(data, 'address_type'));
+                    self.donorPhoneTypes(utils.getDefinitions(data, 'phone_type', 'donor'));
+                    //self.activityTypes(getDefinitions(data, 'activity_type'));
+
+                    self.defaultAddressType = utils.getDefaultDefinition(self.addressTypes());
+                    self.defaultPhoneType = utils.getDefaultDefinition(self.donorPhoneTypes());
+                    //self.defaultActivityType = getDefaultDefinition(self.activityTypes());
+
+                }).fail(function (error) {
+                    alert(error);
+                });
+
+            //self.uow.addressTypes.then(function (data) {
+            //    self.addressTypes(data);
+            //    self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+            //}).fail(function (error) {
+            //    alert(error);
+            //});
+
+            //self.uow.donorPhoneTypes.then(function (data) {
+            //    self.donorPhoneTypes(data);
+            //    self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+            //}).fail(function (error) {
+            //    alert(error);
+            //});
 
             self.uow.donors.allIncluding("Addresses, Phones").then(function (data) {
                 self.donors(data);

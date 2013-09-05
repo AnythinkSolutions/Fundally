@@ -1,0 +1,101 @@
+﻿<div class="page-header">
+    <h1>
+        <a class="btn btn-small btn-info" style="display:inline;" data-bind="attr: { href: '/#donors/' + cycle().donor().id() }"><i class="icon-arrow-left"></i></a>
+        <span data-bind="text: cycle().name"></span>
+        <span style="font-size:24px;">cycle for</span>
+        <a href="#" data-bind="attr: { href: '/#donors/' + cycle().donor().id() }" style="font-size:24px;">
+            <span data-bind="text: cycle().donor().name"></span>
+        </a>
+    </h1>
+</div>
+
+<div id="leftColumn" class="pull-left span3">
+    <span>Status: </span>
+    <span class="value" data-bind="text: cycle().grantStatus().name"></span>
+
+    <div id="fundingAreas">
+        <h4 class="section-header">
+            <i class="icon-compass icon-3 space-right-small"></i>
+            Funding Areas
+            <!--<button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea, visible: donor().isEditing">New...</button>-->
+        </h4>
+        <div data-bind="ifnot: cycle().isEditing">
+            <ul class="list-unstyled space-left-small" data-bind="foreach: cycle().fundingAreas()">
+                <li data-bind="text: displayName"></li>
+            </ul>
+        </div>
+        <table class="st-table table table-condensed" id="Table1" data-bind="if: cycle().isEditing">
+            <tbody data-bind="foreach: cycle().fundingAreas">
+                <tr>
+                    <td class="always" style="text-align: left;">
+                        <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select><br />
+                        <input type="text" class="input-small" placeholder="Other Area" data-bind="value: otherName, visible: isOther()" />
+                    </td>
+                    <td class="always">
+                        <button id="deleteFundingAreaButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteFundingArea"><i class="icon-remove"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button class="btn btn-small btn-primary" data-bind="click: editCycle">Edit Cycle</button>
+</div>
+
+<div id="centerColumn" class="pull-left" style="width:50%;">
+    <div id="notes" data-bind="ifnot: cycle().isEditing">
+        <h4 class="section-header" style="margin-top:0px;">
+            <i class="icon-file-text space-right-small"></i>
+            Notes
+        </h4>
+        <textarea rows="5" style="width: 100%" data-bind="value: cycle().notes" />
+    </div>
+    <div id="activities" data-bind="ifnot: cycle().isEditing">
+        <h4 class="section-header">
+            <i class="icon-calendar space-right-small"></i>
+            Activities
+        </h4>
+        <button class="btn btn-mini btn-info" style="margin-bottom:5px;" title="Add Activity" data-bind="click: addActivity">
+           <i class="icon-plus"></i>&nbsp;&nbsp;Add New
+        </button>
+        <ul data-bind="foreach: cycle().activities()" class="list-unstyled">
+            <li>
+                <div class="activity" data-bind="with: $data">
+                    <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">
+                        <i data-bind="css: iconName, attr: { title: activityType().name() }, click: $root.completeTask" style="margin-right: 10px;"></i>
+                        <span data-bind="text: subject" style="vertical-align: top; font-weight: bold;"></span>
+                        <div data-bind="if: dueDate() != null" style="display: inline;">
+                            <span data-bind="text: 'by ' + moment(dueDate()).format('M/D/YYYY')"></span>
+                            <!--<input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />-->
+                        </div>
+                        <span data-bind="text: moment(activityDate()).format('M/D')" class="comment-date pull-right" style="margin-right: 10px;"></span>
+                        <br />
+                        <span data-bind="text: body" style="vertical-align: top"></span>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="activity-editing" data-bind="if: isEditing">
+                        <div class=" alert alert-info">
+                            <h4 style="border-bottom: 1px solid DarkGray; margin-bottom: 5px; padding-bottom: 7.5px;">New Note
+                                    <div class="pull-right">
+                                        <button class="btn btn-mini" title="Cancel" data-bind="click: $root.deleteActivity"><i class="icon-remove"></i></button>
+                                        <button class="btn btn-mini btn-info" title="Save" data-bind="click: $root.saveActivity"><i class="icon-save"></i></button>
+                                    </div>
+                            </h4>
+                            <select data-bind="options: $root.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>
+                            <input type="text" class="span2" data-bind="datepicker: activityDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
+                            <select data-bind="options: $root.cycle().donor().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Optional...'"></select>
+                            <input type="text" class="span2" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;" placeholder="Due Date">
+
+                            <br />
+
+                            <input type="text" data-bind="value: subject" style="width: 100%" placeholder="Subject" />
+                            <textarea data-bind="value: body" rows="3" style="width: 100%;" placeholder="Body" />
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+</div>
+</div>
+
+<div id="rightColumn" class="pull-left span4"></div>

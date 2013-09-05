@@ -31,6 +31,7 @@ define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plu
 				{ url: 'login', moduleId: 'viewmodels/account/login', name: 'Login', visible: false },
 				{ url: 'donors', moduleId: 'viewmodels/donors/donors', name: 'Donors', settings: { authorize: ["User"] }, visible: true },
                 { url: 'donors/:id', moduleId: 'viewmodels/donors/donor', name: 'Donor', settings: { authorize: ["User"]}, visible: false},
+                { url: 'donors/:id/cycles/:cycleid', moduleId: 'viewmodels/donors/fundingcycle', name: 'FundingCycle', settings: { authorize: ["User"] }, visible: false },
 				{ url: 'contacts', moduleId: 'viewmodels/contacts/contacts', name: 'Contacts', settings: { authorize: ["User"] }, visible: true },
 				{ url: 'contacts/:id', moduleId: 'viewmodels/contacts/contact', name: 'Contact', settings: { authorize: ["User"] }, visible: false },
 				{ url: 'schedule', moduleId: 'viewmodels/schedule/schedule', name: 'Schedule', settings: { authorize: ["User"] }, visible: true },

@@ -1,4 +1,4 @@
-﻿define(['services/unitofwork'], function (unitofwork) {
+﻿define(['services/unitofwork', 'services/utils'], function (unitofwork, utils) {
 
     var myUow = unitofwork.create();
 
@@ -16,7 +16,7 @@
             var self = this;
 
 
-            return self.uow.contacts.withIdIncluding(params.id, "ContactType, Addresses, Phones, Donor")
+            return self.uow.contacts.withIdIncluding(params.id, "ContactType, Addresses, Addresses.AddressType, Phones, Phones.PhoneType, Donor")
                 .then(function (data) {
                     self.contact(data[0]);
                     self.isWorking(false);
@@ -30,26 +30,41 @@
         activate: function (params) {
             var self = this;
 
-            self.uow.addressTypes.then(function (data) {
-                self.addressTypes(data);
-                self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            }).fail(function (error) {
-                alert(error);
-            });
+            self.uow.definitions.all()
+                .then(function (data) {
 
-            self.uow.contactPhoneTypes.then(function (data) {
-                self.phoneTypes(data);
-                self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+                    self.addressTypes(utils.getDefinitions(data, 'address_type'));
+                    self.phoneTypes(utils.getDefinitions(data, 'phone_type', 'contact'));
+                    //self.activityTypes(getDefinitions(data, 'activity_type'));
 
-                $.each(self.contact().phones(), function (p) {
-                    var pType = $.grep(self.phoneTypes, function (pt) { return pt.id = p.phoneTypeId; })[0];
-                    if (pType)
-                        p.phoneType(pType);
+                    self.defaultAddressType = utils.getDefaultDefinition(self.addressTypes());
+                    self.defaultPhoneType = utils.getDefaultDefinition(self.phoneTypes());
+                    //self.defaultActivityType = getDefaultDefinition(self.activityTypes());
+
+                }).fail(function (error) {
+                    alert(error);
                 });
 
-            }).fail(function (error) {
-                alert(error);
-            });
+            //self.uow.addressTypes.then(function (data) {
+            //    self.addressTypes(data);
+            //    self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+            //}).fail(function (error) {
+            //    alert(error);
+            //});
+
+            //self.uow.contactPhoneTypes.then(function (data) {
+            //    self.phoneTypes(data);
+            //    self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
+
+            //    $.each(self.contact().phones(), function (p) {
+            //        var pType = $.grep(self.phoneTypes, function (pt) { return pt.id = p.phoneTypeId; })[0];
+            //        if (pType)
+            //            p.phoneType(pType);
+            //    });
+
+            //}).fail(function (error) {
+            //    alert(error);
+            //});
 
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
         },
