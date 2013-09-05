@@ -36,6 +36,7 @@ namespace Fundally.Data.UnitOfWork
 			PhonesRepository = new Repository<Phone>(contextProvider.Context);
             FundingAreasRepository = new Repository<FundingArea>(contextProvider.Context);
 			FundingCyclesRepository = new Repository<FundingCycle>(contextProvider.Context);
+			ActivitiesRepository = new Repository<Activity>(contextProvider.Context);
         }
 
         /// <summary>
@@ -47,6 +48,7 @@ namespace Fundally.Data.UnitOfWork
 		public IRepository<UserProfile> UserProfileRepository { get; private set; }
 		public IRepository<Address> AddressesRepository { get; private set; }
 		public IRepository<Phone> PhonesRepository { get; private set; }
+		public IRepository<Activity> ActivitiesRepository { get; private set; }
         public IRepository<FundingArea> FundingAreasRepository { get; private set; }
 		public IRepository<FundingCycle> FundingCyclesRepository { get; private set; }
 

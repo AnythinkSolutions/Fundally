@@ -29,20 +29,6 @@
                     alert(error);
                 });
 
-            //self.uow.addressTypes.then(function (data) {
-            //    self.addressTypes(data);
-            //    self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            //}).fail(function (error) {
-            //    alert(error);
-            //});
-
-            //self.uow.donorPhoneTypes.then(function (data) {
-            //    self.donorPhoneTypes(data);
-            //    self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            //}).fail(function (error) {
-            //    alert(error);
-            //});
-
             self.uow.donors.allIncluding("Addresses, Phones").then(function (data) {
                 self.donors(data);
                 Stashy.Table("#donors", { idprefix: "dnr-", menuClass: "btn btn-primary" }).on();

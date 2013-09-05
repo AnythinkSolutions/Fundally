@@ -1,7 +1,7 @@
 <div class="row" data-bind="visible: !appsecurity.user().IsAuthenticated">
     <div class="col-lg-6">
         <form>
-           <div class="panel">
+           <div class="panel" style="margin-bottom:20px;padding:15px;margin-top:20px;">
                 <div class="panel-heading">
                     <h3>Sign in</h3>
                 </div>
@@ -27,7 +27,7 @@
         </form>                      
     </div>
     
-    <div class="col-offset-1 col-lg-5">
+    <!--<div class="col-offset-1 col-lg-5">
         <h3>Login using another service</h3>
         <div class="list-group" data-bind="foreach: appsecurity.externalLogins">                        
             <a class="list-group-item lead" href="#"  data-bind="click: function (data, event) { $parent.externalLogin($parent, data, event) }, attr: { 'data-provider': Provider }">
@@ -35,7 +35,7 @@
                 <span data-bind="text: ProviderDisplayName"></span>
             </a>
         </div>
-    </div>    
+    </div>    -->
 </div>
   
 <div class="jumbotron" data-bind="visible: appsecurity.user().IsAuthenticated && !isRedirect()">

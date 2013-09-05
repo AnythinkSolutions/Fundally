@@ -5,6 +5,7 @@ using Newtonsoft.Json.Linq;
 using Fundally.Domain.UnitOfWork;
 using Fundally.Domain.Model;
 using Fundally.Web.Helpers;
+using WebMatrix.WebData;
 
 namespace Fundally.Web.Controllers
 {
@@ -63,6 +64,13 @@ namespace Fundally.Web.Controllers
 		public IQueryable<FundingCycle> FundingCycles()
 		{
 			return UnitOfWork.FundingCyclesRepository.All();
+		}
+
+		[HttpGet]
+		[Authorize(Roles = "User")]
+		public IQueryable<Activity> Activities()
+		{
+			return UnitOfWork.ActivitiesRepository.All().Where(a => a.OwnerId == WebSecurity.CurrentUserId);
 		}
 
 		// ~/breeze/fundally/UserProfiles

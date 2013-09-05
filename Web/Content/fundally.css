@@ -1,7 +1,7 @@
 ﻿/*Color Theme:
 	Primary:	Secondary:	Tertiary:
 		#9EBAC2		#B8CDD2		#84A7B2
-		#559599		#87B9BC		#467A7E
+		#559599		#9EBAC2		#467A7E
 		#3B5E44		#4B7857		#2B4431
 		#C8B59F		#A98B69		#D7CABA
 		#BDC1C6		#EBECED		#A6ACB2
@@ -100,4 +100,55 @@
 address
 {
 	margin-bottom: 10px;
+}
+
+/*--------- Schedule/Calendar ----------*/
+.calendar-title
+{
+	font-size: 24px;
+	height: 50px;
+}
+
+th.calendar
+{
+	border-right: 1px solid #9EBAC2;
+	text-align: left;
+	width: 14.28%;
+}
+
+td.calendar-day
+{
+	border-right: 1px solid #9EBAC2;
+	height: 100px;
+	text-align: left;
+	margin-top: auto;
+}
+
+td.calendar-day-right
+{
+	border-right: 0px;
+}
+
+td.calendar-today
+{
+	background-color: #9EBAC2;
+	font-weight: bold;
+}
+
+td.calendar-other-month
+{
+	background-color: #EBECED;
+}
+
+td.calendar-day-selected
+{
+	border: 2px solid #3B5E44;
+	background-color: #C8B59F;
+}
+
+li.calendar-event
+{
+	max-width: 100px;
+	max-height: 30px;
+	margin-top: 2px;
 }

@@ -9,7 +9,8 @@ define(function () {
         getEntityValidationErrorMessage: getEntityValidationErrorMessage,
         getURLParameter: getURLParameter,
         getDefinitions: getDefinitions,
-        getDefaultDefinition: getDefaultDefinition
+        getDefaultDefinition: getDefaultDefinition,
+        isSameDate: isSameDate
     }
 
     /**
@@ -67,5 +68,9 @@ define(function () {
 
     function getDefaultDefinition(data) {
         return $.grep(data, function (a) { return a.isDefault() == true; })[0];
+    }
+
+    function isSameDate(x, y) {
+        return x != null && y != null && x.getFullYear() === y.getFullYear() && x.getMonth() == y.getMonth() && x.getDate() == y.getDate();
     }
 });

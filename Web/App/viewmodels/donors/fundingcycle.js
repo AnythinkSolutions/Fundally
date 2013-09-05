@@ -99,6 +99,7 @@
         activity.activityType(self.defaultActivityType);
         activity.isEditing(true);
         activity.activityDate(new Date());
+        activity.donorId(self.cycle().donorId());
 
         viewModel.cycle().activities.unshift(activity);
     }
@@ -109,7 +110,10 @@
 
     function saveActivity(activity) {
         activity.isEditing(false);
-        uow.commit();
+        uow.commit()
+            .then(function () {
+            app.trigger('activity:new', activity);
+        });
     }
 
     function completeTask(activity) {
@@ -137,7 +141,7 @@
             });
         }
         else
-            deleteItemCore(cycle, itemCollection);
+            deleteItemCore(item, itemCollection);
     }
 
     function deleteItemCore(item, itemCollection, delayedCommit) {

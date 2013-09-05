@@ -266,6 +266,7 @@
     <Content Include="App\durandal\viewModel.js" />
     <Content Include="App\durandal\viewModelBinder.js" />
     <Content Include="App\durandal\widget.js" />
+    <Content Include="App\services\calendar.js" />
     <Content Include="App\services\entitymanagerprovider.js" />
     <Content Include="App\services\modelbuilder.js" />
     <Content Include="App\services\repository.js" />

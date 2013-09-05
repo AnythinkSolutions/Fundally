@@ -11,11 +11,13 @@
         phoneTypes: ko.observableArray(),
         contactTypes: ko.observableArray(),
         activityTypes: ko.observableArray(),
-        fundingAreas : ko.observableArray(),
+        fundingAreas: ko.observableArray(),
+        grantStatuses: ko.observableArray(),
         defaultAddressType: null,
         defaultPhoneType: null,
         defaultContactType: null,
         defaultActivityType: null,
+        defaultGrantStatus: null,
 
         canActivate: function (params) {
             var self = this;
@@ -48,10 +50,12 @@
                     self.contactTypes(utils.getDefinitions(data, 'contact_type'));
                     self.activityTypes(utils.getDefinitions(data, 'activity_type'));
                     self.fundingAreas(utils.getDefinitions(data, 'funding_area'));
+                    self.grantStatuses(utils.getDefinitions(data, 'grant_status'));
 
                     self.defaultAddressType = utils.getDefaultDefinition(self.addressTypes());
                     self.defaultPhoneType = utils.getDefaultDefinition(self.phoneTypes());
                     self.defaultActivityType = utils.getDefaultDefinition(self.activityTypes());
+                    self.defaultGrantStatus = utils.getDefaultDefinition(self.grantStatuses());
 
                 }).fail(function (error) {
                     alert(error);
@@ -195,6 +199,8 @@
         cycle.isParticipating(true);
         cycle.dueDate(new Date());
         cycle.endDate(new Date());
+        cycle.grantStatus(viewModel.defaultGrantStatus);
+
         viewModel.donor().fundingCycles.push(cycle);
     }
 
@@ -315,7 +321,11 @@
 
     function saveActivity(activity) {
         activity.isEditing(false);
-        viewModel.uow.commit();
+
+        viewModel.uow.commit()
+            .then(function () {
+                app.trigger('activity:new', activity);
+            });
     }
 
     function completeTask(activity) {

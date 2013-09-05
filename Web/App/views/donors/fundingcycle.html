@@ -10,6 +10,7 @@
 </div>
 <div class="page-header" data-bind="visible: cycle().isEditing()">
     <input type="text" class="input-large" style="font-size: 38px;" placeholder="Funding Cycle Name" data-bind="value: cycle().name" />
+    <span style="font-size:24px;" data-bind="text: 'cycle for ' + cycle().donor().name()"></span>
     <button id="saveButton" class="btn btn-small btn-primary pull-right" data-bind="click: save" style="margin-left: 5px;">Save</button>
     <button id="cancelButton" class="btn btn-small btn-primary pull-right" data-bind="click: cancel">Cancel</button>
 </div>
@@ -27,7 +28,7 @@
                         <span class="value" data-bind="text: cycle().grantStatus().name"></span><br />
                     </td>
                 </tr>
-                <tr>
+                <tr data-bind="css: { 'alert-danger': cycle().daysUntilDue() < 15, 'alert-warning': cycle().daysUntilDue() <= 45 }">
                     <td class="always">
                         <span>Due Date: </span>
                     </td>

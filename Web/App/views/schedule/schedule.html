@@ -1,25 +1,66 @@
-﻿<div class="jumbotron">
-	<h1>Schedule</h1>
-	<p class="mart5">This is where you will manage your Fundally Schedule</p>
+﻿<div class="page-header" style="margin-top:10px;">
+    <h1>
+        Schedule
+    </h1>
+</div>
+<i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
+
+<div class="pull-left" style="width:70%;">
+    <table class="st-table table">
+        <thead>
+            <tr>
+                <th class="calendar-title always" colspan="7">
+                    <span data-bind="text: calendar.monthName() + ' ' + calendar.year()" style="font-size:24px;"></span>
+
+                    <div class="pull-right" style="display:inline;">
+                        <button class="btn btn-info btn-small" data-bind="click: calendar.prevYear"><i class="icon-double-angle-left" title="Previous Year"></i></button>
+                        <button class="btn btn-info btn-small" data-bind="click: calendar.prevMonth" style="margin-right:10px;"><i class="icon-arrow-left" title="Previous Month"></i></button>
+                        <button class="btn btn-info btn-small" data-bind="click: calendar.gotoToday" style="margin-right:10px;"><i class="icon-time" title="Today"></i></button>
+                        <button class="btn btn-info btn-small" data-bind="click: calendar.nextMonth"><i class="icon-arrow-right" title="Next Month"></i></button>
+                        <button class="btn btn-info btn-small" data-bind="click: calendar.nextYear"><i class="icon-double-angle-right" title="Next Year"></i></button>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <th class="calendar always">Sunday</th>
+                <th class="calendar always">Monday</th>
+                <th class="calendar always">Tuesday</th>
+                <th class="calendar always">Wednesday</th>
+                <th class="calendar always">Thursday</th>
+                <th class="calendar always">Friday</th>
+                <th class="calendar always" style="border-right:0px;">Saturday</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: calendar.weeks">
+            <tr>
+                <!-- ko foreach: $data -->
+                <td class="calendar-day always" data-bind="css: { 'calendar-day-right': dayOfWeek == 6, 'calendar-other-month': !isCurrentMonth, 'calendar-today': isCurrentDay}">
+                    <span data-bind="text: dayOfMonth"></span>
+                    <div style="margin-top:5px;font-size:10px;">
+                        <ul class="list-unstyled" data-bind="foreach: events">
+                            <li class="label label-inverse calendar-event" data-bind="text: subject, attr: { title: tooltip}" />
+                        </ul>
+                    </div>
+                </td>
+                <!-- /ko -->
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-<div class="st-table-container">
-	<!--<table cellspacing="0" class="st-table table table-striped" id="articles">
-		<thead>
-		  <tr>
-			 <th class="always not-selectable">Title</th>
-			 <th class="always not-selectable">Description</th>
-			 <th class="ontablet">Text</th>
-			 <th class="ontablet">Date Created</th>
-		  </tr>
-	   </thead>
-	   <tbody data-bind="foreach: articles">
-		  <tr>
-			 <td data-bind="text: title"></td>
-			 <td data-bind="text: description"></td>
-			 <td data-bind="text: text"></td>
-			 <td data-bind="text: createdDate"></td>
-		  </tr>      
-	   </tbody>
-	</table>-->
+<div class="pull-right" style="width:25%;">
+    <h3 class="section-header">Upcoming</h3>
+    <table class="st-table table">
+        <tbody data-bind="foreach: upcomingItems">
+            <tr data-bind="attr: { title: $root.getActivityTooltip($data) }">
+                <td class="always" data-bind="text: subject"></td>
+                <td class="always">
+                    <div data-bind="if: dueDate() != null" style="display: inline;">
+                        <span data-bind="text: moment(dueDate()).format('M/D/YYYY')"></span>
+                        <!--<input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />-->
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

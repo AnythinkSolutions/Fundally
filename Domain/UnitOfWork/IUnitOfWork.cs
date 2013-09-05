@@ -24,6 +24,7 @@ namespace Fundally.Domain.UnitOfWork
 		IRepository<Contact> ContactRepository { get; }
 		IRepository<Address> AddressesRepository { get; }
 		IRepository<Phone> PhonesRepository { get; }
+		IRepository<Activity> ActivitiesRepository { get; }
         IRepository<UserProfile> UserProfileRepository { get; }
         IRepository<FundingArea> FundingAreasRepository { get; }
 		IRepository<FundingCycle> FundingCyclesRepository { get; }
