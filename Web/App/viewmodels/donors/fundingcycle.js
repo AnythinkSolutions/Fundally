@@ -14,8 +14,8 @@
         activate: activate,
 
         editCycle: editCycle,
-        //save: save,
-        //cancel: cancel,
+        save: save,
+        cancel: cancel,
 
         addActivity: addActivity,
         deleteActivity: deleteActivity,
@@ -33,7 +33,7 @@
     function canActivate(params) {
         var self = this;
 
-        return uow.fundingcycles.withIdIncluding(params.cycleid, "Donor, Donor.Contacts, FundingAreas, FundingAreas.AreaType, GrantStatus")
+        return uow.fundingcycles.withIdIncluding(params.cycleid, "Donor, Donor.Contacts, FundingAreas, FundingAreas.AreaType, GrantStatus, Activities, Activities.ActivityType")
             .then(function (data) {
                 self.cycle(data[0]);
                 return true;
@@ -57,17 +57,34 @@
             });
     }
 
-    //------- Funding Areas -----
+    //------- Funding Cycle -----
     function editCycle() {
         viewModel.cycle().isEditing(true);
+    }
+
+    function save() {
+        uow.commit()
+            .then(function () {
+                toastr.success('Funding Cycle Saved', 'Success');
+                viewModel.cycle().isEditing(false);
+        })
+        .fail(function (error) {
+            toastr.error(error, 'Error', { timeOut: 0, positionClass: "toast-bottom-full-width" });
+        });
+    }
+
+    function cancel() {
+        var self = this;
+        uow.rollback();
+        viewModel.cycle().isEditing(false);
     }
 
     //------- Funding Areas -----
     function addFundingArea() {
         var self = this;
 
-        var fundingArea = self.uow.fundingcycles.createRelated("FundingArea");
-        viewModel.cycle().fundingcycles.push(fundingArea);
+        var fundingArea = uow.fundingcycles.createRelated("FundingArea");
+        viewModel.cycle().fundingAreas.push(fundingArea);
     }
 
     function deleteFundingArea(area) {

@@ -1,4 +1,4 @@
-﻿<div class="page-header">
+﻿<div class="page-header" data-bind="visible: !cycle().isEditing()">
     <h1>
         <a class="btn btn-small btn-info" style="display:inline;" data-bind="attr: { href: '/#donors/' + cycle().donor().id() }"><i class="icon-arrow-left"></i></a>
         <span data-bind="text: cycle().name"></span>
@@ -8,16 +8,78 @@
         </a>
     </h1>
 </div>
+<div class="page-header" data-bind="visible: cycle().isEditing()">
+    <input type="text" class="input-large" style="font-size: 38px;" placeholder="Funding Cycle Name" data-bind="value: cycle().name" />
+    <button id="saveButton" class="btn btn-small btn-primary pull-right" data-bind="click: save" style="margin-left: 5px;">Save</button>
+    <button id="cancelButton" class="btn btn-small btn-primary pull-right" data-bind="click: cancel">Cancel</button>
+</div>
+
 
 <div id="leftColumn" class="pull-left span3">
-    <span>Status: </span>
-    <span class="value" data-bind="text: cycle().grantStatus().name"></span>
-
+    <div id="cycleInfo" data-bind="visible: !cycle().isEditing()">
+        <table class="st-table table table-condensed" id="infoTable">
+            <tbody>
+                <tr>
+                    <td class="always">
+                        <span>Status: </span>
+                    </td>
+                    <td class="always">
+                        <span class="value" data-bind="text: cycle().grantStatus().name"></span><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="always">
+                        <span>Due Date: </span>
+                    </td>
+                    <td class="always">
+                        <span class="value" data-bind="text: moment(cycle().dueDate()).format('M/D/YYYY')"></span><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="always">
+                        <span>End Date: </span>
+                    </td>
+                    <td class="always">
+                        <span class="value" data-bind="text: moment(cycle().endDate()).format('M/D/YYYY')"></span><br />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="cycleInfoEdit" data-bind="visible: cycle().isEditing">
+        <table class="st-table table table-condensed" id="Table2">
+            <tbody>
+                <tr>
+                    <td class="always">
+                        <span>Status: </span>
+                    </td>
+                    <td class="always">
+                        <select data-bind="options: $root.grantStatuses, optionsText: 'name', value: cycle().grantStatus, optionsCaption: 'Choose...'"></select><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="always">
+                        <span>Due Date: </span>
+                    </td>
+                    <td class="always">
+                        <input type="text" class="span2" data-bind="datepicker: cycle().dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;"><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="always">
+                        <span>End Date: </span>
+                    </td>
+                    <td class="always">
+                        <input type="text" class="span2" data-bind="datepicker: cycle.endDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div id="fundingAreas">
         <h4 class="section-header">
             <i class="icon-compass icon-3 space-right-small"></i>
             Funding Areas
-            <!--<button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea, visible: donor().isEditing">New...</button>-->
         </h4>
         <div data-bind="ifnot: cycle().isEditing">
             <ul class="list-unstyled space-left-small" data-bind="foreach: cycle().fundingAreas()">
@@ -25,7 +87,8 @@
             </ul>
         </div>
         <table class="st-table table table-condensed" id="Table1" data-bind="if: cycle().isEditing">
-            <tbody data-bind="foreach: cycle().fundingAreas">
+            <tbody>
+                <!-- ko foreach: cycle().fundingAreas -->
                 <tr>
                     <td class="always" style="text-align: left;">
                         <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select><br />
@@ -35,11 +98,18 @@
                         <button id="deleteFundingAreaButton" class="btn btn-mini btn-info" data-bind="click: $root.deleteFundingArea"><i class="icon-remove"></i></button>
                     </td>
                 </tr>
+                <!-- /ko -->
+                <tr>
+                    <td class="always" style="text-align:left;" colspan="2">
+                        <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea, visible: cycle().isEditing">New...</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <button class="btn btn-small btn-primary" data-bind="click: editCycle">Edit Cycle</button>
+    <button class="btn btn-small btn-primary" data-bind="visible: !cycle().isEditing(), click: editCycle">Edit Cycle</button>
+
 </div>
 
 <div id="centerColumn" class="pull-left" style="width:50%;">
