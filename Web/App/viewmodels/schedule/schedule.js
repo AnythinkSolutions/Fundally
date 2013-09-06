@@ -10,7 +10,8 @@
         viewAttached: viewAttached,
         activate: activate,
 
-        getActivityTooltip: getActivityTooltip
+        getActivityTooltip: getActivityTooltip,
+        addEvent: addEvent
 }
 
     return viewModel;
@@ -37,7 +38,7 @@
                 });
 
                 viewModel.upcomingItems(upcoming);
-                viewModel.upcomingItems.sort(sortActivities);
+                viewModel.upcomingItems.sort(utils.sortActivitiesByDueDate);
 
                 var events = $.map(dated, function (e, i) { return createEvent(e); });
                 calendar.addEvents(events);
@@ -77,7 +78,7 @@
 
     function createEvent(activity) {       
 
-        return new calendar.event(activity.dueDate(), activity.subject(), getActivityTooltip(activity));
+        return new calendar.event(activity.dueDate(), activity.subject(), getActivityTooltip(activity), activity);
     }
 
     function activate() {
@@ -94,18 +95,14 @@
     function onDateChanged(newDate) {
         //alert('changed date!');
     }
-
-    function sortActivities(left, right){
-        var leftTime = left.dueDate().getTime();
-        var rightTime = right.dueDate().getTime();
-
-        if(leftTime < rightTime)
-            return -1;
-        else if(leftTime === rightTime)
-            return 0;
-        else
-            return 1;
-        
-    }
     
+    function addEvent() {
+        var activity = viewModel.uow.activities.create();
+        activity.activityType(self.defaultActivityType);
+        activity.isEditing(true);
+        activity.activityDate(new Date());
+
+        //var dialogVm = new eventdialog(activity);
+        app.showModal('viewmodels/schedule/eventdialog', activity);
+    }
 });

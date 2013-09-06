@@ -10,6 +10,7 @@
             weeks: ko.observableArray(),
             days: ko.observableArray(),
             events: ko.observableArray(),
+            selectedDay: ko.observable(),
 
             dateChanging: null,
             dateChanged: null,
@@ -21,6 +22,7 @@
             nextYear: nextYear,
             prevYear: prevYear,
             gotoToday: gotoToday,
+            selectDate: selectDate,
 
             event: event,
             addEvent: addEvent,
@@ -38,6 +40,7 @@
             self.isCurrentMonth = (dayDate.getMonth() == calendar.month());
             self.dayOfWeek = dayDate.getDay();
             self.dayOfMonth = dayDate.getDate();
+            self.isSelected = ko.observable(false);
 
             self.events = ko.observableArray();
             
@@ -56,12 +59,13 @@
             self.checkForEvents();
         }
 
-        function event(date, subject, tooltip) {
+        function event(date, subject, tooltip, activity) {
             var self = this;
 
             self.date = date;
             self.subject = subject;
             self.tooltip = tooltip;
+            self.activity = activity;
         }
         
         function addEvents(events) {
@@ -257,6 +261,15 @@
             }
         }
 
+        function selectDate(date) {
+
+            if (calendar.selectedDay() != null)
+                calendar.selectedDay().isSelected(false);
+            
+            calendar.date(date.date);
+            date.isSelected(true);
+            calendar.selectedDay(date);
+        }
         //function getTime() {
         //    // initialize time-related variables with current time settings
         //    var now = new Date()

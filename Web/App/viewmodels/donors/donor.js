@@ -7,6 +7,7 @@
         uow: myUow,
         donor: ko.observable(),
         activeCycles: ko.observable(),
+        activities: ko.observableArray(),
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
         contactTypes: ko.observableArray(),
@@ -22,21 +23,27 @@
         canActivate: function (params) {
             var self = this;
 
-            //var pred = new breeze.Predicate("Id", "eq", params.id);
-            return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, FundingAreas, FundingCycles, Contacts.Phones, Activities, Phones.PhoneType, Contacts.ContactType, Activities.ActivityType, FundingAreas.AreaType, FundingCycles.FundingAreas, FundingCycles.FundingAreas.AreaType")
-                .then(function (data) {
-                    self.donor(data[0]);
+            if (self.donor() == null || self.donor().id() != params.id) {
+                //var pred = new breeze.Predicate("Id", "eq", params.id);
+                return self.uow.donors.withIdIncluding(params.id, "Addresses, Phones, Contacts, FundingAreas, FundingCycles, Contacts.Phones, Activities, Phones.PhoneType, Contacts.ContactType, Activities.ActivityType, FundingAreas.AreaType, FundingCycles.FundingAreas, FundingCycles.FundingAreas.AreaType")
+                    .then(function (data) {
+                        self.donor(data[0]);
 
-                    //Get the list of active cycles
-                    getActiveFundingCycles();
+                        self.activities(data[0].activities().sort(utils.sortActivities));
 
-                    self.donor().entityAspect.propertyChanged.subscribe(handlePropertyChanged);
-                    self.isWorking(false);
-                    return true;
-                }).fail(function (error) {
-                    alert(error);
-                    return false;
-                });
+                        //Get the list of active cycles
+                        getActiveFundingCycles();
+
+                        self.donor().entityAspect.propertyChanged.subscribe(handlePropertyChanged);
+                        self.isWorking(false);
+                        return true;
+                    }).fail(function (error) {
+                        alert(error);
+                        return false;
+                    });
+            }
+            else
+                return true;
         },
 
         activate: function (params) {
@@ -308,6 +315,7 @@
         activity.isEditing(true);
         activity.activityDate(new Date());
 
+        viewModel.activities.unshift(activity);
         viewModel.donor().activities.unshift(activity);
     }
 
@@ -316,6 +324,8 @@
         activity.isEditing(false);
 
         viewModel.donor().activities.remove(activity);
+        viewModel.activities.remove(activity);
+
         activity = null;
     }
 

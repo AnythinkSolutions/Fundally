@@ -99,7 +99,7 @@
         <button class="btn btn-mini btn-info" style="margin-bottom:5px;" title="Add Activity" data-bind="click: addActivity">
            <i class="icon-plus"></i>&nbsp;&nbsp;Add New
         </button>
-        <ul data-bind="foreach: donor().activities()" class="list-unstyled">
+        <ul data-bind="foreach: activities()" class="list-unstyled">
             <li>
                 <div class="activity" data-bind="with: $data">
                     <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">

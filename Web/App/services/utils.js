@@ -10,7 +10,9 @@ define(function () {
         getURLParameter: getURLParameter,
         getDefinitions: getDefinitions,
         getDefaultDefinition: getDefaultDefinition,
-        isSameDate: isSameDate
+        isSameDate: isSameDate,
+        sortActivities: sortActivities,
+        sortActivitiesByDueDate: sortActivitiesByDueDate,
     }
 
     /**
@@ -72,5 +74,33 @@ define(function () {
 
     function isSameDate(x, y) {
         return x != null && y != null && x.getFullYear() === y.getFullYear() && x.getMonth() == y.getMonth() && x.getDate() == y.getDate();
+    }
+
+    function sortActivitiesByDueDate(left, right, descending) {
+        var leftTime = left.dueDate().getTime();
+        var rightTime = right.dueDate().getTime();
+
+        if (leftTime < rightTime)
+            return -1;
+        else if (leftTime === rightTime)
+            return 0;
+        else
+            return 1;
+    }
+
+    function sortActivities(left, right, descending) {
+        
+        var factor = descending ? 1 : -1;
+
+        var leftTime = left.activityDate().getTime();
+        var rightTime = right.activityDate().getTime();
+
+        if (leftTime < rightTime)
+            return -1 * factor;
+        else if (leftTime === rightTime)
+            return 0;
+        else
+            return 1 * factor;
+
     }
 });

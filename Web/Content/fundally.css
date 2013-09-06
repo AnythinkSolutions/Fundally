@@ -142,7 +142,7 @@ td.calendar-other-month
 
 td.calendar-day-selected
 {
-	border: 2px solid #3B5E44;
+	/*border: 2px solid #3B5E44;*/
 	background-color: #C8B59F;
 }
 

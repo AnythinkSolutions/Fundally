@@ -34,7 +34,7 @@
         <tbody data-bind="foreach: calendar.weeks">
             <tr>
                 <!-- ko foreach: $data -->
-                <td class="calendar-day always" data-bind="css: { 'calendar-day-right': dayOfWeek == 6, 'calendar-other-month': !isCurrentMonth, 'calendar-today': isCurrentDay}">
+                <td class="calendar-day always" data-bind="event: { mousedown: $root.calendar.selectDate }, css: { 'calendar-day-right': dayOfWeek == 6, 'calendar-other-month': !isCurrentMonth, 'calendar-today': isCurrentDay, 'calendar-day-selected': isSelected}">
                     <span data-bind="text: dayOfMonth"></span>
                     <div style="margin-top:5px;font-size:10px;">
                         <ul class="list-unstyled" data-bind="foreach: events">
@@ -49,18 +49,40 @@
 </div>
 
 <div class="pull-right" style="width:25%;">
-    <h3 class="section-header">Upcoming</h3>
-    <table class="st-table table">
+    <div id="appointments" data-bind="if: calendar.selectedDay() != null">
+        <h3 class="section-header" data-bind="text: moment(calendar.selectedDay().date).format('MMMM D, YYYY')"></h3>
+        <table class="st-table table">
+            <tbody>
+                <!-- ko foreach: calendar.selectedDay().events -->
+                <tr data-bind="attr: { title: tooltip }">
+                    <td class="always" data-bind="text: subject"></td>
+                    <td class="always">
+                        <span data-bind="text: moment(date).format('M/D/YYYY')"></span>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <tr>
+                    <td class="always" colspan="2">
+                        <button class="btn btn-mini btn-info" data-bind="click: addEvent">New...</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="upcomingActivities">
+        <h3 class="section-header">Upcoming</h3>
+        <table class="st-table table">
         <tbody data-bind="foreach: upcomingItems">
             <tr data-bind="attr: { title: $root.getActivityTooltip($data) }">
                 <td class="always" data-bind="text: subject"></td>
                 <td class="always">
                     <div data-bind="if: dueDate() != null" style="display: inline;">
-                        <span data-bind="text: moment(dueDate()).format('M/D/YYYY')"></span>
+                        <span data-bind="text: moment(dueDate()).fromNow(), attr: { title: moment(dueDate()).format('M/D/YYYY')}"></span>
                         <!--<input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />-->
                     </div>
                 </td>
             </tr>
         </tbody>
     </table>
+    </div>
 </div>

@@ -7,9 +7,13 @@ requirejs.config({
 define(['durandal/app', 'durandal/viewLocator', 'durandal/system', 'durandal/plugins/router','services/appsecurity'],
 	function (app, viewLocator, system, router, appsecurity) {
 
-		//>>excludeStart("build", true);
-		system.debug(true);
-		//>>excludeEnd("build");
+	    //>>excludeStart("build", true);
+	    system.debug(true);
+	    //>>excludeEnd("build");
+
+	    //app.configurePlugins({
+        //    dialogs: true
+        //});
 
 		app.title = 'Fundally';
 
