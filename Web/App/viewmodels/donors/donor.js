@@ -265,8 +265,8 @@
         var contact = self.uow.contacts.create();
         contact.isEditing(true);
 
+        contact.contactType(self.defaultContactType);
         if (viewModel.donor().contacts().length == 0) {
-            contact.contactType(self.defaultContactType);
             contact.isPrimary(true);
         }
 

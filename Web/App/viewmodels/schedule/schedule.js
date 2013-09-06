@@ -103,6 +103,6 @@
         activity.activityDate(new Date());
 
         //var dialogVm = new eventdialog(activity);
-        app.showModal('viewmodels/schedule/eventdialog', activity);
+        //app.showModal('viewmodels/schedule/eventdialog', activity);
     }
 });
