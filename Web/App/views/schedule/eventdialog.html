@@ -1,21 +1,28 @@
-﻿<div class="modal">
+﻿<div class="messageBox">
     <div class="modal-header">
-        <span>New Event</span>
+        <span>New Schedule Item</span>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" data-bind="with: activity()">
+        
+        <select data-bind="options: $root.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose Type...'"></select>
+        <select data-bind="options: $root.donors, optionsText: 'name', value: donor, optionsCaption: 'Choose Donor...'"></select>
+        <span data-bind="if: donor() != null">
+            <select data-bind="options: donor().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Choose Contact...'"></select>
+        </span><br />
+
         <!--<select data-bind="options: $root.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>-->
-        <input type="text" class="span2" data-bind="datepicker: activity.activityDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
+        <input type="text" class="span2" data-bind="datepicker: activityDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
         <!--<select data-bind="options: $root.donor().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Optional...'"></select>-->
-        <input type="text" class="span2" data-bind="datepicker: activity.dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;" placeholder="Due Date">
+        <input type="text" class="span2" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;" placeholder="Due Date">
 
         <br />
 
-        <input type="text" data-bind="value: activity.subject" style="width: 100%" placeholder="Subject" />
-        <textarea data-bind="value: activity.body" rows="3" style="width: 100%;" placeholder="Body" />
+        <input type="text" data-bind="value: subject" style="width: 100%" placeholder="Subject" />
+        <textarea data-bind="value: body" rows="3" style="width: 100%;" placeholder="Body" />
     </div>
     <div class="modal-footer">
-        <button class="btn btn-mini" title="Cancel" data-bind="click: cancel"><i class="icon-remove"></i></button>
-        <button class="btn btn-mini btn-info" title="Save" data-bind="click: save"><i class="icon-save"></i></button>
+        <button class="btn btn-small" title="Cancel" data-bind="click: cancel">Cancel</button>
+        <button class="btn btn-small btn-info" title="Save" data-bind="click: save">Save</button>
     </div>
 
 </div>

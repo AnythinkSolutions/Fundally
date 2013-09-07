@@ -11,7 +11,8 @@
         activate: activate,
 
         getActivityTooltip: getActivityTooltip,
-        addEvent: addEvent
+        addEvent: addEvent,
+        openEvent: openEvent
 }
 
     return viewModel;
@@ -97,12 +98,41 @@
     }
     
     function addEvent() {
-        var activity = viewModel.uow.activities.create();
-        activity.activityType(self.defaultActivityType);
-        activity.isEditing(true);
-        activity.activityDate(new Date());
 
-        //var dialogVm = new eventdialog(activity);
-        //app.showModal('viewmodels/schedule/eventdialog', activity);
+        var params = { uow: viewModel.uow, activity: null };
+        app.showModal('viewmodels/schedule/eventdialog', params); //, activity);
+    }
+
+    function openEvent(event) {
+        var params = { uow: viewModel.uow, activity: event.activity };
+        var originalDueDate = event.activity.dueDate();
+
+        app.showModal('viewmodels/schedule/eventdialog', params)
+            .then(function (dialogResult) {
+                if (dialogResult.isSaved) {
+
+                    event.subject(event.activity.subject());
+                    event.tooltip(getActivityTooltip(event.activity));
+
+                    var curDate = event.activity.dueDate();
+                    if (!utils.isSameDate(originalDueDate, curDate)) {
+
+                        //Update the event with the new date
+                        event.date = curDate;
+
+                        //get the day from the calendar and remove the event
+                        var oldDays = $.grep(viewModel.calendar.days(), function (d) { return utils.isSameDate(d.date, originalDueDate); });
+                        if (oldDays != null && oldDays.length > 0) {
+                            oldDays[0].events.remove(event);
+                        }
+                        //get the new day and add it to that day
+                        var newDays = $.grep(viewModel.calendar.days(), function (d) { return utils.isSameDate(d.date, curDate); });
+                        if (newDays != null && newDays.length > 0) {
+                            newDays[0].addEvent(event);
+                        }
+
+                    }
+                }
+            });
     }
 });

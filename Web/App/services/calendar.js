@@ -63,8 +63,8 @@
             var self = this;
 
             self.date = date;
-            self.subject = subject;
-            self.tooltip = tooltip;
+            self.subject = ko.observable(subject);
+            self.tooltip = ko.observable(tooltip);
             self.activity = activity;
         }
         
@@ -172,7 +172,8 @@
             calendar.dateChanging = changingCallback;
             calendar.dateChanged = changedCallback;
 
-            setDate(new Date());
+            var today = new Date();
+            setDate(today);
         }
 
         function setDate(calendarDate) {
@@ -213,6 +214,8 @@
                 var days = getDays(month, year)
 
                 buildCalendar(firstDay + 1, days, date, month, year);
+
+                selectDate(getDay(calendarDate));
             }
 
             if (calendar.dateChanged)
@@ -261,39 +264,22 @@
             }
         }
 
-        function selectDate(date) {
+        //Gets the Day object for a specific day, if possible
+        function getDay(date) {
+            var days = $.grep(calendar.days(), function (d) { return utils.isSameDate(d.date, date); });
+            if (days != null && days.length > 0)
+                return days[0];
+        }
+
+        function selectDate(day) {
 
             if (calendar.selectedDay() != null)
                 calendar.selectedDay().isSelected(false);
             
-            calendar.date(date.date);
-            date.isSelected(true);
-            calendar.selectedDay(date);
+            calendar.date(day.date);
+            day.isSelected(true);
+            calendar.selectedDay(day);
         }
-        //function getTime() {
-        //    // initialize time-related variables with current time settings
-        //    var now = new Date()
-        //    var hour = now.getHours()
-        //    var minute = now.getMinutes()
-        //    now = null
-        //    var ampm = ""
-
-        //    // validate hour values and set value of ampm
-        //    if (hour >= 12) {
-        //        hour -= 12
-        //        ampm = "PM"
-        //    } else
-        //        ampm = "AM"
-        //    hour = (hour == 0) ? 12 : hour
-
-        //    // add zero digit to a one digit minute
-        //    if (minute < 10)
-        //        minute = "0" + minute // do not parse this number!
-
-        //    // return time string
-        //    return hour + ":" + minute + " " + ampm
-        //}
-
 
     }
 );

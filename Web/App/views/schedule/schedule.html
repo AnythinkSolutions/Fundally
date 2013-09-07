@@ -38,7 +38,7 @@
                     <span data-bind="text: dayOfMonth"></span>
                     <div style="margin-top:5px;font-size:10px;">
                         <ul class="list-unstyled" data-bind="foreach: events">
-                            <li class="label label-inverse calendar-event" data-bind="text: subject, attr: { title: tooltip}" />
+                            <li class="label label-inverse calendar-event" data-bind="text: subject, attr: { title: tooltip}, click: $root.openEvent" />
                         </ul>
                     </div>
                 </td>
