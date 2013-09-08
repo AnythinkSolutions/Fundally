@@ -29,6 +29,7 @@
                     .then(function (data) {
                         self.donor(data[0]);
 
+                        //getActivities();
                         self.activities(data[0].activities().sort(utils.sortActivities));
 
                         //Get the list of active cycles
@@ -93,7 +94,9 @@
         deleteContact: deleteContact,
 
         addActivity: addActivity,
+        editActivity: editActivity,
         cancelActivity: cancelActivity,
+        deleteActivity: deleteActivity,
         saveActivity: saveActivity,
 
         addFundingCycle: addFundingCycle,
@@ -111,14 +114,6 @@
             self.uow.commit();
         }
     }
-
-    //function getDefinitions(data, itemType, itemSubType){
-    //    return $.grep(data, function (a) { return a.itemType() == itemType && (itemSubType == null || a.itemSubType() == itemSubType); });
-    //}
-
-    //function getDefaultDefinition(data){
-    //    return $.grep(data, function (a) { return a.isDefault() == true; })[0];
-    //}
 
     function editDonor() {
         var self = this;
@@ -223,13 +218,16 @@
             .then(function (args) {
                 if (args == 'Yes') {
                     deleteItemCore(cycle, viewModel.donor().fundingCycles);
+                    cycle = null;
                 }
                 else
                     return;
             });
         }
-        else
+        else {
             deleteItemCore(cycle, viewModel.donor().fundingCycles);
+            cycle = null;
+        }
 
         getActiveFundingCycles();
     }
@@ -241,7 +239,7 @@
         if (!delayedCommit)
             viewModel.uow.commit();
 
-        item = null;
+        //item = null;
     }
 
     function addAddress() {
@@ -316,17 +314,44 @@
         activity.activityDate(new Date());
 
         viewModel.activities.unshift(activity);
-        viewModel.donor().activities.unshift(activity);
+        //viewModel.donor().activities.unshift(activity);
+    }
+
+    function deleteActivity(activity) {
+        var self = this;
+
+        if (!activity.entityAspect.entityState.isAdded()) {
+            //Confirm with user they want to delete this item
+            app.showMessage('Are you sure you want to delete this activity?', 'Delete Activity', ['Yes', 'No'])
+            .then(function (args) {
+                if (args == 'Yes') {
+                    //activity.isEditing(false);
+                    deleteItemCore(activity, viewModel.activities);
+                    activity = null;
+                    //getActivities();
+                }
+                else
+                    return;
+            });
+        }
+        else
+            deleteItemCore(activity, viewModel.donor().activities);
     }
 
     function cancelActivity(activity) {
-        var self = this;
+
         activity.isEditing(false);
 
-        viewModel.donor().activities.remove(activity);
-        viewModel.activities.remove(activity);
+        if (activity.entityAspect.entityState.isAdded()) {
+            //viewModel.activities.remove(activity);
+            deleteItemCore(activity, viewModel.activities);
+        }
 
-        activity = null;
+        viewModel.uow.rollback();
+    }
+
+    function editActivity(activity) {
+        activity.isEditing(true);
     }
 
     function saveActivity(activity) {
@@ -344,5 +369,11 @@
             activity.isComplete(!isComplete);
         }
     }
+
+    //function getActivities() {
+    //    viewModel.activities.removeAll();
+    //    var sorted = viewModel.donor().activities().sort(utils.sortActivities);
+    //    viewModel.activities(sorted);
+    //}
 
 });

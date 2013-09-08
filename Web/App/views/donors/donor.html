@@ -109,7 +109,11 @@
                             <span data-bind="text: 'by ' + moment(dueDate()).format('M/D/YYYY')"></span>
                             <!--<input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />-->
                         </div>
-                        <span data-bind="text: moment(activityDate()).format('M/D')" class="comment-date pull-right" style="margin-right: 10px;"></span>
+                        <div class="pull-right" style="display:inline;">
+                            <span data-bind="text: moment(activityDate()).format('M/D')" class="comment-date" style="margin-right: 10px;"></span>
+                            <button class="btn btn-mini btn-info" title="Edit" data-bind="click: $root.editActivity"><i class="icon-edit"></i></button>
+                            <button class="btn btn-mini" title="Cancel" data-bind="click: $root.deleteActivity"><i class="icon-remove"></i></button>
+                        </div>
                         <br />
                         <span data-bind="text: body" style="vertical-align: top"></span>
                         <div class="clearfix"></div>
@@ -117,10 +121,10 @@
                     <div class="activity-editing" data-bind="if: isEditing">
                         <div class=" alert alert-info">
                             <h4 style="border-bottom: 1px solid DarkGray; margin-bottom: 5px; padding-bottom: 7.5px;">New Note
-                                    <div class="pull-right">
-                                        <button class="btn btn-mini" title="Cancel" data-bind="click: $root.cancelActivity"><i class="icon-remove"></i></button>
-                                        <button class="btn btn-mini btn-info" title="Save" data-bind="click: $root.saveActivity"><i class="icon-save"></i></button>
-                                    </div>
+                                <div class="pull-right">
+                                    <button class="btn btn-mini" title="Cancel" data-bind="click: $root.cancelActivity"><i class="icon-undo"></i></button>
+                                    <button class="btn btn-mini btn-info" title="Save" data-bind="click: $root.saveActivity"><i class="icon-save"></i></button>
+                                </div>
                             </h4>
                             <select data-bind="options: $root.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>
                             <input type="text" class="span2" data-bind="datepicker: activityDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">

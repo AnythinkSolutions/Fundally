@@ -113,10 +113,24 @@ h1, h2, h3, h4, h5, h6 {
 }
 /* --------------- */
 /* ------ btn ---- */
+.btn {
+    background-color: #BDC1C6;
+    color: #3B5E44;
+    border-color:  #A6ACB2;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active,
+.btn.active {
+  background-color: #A6ACB2;
+  border-color: #BDC1C6;
+}
+
 .btn-primary {
-  color: #ffffff;
+  color: #EBECED;
   background-color: #4B7857;
-  border-color: #4B7857;
+  border-color: #3B5E44;
 }
 
 .btn-primary:hover,
@@ -124,7 +138,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary:active,
 .btn-primary.active {
   background-color: #3B5E44;
-  border-color: #3B5E44;
+  border-color: #4B7857;
 }
 
 .btn-primary.disabled,
@@ -147,7 +161,7 @@ fieldset[disabled] .btn-primary.active {
 }
 
 .btn-info {
-  color: #ffffff;
+  color: #2B4431;
   background-color: #87B9BC;
   border-color: #87B9BC;
 }
