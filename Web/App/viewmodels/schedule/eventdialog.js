@@ -15,29 +15,34 @@
             var self = this;
             uow = params.uow;
 
-            uow.donors.allIncluding("Contacts")
-                .then(function (data) {
-                    self.donors(data);
-                });
-
             uow.definitions.all()
-                .then(function (data) {
-                    self.activityTypes(utils.getDefinitions(data, 'activity_type'));
-                    self.defaultActivityType = utils.getDefaultDefinition(self.activityTypes());
+                .then(initializeDefinitions)
+                .then(uow.donors.allIncluding("Contacts")
+                    .then(initializeDonors)
+                    .then(initializeActivity));
 
-                    if (params.activity == null) {
+            function initializeDefinitions(data) {
+                vm.activityTypes(utils.getDefinitions(data, 'activity_type'));
+                vm.defaultActivityType = utils.getDefaultDefinition(self.activityTypes());
+            }
 
-                        var act = uow.activities.create();
-                        act.activityType(self.defaultActivityType);
-                        act.isEditing(true);
-                        act.activityDate(new Date());
+            function initializeDonors(data) {
+                self.donors(data);
+            }
 
-                        self.activity(act);
-                    }
-                    else
-                        self.activity(params.activity);
+            function initializeActivity() {
+                if (params.activity == null) {
 
-                });
+                    var act = uow.activities.create();
+                    act.activityType(self.defaultActivityType);
+                    act.isEditing(true);
+                    act.activityDate(new Date());
+
+                    self.activity(act);
+                }
+                else
+                    self.activity(params.activity);
+            }
         },
 
         save: function (dialogResult) {
@@ -64,5 +69,4 @@
     //};
 
     return vm;
-
 });
