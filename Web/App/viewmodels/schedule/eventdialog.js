@@ -46,9 +46,15 @@
         },
 
         save: function (dialogResult) {
+            var isNew = vm.activity().entityAspect.entityState.isAdded();
+
             uow.commit()
                      .then(function () {
-                         app.trigger('activity:new', activity);
+                         if (isNew)
+                             app.trigger('activity:new', activity);
+                         else
+                             app.trigger('activity:edit', activity);
+
                          toastr.success('Schedule Item Saved');
                      });
             vm.isSaved = true;

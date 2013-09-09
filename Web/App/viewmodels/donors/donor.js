@@ -1,6 +1,7 @@
 ﻿define(['services/unitofwork', 'durandal/app', 'services/utils'], function (unitofwork, app, utils) {
     
     var myUow = unitofwork.create();
+    var isOperatingOnActivity = false;
 
     var viewModel = {
         isWorking: ko.observable(true),
@@ -51,6 +52,19 @@
         activate: function (params) {
             var self = this;
 
+            var id = self.donor().id();
+            var predicate = new breeze.Predicate("donorId", "eq", id);
+            self.uow.activities.find(predicate)
+                .then(function (data) {
+                    var items = data;   //for purposes of debugging
+                    getActivities();
+                });
+
+            ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
+        },
+
+        viewAttached: function (params) {
+            var self = this;
             self.uow.definitions.all()
                 .then(function (data) {
 
@@ -70,7 +84,17 @@
                     alert(error);
                 });
 
-            ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
+
+            //Subscribe to new tasks being created
+            //app.on('activity:new').then(function (activity) {
+            //    if (activity.donor() != null && activity.donor().id() == viewModel.donor().id()) {
+
+            //        //was it sent from here?
+            //        if (!isOperatingOnActivity) {
+                        
+            //        }
+            //    }
+            //});
         },
 
         editDonor: editDonor,
@@ -330,9 +354,16 @@
             app.showMessage('Are you sure you want to delete this activity?', 'Delete Activity', ['Yes', 'No'])
             .then(function (args) {
                 if (args == 'Yes') {
+                    isOperatingOnActivity = true;
                     //activity.isEditing(false);
                     deleteItemCore(activity, viewModel.donor().activities);
+
+                    //send out notification about the delete
+                    app.trigger('activity:delete', activity.id());
+
                     activity = null;
+                    isOperatingOnActivity = false;
+
                     getActivities();
                 }
                 else
@@ -363,11 +394,18 @@
     }
 
     function saveActivity(activity) {
+        var isNew = activity.entityAspect.entityState.isAdded();
+        isOperatingOnActivity = true;
         activity.isEditing(false);
 
         viewModel.uow.commit()
             .then(function () {
-                app.trigger('activity:new', activity);
+                if (isNew)
+                    app.trigger('activity:new', activity);
+                else
+                    app.trigger('activity:edit', activity);
+
+                isOperatingOnActivity = false;
             });
     }
 
