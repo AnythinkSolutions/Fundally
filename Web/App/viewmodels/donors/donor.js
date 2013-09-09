@@ -6,7 +6,8 @@
         isWorking: ko.observable(true),
         uow: myUow,
         donor: ko.observable(),
-        activeCycles: ko.observable(),
+        activeCycles: ko.observableArray(),
+        allCycles: ko.observableArray(),
         activities: ko.observableArray(),
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
@@ -29,8 +30,8 @@
                     .then(function (data) {
                         self.donor(data[0]);
 
-                        //getActivities();
-                        self.activities(data[0].activities().sort(utils.sortActivities));
+                        getActivities();
+                        //self.activities();
 
                         //Get the list of active cycles
                         getActiveFundingCycles();
@@ -204,10 +205,14 @@
         cycle.grantStatus(viewModel.defaultGrantStatus);
 
         viewModel.donor().fundingCycles.push(cycle);
+        viewModel.allCycles.push(cycle);
     }
 
     function getActiveFundingCycles() {
-        viewModel.activeCycles($.grep(viewModel.donor().fundingCycles(), function (c) { return c.daysUntilDue() >= 0 && c.daysUntilDue() <= 356; }));
+
+        var upcoming = $.grep(viewModel.donor().fundingCycles(), function (c) { return c.daysUntilDue() >= 0 && c.daysUntilDue() <= 356; });
+        viewModel.activeCycles(upcoming);
+        viewModel.allCycles(viewModel.donor().fundingCycles().slice()); //slice will copy the array
     }
 
     function deleteFundingCycle(cycle) {
@@ -219,6 +224,7 @@
                 if (args == 'Yes') {
                     deleteItemCore(cycle, viewModel.donor().fundingCycles);
                     cycle = null;
+                    getActiveFundingCycles();
                 }
                 else
                     return;
@@ -227,19 +233,18 @@
         else {
             deleteItemCore(cycle, viewModel.donor().fundingCycles);
             cycle = null;
+            getActiveFundingCycles();
         }
 
-        getActiveFundingCycles();
     }
 
+    //Deletes an item and removes it from a collection
     function deleteItemCore(item, itemCollection, delayedCommit) {
         item.entityAspect.setDeleted();
         itemCollection.remove(item);
 
         if (!delayedCommit)
             viewModel.uow.commit();
-
-        //item = null;
     }
 
     function addAddress() {
@@ -314,7 +319,7 @@
         activity.activityDate(new Date());
 
         viewModel.activities.unshift(activity);
-        //viewModel.donor().activities.unshift(activity);
+        viewModel.donor().activities.unshift(activity);
     }
 
     function deleteActivity(activity) {
@@ -326,16 +331,18 @@
             .then(function (args) {
                 if (args == 'Yes') {
                     //activity.isEditing(false);
-                    deleteItemCore(activity, viewModel.activities);
+                    deleteItemCore(activity, viewModel.donor().activities);
                     activity = null;
-                    //getActivities();
+                    getActivities();
                 }
                 else
                     return;
             });
         }
-        else
+        else {
             deleteItemCore(activity, viewModel.donor().activities);
+            getActivities();
+        }
     }
 
     function cancelActivity(activity) {
@@ -343,11 +350,12 @@
         activity.isEditing(false);
 
         if (activity.entityAspect.entityState.isAdded()) {
+            deleteItemCore(activity, viewModel.donor().activities);
             //viewModel.activities.remove(activity);
-            deleteItemCore(activity, viewModel.activities);
         }
 
         viewModel.uow.rollback();
+        getActivities();
     }
 
     function editActivity(activity) {
@@ -370,10 +378,10 @@
         }
     }
 
-    //function getActivities() {
-    //    viewModel.activities.removeAll();
-    //    var sorted = viewModel.donor().activities().sort(utils.sortActivities);
-    //    viewModel.activities(sorted);
-    //}
+    function getActivities() {
+        //viewModel.activities.removeAll();
+        var sorted = viewModel.donor().activities().sort(utils.sortActivities);
+        viewModel.activities(sorted.slice());   //slice will make a copy, so the lists are separate
+    }
 
 });

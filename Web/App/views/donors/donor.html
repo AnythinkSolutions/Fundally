@@ -317,7 +317,7 @@
                     <button class="btn btn-info btn-mini space-left" title="Add Funding Cycle" data-bind="click: $root.addFundingCycle">New...</button>
                 </h4>
             </div>
-            <ul data-bind="foreach: donor().fundingCycles()" class="list-unstyled">
+            <ul data-bind="foreach: allCycles()" class="list-unstyled">
                 <li>
                     <div class="fundingCycleEdit">
                         <h4 style="margin-bottom: 5px;">
