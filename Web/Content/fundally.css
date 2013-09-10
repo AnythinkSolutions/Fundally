@@ -152,3 +152,16 @@ li.calendar-event
 	max-height: 30px;
 	margin-top: 2px;
 }
+
+table.table-input td
+{
+	border-bottom: 0px;
+	text-align: left;
+}
+
+table.table-input td.left-align
+{
+	border-bottom: 0px;
+	text-align: left;
+	padding-left: 0px;
+}

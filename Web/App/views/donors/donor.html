@@ -5,10 +5,12 @@
         <button id="saveChangesButton" class="btn btn-small btn-info pull-right" data-bind="click: saveChanges, visible: donor().isEditing" style="margin-right: 5px;">Save Donor</button>
     </h1>
 </div>
-<div class="page-header" data-bind="visible: donor().isEditing()">
+<div class="page-header" style="margin-top:10px;" data-bind="visible: donor().isEditing()">
     <input type="text" class="input-large" style="font-size: 38px;" placeholder="Donor Name" data-bind="value: donor().name()" />
-    <button id="saveButton" class="btn btn-small btn-primary pull-right" data-bind="click: saveChanges" style="margin-left: 5px;">Save</button>
-    <button id="cancelButton" class="btn btn-small btn-primary pull-right" data-bind="click: rollbackDonor">Cancel</button>
+    <div style="display:inline;margin-top:15px;" class="pull-right">
+        <button id="saveButton" class="btn btn-small btn-primary" data-bind="click: saveChanges" style="margin-left: 5px;">Save</button>
+        <button id="cancelButton" class="btn btn-small btn-primary" data-bind="click: rollbackDonor">Cancel</button>
+    </div>
 </div>
 
 <i class="icon-spinner icon-2x icon-spin active" data-bind="visible: isWorking"></i>
@@ -47,11 +49,10 @@
             </div>
             <!-- /ko -->
         </div>
-        <div id="donorAreas">
+        <div id="donorAreas" style="margin-top:20px;">
             <h4 class="section-header">
                 <i class="icon-compass icon-3 space-right-small"></i>
                 Funding Areas
-                <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea, visible: donor().isEditing">New...</button>
             </h4>
             <div data-bind="ifnot: donor().isEditing">
                 <ul class="list-unstyled space-left-small" data-bind="foreach: donor().fundingAreas()">
@@ -59,7 +60,13 @@
                 </ul>
             </div>
             <table class="st-table table table-condensed" id="Table1" data-bind="if: donor().isEditing">
-                <tbody data-bind="foreach: donor().fundingAreas">
+                <tbody>
+                    <tr data-bind="visible: donor().isEditing">
+                        <td colspan="2">
+                            <button class="btn btn-info btn-mini space-left" title="Add Funding Area" data-bind="click: $root.addFundingArea, visible: donor().isEditing">New...</button>
+                        </td>
+                    </tr>
+                    <!-- ko foreach: donor().fundingAreas -->
                     <tr>
                         <td class="always" style="text-align: left;">
                             <select data-bind="options: $root.fundingAreas, optionsText: 'name', value: areaType, optionsCaption: 'Choose...'"></select><br />
@@ -69,10 +76,11 @@
                             <button id="Button1" class="btn btn-mini btn-info" data-bind="click: $root.deleteFundingArea"><i class="icon-remove"></i></button>
                         </td>
                     </tr>
+                    <!-- /ko -->
                 </tbody>
             </table>
         </div>
-        <button id="editButton" class="btn btn-primary btn-small" data-bind="click: editDonor" style="margin-right: 5px;">Edit Donor</button>
+        <button id="editButton" class="btn btn-primary btn-small" data-bind="click: editDonor, visible: !donor().isEditing()" style="margin-right: 5px;">Edit Donor</button>
     </div>
 </div>
 
@@ -88,18 +96,13 @@
         <h4 class="section-header">
             <i class="icon-calendar space-right-small"></i>
             Activities
-<!--            <div class="icon-stack" style="font-size:12px;font-weight:200;" data-bind="click: addActivity" title="Add Activity">
-                <i class="icon-circle-blank icon-stack-base"></i>
-                <i class="icon-plus" style="padding-top:1px;"></i>
-            </div>-->
-            <!--<button class="btn btn-mini btn-clear pull-right" title="Add Activity" data-bind="click: addActivity">
-                <i class="icon-plus"></i>
-            </button>-->
         </h4>
-        <button class="btn btn-mini btn-info" style="margin-bottom:5px;" title="Add Activity" data-bind="click: addActivity">
-           <i class="icon-plus"></i>&nbsp;&nbsp;Add New
-        </button>
-        <ul data-bind="foreach: activities()" class="list-unstyled">
+        <div style="text-align:center">
+            <button class="btn btn-mini btn-info" style="margin-bottom:5px;margin-left:auto;margin-right:auto;width:20%;" title="Add Activity" data-bind="click: addActivity">
+               <i class="icon-plus"></i>&nbsp;&nbsp;Add New
+            </button>
+        </div>
+        <ul data-bind="foreach: activities" class="list-unstyled">
             <li>
                 <div class="activity" data-bind="with: $data">
                     <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">
@@ -259,7 +262,7 @@
                 </li>
             </ul>
         </div>
-        <div id="donorContacts" data-bind="ifnot: donor().isEditing">
+        <div id="donorContacts" data-bind="ifnot: donor().isEditing" style="margin-top:20px;">
             <h4 class="section-header" >
                 <i class="icon-group space-right-small"></i>
                 Contacts
@@ -269,39 +272,23 @@
                 <tbody data-bind="foreach: donor().contacts()">
                     <tr>
                         <td class="always" style="text-align: left; width: 100px;">
-                            <!-- ko if: isEditing -->
-                            <input type="text" class="input-small span2" placeholder="First Name" data-bind="value: firstName" /><br />
-                            <input type="text" class="input-small span2" placeholder="Email Address" data-bind="value: emailBusiness" /><br />
-                            <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: primaryPhone().areaCode" style="width: 50px;" />&nbsp
-                            <!-- /ko -->
-                            <!-- ko ifnot: isEditing -->
                             <a href="#" data-bind="attr: { href: '/#contacts/' + id() }">
                                 <span data-bind="text: fullName"></span>
                             </a>
-                            <!-- /ko -->
                         </td>
                         <td class="always" style="text-align: left;">
-                            <!-- ko if: isEditing -->
-                            <!--<select data-bind="options: $root.contactTypes, optionsText: 'name', value: contactType, optionsCaption: 'Choose...'"></select>-->
-                            <input type="text" class="input-small span2" placeholder="Last Name" data-bind="value: lastName" /><br />
-                            <span>Primary: <input type="checkbox" data-bind="checked: isPrimary" /></span><br />
-                            <input type="text" class="input-small" style="width: 100px;" placeholder="Number" data-bind="value: primaryPhone().number" />
-                            <!-- /ko -->
-                            <!-- ko ifnot: isEditing -->
                             <a data-bind="attr: { href: 'mailto:' + emailBusiness() }">
-                                <i class="icon-envelope" title="Send Email"></i><!--<span data-bind="text: emailBusiness" />-->
+                                <i class="icon-envelope" title="Send Email"></i>
                             </a>
-                            <!-- /ko -->
                         </td>
                         <td class="always" style="text-align: left;">
-                            <!-- ko if: isEditing -->
-                            <button id="saveContactButton" class="btn btn-mini btn-primary" data-bind="click: $root.saveContact"><i class="icon-save"></i></button>
-                            <button id="cancelContactButton" class="btn btn-mini btn-info" data-bind="click: $root.rollbackContact"><i class="icon-remove"></i></button>
-                            <!-- /ko -->
-                            <!-- ko ifnot: isEditing -->
+                            <!-- ko if: primaryPhone() != null -->
                             <i class="icon-phone" data-bind="attr: { title: primaryPhone().phoneType().name() }"></i>
-                            (<span data-bind="text: primaryPhone().areaCode"></span>)&nbsp<span data-bind="    text: primaryPhone().number"></span>
+                            (<span data-bind="text: primaryPhone().areaCode"></span>)&nbsp<span data-bind="text: primaryPhone().number"></span>
                             <!-- /ko -->
+                        </td>
+                        <td class="always">
+                            <a data-bind="click: $root.editContact" title="Edit Contact" href="#"><i class="icon-edit"></i></a>
                         </td>
                     </tr>
                 </tbody>

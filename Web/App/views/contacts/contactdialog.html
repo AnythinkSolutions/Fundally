@@ -1,0 +1,65 @@
+﻿<div class="messageBox">
+    <div class="modal-header">
+        <h3 class="section-header borderless" data-bind="text: isNew ? 'New Contact' : 'Update Contact'"></h3>
+    </div>
+    <div class="modal-body" data-bind="with: contact()">
+        
+        <table class="table-input">
+            <tbody>
+                <tr>
+                    <td class="left-align">Name:</td>
+                    <td>
+                        <input type="text" class="input-small span2" placeholder="First Name" data-bind="value: firstName" />
+                        <input type="text" class="input-small span2" placeholder="Last Name" data-bind="value: lastName" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-align">Email:</td>
+                    <td>
+                        <input type="text" class="input-small span4" placeholder="Email Address" data-bind="value: emailBusiness" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-align">Email 2:</td>
+                    <td>
+                        <input type="text" class="input-small span4" placeholder="Email Address 2" data-bind="value: emailPersonal" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="section-header borderless">Phones</h3>
+        <table class="st-table table">
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <button class="btn btn-info btn-mini" title="Add Phone" data-bind="click: $root.addPhone"><i class="icon-plus"></i>&nbsp;&nbsp;Add New</button>
+                    </td>
+                </tr>
+                <!-- ko foreach: phones -->
+                <tr>
+                    <td class="always">
+                        <select data-bind="options: $root.phoneTypes, optionsText: 'name', value: phoneType, optionsCaption: 'Choose Type...'"></select>
+                        <span>Primary: <input type="checkbox" data-bind="checked: isPrimary" /></span><br />
+                    </td>
+                    <td class="always">
+                        <input type="text" class="input-small span1" placeholder="Area Code" data-bind="value: areaCode" />
+                        <input type="text" class="input-small span2" placeholder="Phone Number" data-bind="value: number" />
+                    </td>
+                    <td class="always">
+                        <button class="btn btn-mini" title="Delete Phone" data-bind="click: $root.deletePhone"><i class="icon-remove"></i>&nbsp;</button>
+                    </td>
+                </tr>
+                <!-- /ko -->
+            </tbody>
+        </table>
+
+        
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-small" title="Cancel" data-bind="click: cancel">Cancel</button>
+        <button class="btn btn-small" title="Delete" data-bind="click: deleteContact, visible: !isNew()">Delete</button>
+        <button class="btn btn-small btn-info" title="Save" data-bind="click: save">Save</button>
+    </div>
+
+</div>

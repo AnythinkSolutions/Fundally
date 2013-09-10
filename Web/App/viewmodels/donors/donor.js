@@ -289,25 +289,31 @@
     function addContact() {
         var self = this;
 
-        var contact = self.uow.contacts.create();
-        contact.isEditing(true);
+        var params = { uow: viewModel.uow, contact: null, donor: viewModel.donor() };
+        app.showModal('viewmodels/contacts/contactdialog', params);
 
-        contact.contactType(self.defaultContactType);
-        if (viewModel.donor().contacts().length == 0) {
-            contact.isPrimary(true);
-        }
 
-        var phone = self.uow.contacts.createRelated("Phone");
-        phone.phoneType(self.defaultPhoneType);
-        phone.isPrimary(true);
-        contact.phones.push(phone);
-        contact.primaryPhone(phone);
+        //var contact = self.uow.contacts.create();
+        //contact.isEditing(true);
 
-        viewModel.donor().contacts.push(contact);
+        //contact.contactType(self.defaultContactType);
+        //if (viewModel.donor().contacts().length == 0) {
+        //    contact.isPrimary(true);
+        //}
+
+        //var phone = self.uow.contacts.createRelated("Phone");
+        //phone.phoneType(self.defaultPhoneType);
+        //phone.isPrimary(true);
+        //contact.phones.push(phone);
+        //contact.primaryPhone(phone);
+
+        //viewModel.donor().contacts.push(contact);
     }
 
     function editContact(contact) {
-        contact.isEditing(true);
+        //contact.isEditing(true);
+        var params = { uow: viewModel.uow, contact: contact, donor: viewModel.donor() };
+        app.showModal('viewmodels/contacts/contactdialog', params);
     }
 
     function saveContact(contact) {
