@@ -35,6 +35,7 @@
 
                     self.addressTypes(utils.getDefinitions(data, 'address_type'));
                     self.phoneTypes(utils.getDefinitions(data, 'phone_type', 'contact'));
+                    self.contactTypes(utils.getDefinitions(data, 'contact_type'));
                     //self.activityTypes(getDefinitions(data, 'activity_type'));
 
                     self.defaultAddressType = utils.getDefaultDefinition(self.addressTypes());
@@ -44,28 +45,7 @@
                 }).fail(function (error) {
                     alert(error);
                 });
-
-            //self.uow.addressTypes.then(function (data) {
-            //    self.addressTypes(data);
-            //    self.defaultAddressType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-            //}).fail(function (error) {
-            //    alert(error);
-            //});
-
-            //self.uow.contactPhoneTypes.then(function (data) {
-            //    self.phoneTypes(data);
-            //    self.defaultPhoneType = $.grep(data, function (a) { return a.isDefault() == true; })[0];
-
-            //    $.each(self.contact().phones(), function (p) {
-            //        var pType = $.grep(self.phoneTypes, function (pt) { return pt.id = p.phoneTypeId; })[0];
-            //        if (pType)
-            //            p.phoneType(pType);
-            //    });
-
-            //}).fail(function (error) {
-            //    alert(error);
-            //});
-
+            
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });
         },
 
@@ -96,6 +76,16 @@
     function saveContact() {
         var self = this;
         viewModel.contact().isEditing(false);
+
+        $.each(viewModel.contact().phones(), function (i, p) { p.isEditing(false); });
+
+        viewModel.uow.commit()
+            .then(function () {
+                toastr.success('Contact Saved');
+            })
+            .fail(function (error) {
+                toastr.error('There was an error saving the contact: ' + error);
+            });
     }
 
     function rollbackContact() {
