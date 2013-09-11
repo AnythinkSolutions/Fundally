@@ -8,7 +8,7 @@
         uow: myUow,
         donor: ko.observable(),
         activeCycles: ko.observableArray(),
-        allCycles: ko.observableArray(),
+        //allCycles: ko.observableArray(),
         activities: ko.observableArray(),
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
@@ -229,14 +229,15 @@
         cycle.grantStatus(viewModel.defaultGrantStatus);
 
         viewModel.donor().fundingCycles.push(cycle);
-        viewModel.allCycles.push(cycle);
+        //viewModel.allCycles.push(cycle);
     }
 
     function getActiveFundingCycles() {
 
         var upcoming = $.grep(viewModel.donor().fundingCycles(), function (c) { return c.daysUntilDue() >= 0 && c.daysUntilDue() <= 356; });
         viewModel.activeCycles(upcoming);
-        viewModel.allCycles(viewModel.donor().fundingCycles().slice()); //slice will copy the array
+        viewModel.donor().fundingCycles.valueHasMutated();
+        //viewModel.allCycles(viewModel.donor().fundingCycles().slice()); //slice will copy the array
     }
 
     function deleteFundingCycle(cycle) {
@@ -416,9 +417,10 @@
     }
 
     function completeTask(activity) {
-        if (activity.isTask()) {
+        if (activity.hasDueDate()) {
             var isComplete = activity.isComplete();
             activity.isComplete(!isComplete);
+            viewModel.uow.commit();
         }
     }
 

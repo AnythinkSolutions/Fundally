@@ -1,6 +1,6 @@
 ﻿<div class="messageBox">
     <div class="modal-header">
-        <h3 class="section-header borderless" data-bind="text: isNew ? 'New Contact' : 'Update Contact'"></h3>
+        <h3 class="section-header borderless" style="margin-bottom:0px;" data-bind="text: isNew() ? 'New Contact' : 'Update Contact'"></h3>
     </div>
     <div class="modal-body" data-bind="with: contact()">
         
@@ -11,6 +11,12 @@
                     <td>
                         <input type="text" class="input-small span2" placeholder="First Name" data-bind="value: firstName" />
                         <input type="text" class="input-small span2" placeholder="Last Name" data-bind="value: lastName" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-align">Role:</td>
+                    <td>
+                        <select data-bind="options: $root.contactTypes, optionsText: 'name', value: contactType, optionsCaption: 'Choose Role...'"></select>
                     </td>
                 </tr>
                 <tr>
@@ -28,7 +34,7 @@
             </tbody>
         </table>
 
-        <h3 class="section-header borderless">Phones</h3>
+        <h4 class="section-header borderless">Phones</h4>
         <table class="st-table table">
             <tbody>
                 <tr>

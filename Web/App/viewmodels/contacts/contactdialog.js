@@ -102,11 +102,12 @@
             app.showMessage('Are you sure you want to delete this contact?', 'Delete Contact', ['Yes', 'No'])
             .then(function (args) {
                 if (args == 'Yes') {
-                    viewModel.donor().contacts.remove(viewModel.contact());
+                    //viewModel.donor().contacts.remove(viewModel.contact());
                     viewModel.contact().entityAspect.setDeleted();
-
+                    
                     uow.commit()
                         .then(function () {
+                            viewModel.donor().contacts.valueHasMutated();
                             toastr.success('Contact deleted');
                             viewModel.modal.close(dialogResult);
                         })

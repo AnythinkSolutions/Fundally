@@ -107,6 +107,10 @@
                 <div class="activity" data-bind="with: $data">
                     <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">
                         <i data-bind="css: iconName, attr: { title: activityType().name() }, click: $root.completeTask" style="margin-right: 10px;"></i>
+                        <span data-bind="if: !isTask() && hasDueDate">
+                            <i class="icon-check-empty" title="Mark Complete" data-bind="visible: !isComplete(), click: $root.completeTask" style="margin-right: 10px;"></i>
+                            <i class="icon-check" title="Mark Incomplete" data-bind="visible: isComplete(), click: $root.completeTask" style="margin-right: 10px;"></i>
+                        </span>
                         <span data-bind="text: subject" style="vertical-align: top; font-weight: bold;"></span>
                         <div data-bind="if: dueDate() != null" style="display: inline;">
                             <span data-bind="text: 'by ' + moment(dueDate()).format('M/D/YYYY')"></span>
@@ -263,7 +267,7 @@
             </ul>
         </div>
         <div id="donorContacts" data-bind="ifnot: donor().isEditing" style="margin-top:20px;">
-            <h4 class="section-header" >
+            <h4 class="section-header borderless" >
                 <i class="icon-group space-right-small"></i>
                 Contacts
                 <button class="btn btn-info btn-mini space-left" title="Add Contact" data-bind="click: addContact">New...</button>
@@ -304,7 +308,7 @@
                     <button class="btn btn-info btn-mini space-left" title="Add Funding Cycle" data-bind="click: $root.addFundingCycle">New...</button>
                 </h4>
             </div>
-            <ul data-bind="foreach: allCycles()" class="list-unstyled">
+            <ul data-bind="foreach: donor().fundingCycles" class="list-unstyled">
                 <li>
                     <div class="fundingCycleEdit">
                         <h4 style="margin-bottom: 5px;">

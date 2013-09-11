@@ -116,6 +116,10 @@ define(function () {
         activity.isTask = ko.computed(function () {
             return activity.activityType() != null && activity.activityType().code() == 'task';
         }, this);
+
+        activity.hasDueDate = ko.computed(function () {
+            return activity.dueDate() != null;
+        }, this);
     };
 
     //Contact Ctor & Initializer
