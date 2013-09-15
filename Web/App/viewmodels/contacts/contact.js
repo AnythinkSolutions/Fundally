@@ -1,4 +1,4 @@
-﻿define(['services/unitofwork', 'services/utils'], function (unitofwork, utils) {
+﻿define(['services/unitofwork', 'services/utils', 'services/activitymanager'], function (unitofwork, utils, actMgr) {
 
     var myUow = unitofwork.create();
 
@@ -11,6 +11,7 @@
         contactTypes: ko.observableArray(),
         defaultAddressType: null,
         defaultPhoneType: null,
+        activityManager: null,
 
         canActivate: function (params) {
             var self = this;
@@ -19,6 +20,9 @@
             return self.uow.contacts.withIdIncluding(params.id, "ContactType, Addresses, Addresses.AddressType, Phones, Phones.PhoneType, Donor")
                 .then(function (data) {
                     self.contact(data[0]);
+
+                    activityManager = actMgr.create(self.uow, self.contact().activities, onActivityAdded);
+
                     self.isWorking(false);
                     return true;
                 }).fail(function (error) {
@@ -165,4 +169,7 @@
         viewModel.contact().addresss.remove(address);
     }
 
+    function onActivityAdded(activity) {
+        activity.donor(self.contact().donor());
+    }
 });
