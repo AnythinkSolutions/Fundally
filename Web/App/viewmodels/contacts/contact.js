@@ -170,6 +170,6 @@
     }
 
     function onActivityAdded(activity) {
-        activity.donor(self.contact().donor());
+        activity.donor(viewModel.contact().donor());
     }
 });

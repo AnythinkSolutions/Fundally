@@ -2,9 +2,10 @@
     var ActivityManager = (function () {
 
         var activityManager = function (unitOfWork, obsArray, added, deleted) {
+            var self = this;
             var uow = unitOfWork;
-            var activityTypes = ko.observableArray();
-            var defaultActivityType = ko.observable();
+            self.activityTypes = ko.observableArray();
+            self.defaultActivityType = ko.observable();
             var collection = obsArray;
             var onAdded = added;
             var onDeleted = deleted;
@@ -107,6 +108,7 @@
         }
 
         return activityManager;
+
     })();
 
     return {
@@ -121,4 +123,5 @@
         
         return am;
     }
+
 });

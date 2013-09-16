@@ -143,7 +143,7 @@
                     Activities
                 </h4>
                 <div style="text-align: center">
-                    <button class="btn btn-mini btn-info" style="margin-bottom: 5px; margin-left: auto; margin-right: auto; width: 20%;" title="Add Activity" data-bind="click: activityManager.addActivity">
+                    <button class="btn btn-mini btn-info" style="margin-bottom: 5px; margin-left: auto; margin-right: auto; width: 20%;" title="Add Activity" data-bind="click: activityManager.newActivity">
                         <i class="icon-plus"></i>&nbsp;&nbsp;Add New
                     </button>
                 </div>
@@ -180,7 +180,8 @@
                                     </h4>
                                     <select data-bind="options: $root.activityManager.activityTypes, optionsText: 'name', value: activityType, optionsCaption: 'Choose...'"></select>
                                     <input type="text" class="span2" data-bind="datepicker: activityDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
-                                    <select data-bind="options: $root.activityManager.contact().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Optional...'"></select>
+                                    <input type="text" class="span2" data-bind="value: $root.contact().fullName" disabled>
+                                    <!--<select data-bind="options: $root.activityManager.contact().contacts, optionsText: 'fullName', value: contact, optionsCaption: 'Optional...'"></select>-->
                                     <input type="text" class="span2" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;" placeholder="Due Date">
 
                                     <br />
