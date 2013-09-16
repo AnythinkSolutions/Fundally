@@ -1,0 +1,43 @@
+﻿<div class="messageBox">
+    <div class="modal-header">
+        <h3 class="section-header borderless" style="margin-bottom:0px;" data-bind="text: isNew() ? 'New Funding Cycle' : 'Update Funding Cycle'"></h3>
+    </div>
+    <div class="modal-body" data-bind="with: cycle()">
+        
+        <table class="table-input">
+            <tbody>
+                <tr>
+                    <td class="left-align">Name:</td>
+                    <td>
+                        <input type="text" class="input-small span4" placeholder="Funding Cycle Name" data-bind="value: name" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-align">Status:</td>
+                    <td>
+                        <select data-bind="options: $root.grantStatuses, optionsText: 'name', value: grantStatus, optionsCaption: 'Choose Status...'"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-align">Due Date:</td>
+                    <td>
+                        <input type="text" class="input-small span4" placeholder="Due Date" data-bind="datepicker: dueDate, datepickerOptions: { format: 'M/D/YYYY' }" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-align">End Date:</td>
+                    <td>
+                        <input type="text" class="input-small span4" placeholder="Due Date" data-bind="datepicker: endDate, datepickerOptions: { format: 'M/D/YYYY' }" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-small" title="Cancel" data-bind="click: cancel">Cancel</button>
+        <button class="btn btn-small" title="Delete" data-bind="click: deleteCycle, visible: !isNew()">Delete</button>
+        <button class="btn btn-small btn-info" title="Save" data-bind="click: save">Save</button>
+    </div>
+
+</div>

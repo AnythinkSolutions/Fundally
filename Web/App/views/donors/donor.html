@@ -252,6 +252,16 @@
             <h4 class="section-header" style="margin-top:0px;">
                 <i class="icon-usd icon-3 space-right-small"></i>
                 Funding Cycles
+                <span class="space-left" style="font-size:12px;">
+                    [
+                        <span data-bind="visible: isAllCycles">All</span>
+                        <a href="#" data-bind="visible: !isAllCycles(), click: toggleCycleDisplay" title="Show all funding cycles">All</a>
+                        |
+                        <span data-bind="visible: !isAllCycles()">Active</span>
+                        <a href="#" data-bind="visible: isAllCycles(), click: toggleCycleDisplay" title="Show only active funding cycles">Active</a>
+                    ]
+                </span>
+                <button class="btn btn-info btn-mini space-left" title="Add Funding Cycle" data-bind="click: addFundingCycle">New...</button>
             </h4>
             <ul class="list-unstyled" data-bind="foreach: activeCycles">
                 <li data-bind="css: { 'alert-danger': daysUntilDue() < 15, 'alert-warning': daysUntilDue() <= 45 }">
@@ -259,6 +269,7 @@
                         <a href="#" data-bind="attr: { href: '/#donors/' + $root.donor().id() + '/cycles/' + id() }">
                             <span data-bind="text: name"></span>
                         </a>
+                        <a href="#" data-bind="click: $root.editFundingCycle"><i class="icon-edit"></i></a>
                         <span style="font-size: 14px;" class="pull-right" data-bind="text: moment(dueDate()).format('M/D/YYYY')" />
                     </h4>
                     

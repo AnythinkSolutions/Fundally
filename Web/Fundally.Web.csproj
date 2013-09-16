@@ -281,6 +281,7 @@
     <Content Include="App\viewmodels\donors\donor.js" />
     <Content Include="App\viewmodels\donors\donors.js" />
     <Content Include="App\viewmodels\donors\fundingcycle.js" />
+    <Content Include="App\viewmodels\donors\fundingcycledialog.js" />
     <Content Include="App\viewmodels\schedule\eventdialog.js" />
     <Content Include="App\viewmodels\schedule\schedule.js" />
     <Content Include="App\views\contacts\contact.html" />
@@ -288,6 +289,7 @@
     <Content Include="App\views\contacts\contacts.html" />
     <Content Include="App\views\donors\donor.html" />
     <Content Include="App\views\donors\fundingcycle.html" />
+    <Content Include="App\views\donors\fundingcycledialog.html" />
     <Content Include="App\views\schedule\eventdialog.html" />
     <Content Include="App\views\schedule\schedule.html" />
     <Content Include="App\views\donors\donors.html" />

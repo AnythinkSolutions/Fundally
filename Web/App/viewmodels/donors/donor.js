@@ -7,8 +7,8 @@
         isWorking: ko.observable(true),
         uow: myUow,
         donor: ko.observable(),
+        isAllCycles: ko.observable(false),
         activeCycles: ko.observableArray(),
-        //allCycles: ko.observableArray(),
         activities: ko.observableArray(),
         addressTypes: ko.observableArray(),
         phoneTypes: ko.observableArray(),
@@ -124,7 +124,9 @@
         deleteActivity: deleteActivity,
         saveActivity: saveActivity,
 
+        toggleCycleDisplay: toggleCycleDisplay,
         addFundingCycle: addFundingCycle,
+        editFundingCycle: editFundingCycle,
         deleteFundingCycle: deleteFundingCycle,
 
         completeTask: completeTask,
@@ -220,24 +222,53 @@
     function addFundingCycle() {
         var self = this;
 
-        var cycle = self.uow.donors.createRelated("FundingCycle");
-        cycle.donor(viewModel.donor());
-        cycle.donorId(viewModel.donor().id());
-        cycle.isParticipating(true);
-        cycle.dueDate(new Date());
-        cycle.endDate(new Date());
-        cycle.grantStatus(viewModel.defaultGrantStatus);
+        var params = { uow: viewModel.uow, cycle: null, donor: viewModel.donor() };
+        app.showModal('viewmodels/donors/fundingcycledialog', params)
+            .then(function (result) {
+                if (result.isSaved) {
+                    getActiveFundingCycles();
+                }
+            });
+    }
 
-        viewModel.donor().fundingCycles.push(cycle);
-        //viewModel.allCycles.push(cycle);
+    function editFundingCycle(cycle) {
+        var self = this;
+
+        var params = { uow: viewModel.uow, cycle: cycle, donor: viewModel.donor() };
+        app.showModal('viewmodels/donors/fundingcycledialog', params)
+            .then(function (result) {
+                getActiveFundingCycles();
+            });
+    }
+
+    function toggleCycleDisplay() {
+        var val = viewModel.isAllCycles();
+        viewModel.isAllCycles(!val);
+        getActiveFundingCycles();
     }
 
     function getActiveFundingCycles() {
+        var cycles = null;
 
-        var upcoming = $.grep(viewModel.donor().fundingCycles(), function (c) { return c.daysUntilDue() >= 0 && c.daysUntilDue() <= 356; });
-        viewModel.activeCycles(upcoming);
-        viewModel.donor().fundingCycles.valueHasMutated();
-        //viewModel.allCycles(viewModel.donor().fundingCycles().slice()); //slice will copy the array
+        if (viewModel.isAllCycles()) {
+            cycles = viewModel.donor().fundingCycles();
+        }
+        else {
+            cycles = $.grep(viewModel.donor().fundingCycles(), function (c) { return c.daysUntilDue() >= 0 && c.daysUntilDue() <= 356; });
+            viewModel.donor().fundingCycles.valueHasMutated();
+        }
+
+        if (cycles != null) {
+
+            //Sort them by due date
+            cycles.sort(function (left, right) {
+                var leftDays = left.daysUntilDue();
+                var rightDays = right.daysUntilDue();
+                return leftDays == rightDays ? 0 : (leftDays < rightDays ? -1 : 1);
+            });
+
+            viewModel.activeCycles(cycles);
+        }
     }
 
     function deleteFundingCycle(cycle) {
