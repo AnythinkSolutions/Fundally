@@ -78,22 +78,6 @@ define(['services/entitymanagerprovider', 'services/repository', 'durandal/app']
                 this.activities = repository.create(provider, "Activity", 'fundally/activities');
 
                 this.definitions = repository.create(provider, "Definition", 'fundally/definitions', breeze.FetchStrategy.FromLocalCache);
-                //var aPred = new breeze.Predicate("itemType", "==", "address_type");
-                //this.addressTypes = this.definitions.find(aPred);
-
-                //var cPred1 = new breeze.Predicate("itemType", "==", "phone_type");
-                //var cPred2 = new breeze.Predicate("itemSubType", "==", "contact");
-                //this.contactPhoneTypes = this.definitions.find(cPred1.and(cPred2));
-
-                //var dPred1 = new breeze.Predicate("itemType", "==", "phone_type");
-                //var dPred2 = new breeze.Predicate("itemSubType", "==", "donor");
-                //this.donorPhoneTypes = this.definitions.find(dPred1.and(dPred2));
-
-                //var ctPred = new breeze.Predicate("itemType", "==", "contact_type");
-                //this.contactTypes = this.definitions.find(ctPred);
-
-                //var actPred = new breeze.Predicate("itemType", "==", "activity_type");
-                //this.activityTypes = this.definitions.find(actPred);
             };
 
             return unitofwork;

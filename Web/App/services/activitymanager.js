@@ -4,8 +4,9 @@
         var activityManager = function (unitOfWork, obsArray, added, deleted) {
             var self = this;
             var uow = unitOfWork;
+            var defaultActivityType = null;
             self.activityTypes = ko.observableArray();
-            self.defaultActivityType = ko.observable();
+            //self.defaultActivityType = null;
             var collection = obsArray;
             var onAdded = added;
             var onDeleted = deleted;
@@ -13,14 +14,15 @@
             uow.definitions.all()
                 .then(function (data) {
                     self.activityTypes(utils.getDefinitions(data, 'activity_type'));
-                    self.defaultActivityType = utils.getDefaultDefinition(self.activityTypes());
+                    defaultActivityType = utils.getDefaultDefinition(self.activityTypes());
+                    //self.defaultActivityType = dfActType;
                 });
 
             this.newActivity = function () {
-                var self = this;
+                //var self = this.activityManager;
 
                 var activity = uow.activities.create();
-                activity.activityType(self.defaultActivityType);
+                activity.activityType(defaultActivityType);
                 activity.isEditing(true);
                 activity.activityDate(new Date());
 
@@ -31,7 +33,7 @@
             }
 
             this.deleteActivity = function (activity) {
-                var self = this;
+                //var self = this;
 
                 if (!activity.entityAspect.entityState.isAdded()) {
                     //Confirm with user they want to delete this item
@@ -63,13 +65,13 @@
 
             this.cancelActivity = function (activity) {
 
-                activity.isEditing(false);
+                //activity.isEditing(false);
 
-                if (activity.entityAspect.entityState.isAdded()) {
-                    deleteItemCore(activity);
-                }
+                if (activity.entityAspect.entityState.isAdded())
+                    activity.entityAspect.setDeleted(); //deleteItemCore(activity);
 
-                viewModel.uow.rollback();
+                uow.rollback();
+
                 //getActivities();
             }
 
@@ -103,7 +105,7 @@
                 item.entityAspect.setDeleted();
 
                 if (!delayedCommit)
-                    viewModel.uow.commit();
+                    uow.commit();
             }
         }
 

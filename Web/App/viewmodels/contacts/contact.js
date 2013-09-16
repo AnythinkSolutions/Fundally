@@ -17,7 +17,7 @@
             var self = this;
 
 
-            return self.uow.contacts.withIdIncluding(params.id, "ContactType, Addresses, Addresses.AddressType, Phones, Phones.PhoneType, Donor")
+            return self.uow.contacts.withIdIncluding(params.id, "ContactType, Addresses, Addresses.AddressType, Phones, Phones.PhoneType, Donor, Activities, Activities.ActivityType")
                 .then(function (data) {
                     self.contact(data[0]);
 
