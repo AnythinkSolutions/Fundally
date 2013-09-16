@@ -21,7 +21,7 @@
                 .then(function (data) {
                     self.contact(data[0]);
 
-                    activityManager = actMgr.create(self.uow, self.contact().activities, onActivityAdded);
+                    self.activityManager = actMgr.create(self.uow, self.contact().activities, onActivityAdded);
 
                     self.isWorking(false);
                     return true;
