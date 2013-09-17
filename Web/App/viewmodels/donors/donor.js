@@ -264,14 +264,16 @@
         if (cycles != null) {
 
             //Sort them by due date
+            //cycles.sortBy(function (c) { return c.dueDate; });
             cycles.sort(function (left, right) {
-                var leftDays = left.daysUntilDue();
-                var rightDays = right.daysUntilDue();
-                return leftDays == rightDays ? 0 : (leftDays < rightDays ? -1 : 1);
+                var lDate = left.dueDate();
+                var rDate = right.dueDate();
+                return lDate > rDate ? -1 : lDate < rDate ? 1 : 0;
             });
 
             viewModel.activeCycles(cycles);
         }
+
     }
 
     function deleteFundingCycle(cycle) {
@@ -326,23 +328,6 @@
 
         var params = { uow: viewModel.uow, contact: null, donor: viewModel.donor() };
         app.showModal('viewmodels/contacts/contactdialog', params);
-
-
-        //var contact = self.uow.contacts.create();
-        //contact.isEditing(true);
-
-        //contact.contactType(self.defaultContactType);
-        //if (viewModel.donor().contacts().length == 0) {
-        //    contact.isPrimary(true);
-        //}
-
-        //var phone = self.uow.contacts.createRelated("Phone");
-        //phone.phoneType(self.defaultPhoneType);
-        //phone.isPrimary(true);
-        //contact.phones.push(phone);
-        //contact.primaryPhone(phone);
-
-        //viewModel.donor().contacts.push(contact);
     }
 
     function editContact(contact) {

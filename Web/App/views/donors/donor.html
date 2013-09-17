@@ -49,6 +49,25 @@
             </div>
             <!-- /ko -->
         </div>
+        <div id="donorHistory" data-bind="ifnot: donor().isEditing">
+            <h4 class="section-header">
+                Donor History
+            </h4>
+            <table class="table-input">
+                <tr>
+                    <td>Gifted: </td>
+                    <td><span data-bind="text: donor().totalGiftedFormatted"></td>
+                </tr>
+                <tr>
+                    <td>Requested: </td>
+                    <td data-bind="text: donor().totalAskedFormatted"></td>
+                </tr>
+                <tr>
+                    <td>Ratio:</td>
+                    <td data-bind="text: donor().grantedRatio"></td>
+                </tr>
+           </table>
+        </div>
         <div id="donorAreas" style="margin-top:20px;">
             <h4 class="section-header">
                 <i class="icon-compass icon-3 space-right-small"></i>
@@ -85,24 +104,24 @@
 </div>
 
 <div id="centerColumn" class="pull-left" style="width:50%;">
-    <div id="donorNotes" data-bind="ifnot: donor().isEditing">
+    <div id="donorNotes" data-bind="ifnot: donor().isEditing, attr: { title: 'donor: ' + donor().name() }">
         <h4 class="section-header" style="margin-top:0px;">
             <i class="icon-file-text space-right-small"></i>
             Notes
         </h4>
         <textarea rows="5" style="width: 100%" data-bind="value: donor().notes" />
     </div>
-    <div id="donorActivities" data-bind="ifnot: donor().isEditing">
+    <div id="donorActivities" data-bind="ifnot: donor().isEditing, attr: { title: 'donor: ' + donor().name() }">
         <h4 class="section-header">
             <i class="icon-calendar space-right-small"></i>
             Activities
         </h4>
-        <div style="text-align:center">
+        <div style="text-align:center" data-bind="attr: { title: 'donor: ' + donor().name() }">
             <button class="btn btn-mini btn-info" style="margin-bottom:5px;margin-left:auto;margin-right:auto;width:20%;" title="Add Activity" data-bind="click: addActivity">
                <i class="icon-plus"></i>&nbsp;&nbsp;Add New
             </button>
         </div>
-        <ul data-bind="foreach: activities, attr: { title: 'donor: ' + donor().name() + ', activities: ' + activities().length }" class="list-unstyled">
+        <ul data-bind="foreach: activities, attr: { title: 'donor: ' + donor().name() }" class="list-unstyled">
             <li>
                 <div class="activity" data-bind="with: $data">
                     <div class="activity-existing" data-bind="ifnot: isEditing, css: { 'alert-danger': daysUntilDue() < 3, 'alert-info': isTask() && !isComplete() && daysUntilDue() >= 3 }">
@@ -265,7 +284,7 @@
                 <button class="btn btn-info btn-mini space-left" title="Add Funding Cycle" data-bind="click: addFundingCycle">New...</button>
             </h4>
             <ul class="list-unstyled" data-bind="foreach: activeCycles">
-                <li data-bind="css: { 'alert-danger': daysUntilDue() < 15, 'alert-warning': daysUntilDue() <= 45 }">
+                <li data-bind="css: { 'alert-danger': daysUntilDue() < 15 && daysUntilDue() > 0, 'alert-warning': daysUntilDue() <= 45 && daysUntilDue() > 0 }">
                     <h4 style="margin-bottom:0px;">
                         <a href="#" data-bind="attr: { href: '/#donors/' + $root.donor().id() + '/cycles/' + id() }">
                             <span data-bind="text: name"></span>

@@ -13,6 +13,36 @@ define(function () {
         donor.primaryAddress = ko.observable(null);
         donor.primaryPhone = ko.observable(null);
 
+        donor.totalAsked = ko.computed(function () {
+            var total = 0;
+            if (donor.fundingCycles() != null) {
+                $.each(donor.fundingCycles(), function (i, c) { if (c.amountRequested() != null) total += c.amountRequested(); });
+            }
+            return total;
+        }, this);
+
+        donor.totalGifted = ko.computed(function () {
+            var total = 0;
+            if (donor.fundingCycles() != null) {
+                $.each(donor.fundingCycles(), function (i, c) { if (c.amountGranted() != null) total += c.amountGranted(); });
+            }
+
+            return total;
+
+        }, this);
+
+        donor.grantedRatio = ko.computed(function () {
+            if (donor.totalAsked() > 0) {
+                var ratio = donor.totalGifted() / donor.totalAsked();
+                return formatPercent(ratio);
+            }
+
+            return null;
+        }, this);
+
+        donor.totalAskedFormatted = getFormattedMoney(donor.totalAsked, this);
+        donor.totalGiftedFormatted = getFormattedMoney(donor.totalGifted, this);
+
         if (donor.addresses().length > 0) {
             var pri = ko.utils.arrayFirst(donor.addresses(), function (a) { return a.isPrimary() == true; });
             if (pri == null) {
@@ -180,9 +210,6 @@ define(function () {
         this.isEditing = ko.observable(false);
     }
 
-    //var initializeFundingCycle = function (cycle) {
-    //}
-
     var initializeFundingCycle = function (cycle) {
         cycle.daysUntilDue = ko.computed(function () {
             if (cycle.dueDate() != null){
@@ -257,11 +284,11 @@ define(function () {
         return new ModelBuilder();
     }
 
-    function getFormattedMoney(prop, context) {
+    function getFormattedMoney(prop, context, digits) {
         return ko.computed({
             read: function () {
                 if (prop() != null) {
-                    return formatMoney(prop());
+                    return formatMoney(prop(), digits);
                 }
             },
             write: function (value) {
@@ -275,9 +302,11 @@ define(function () {
         }, context)
     }
 
-    function formatMoney(value) {
+    function formatMoney(value, digits) {
         if (value != null) {
-            toks = value.toFixed(2).replace('-', '').split('.');
+            if (digits == null) digits = 2;
+
+            toks = value.toFixed(digits).replace('-', '').split('.');
             var display = '$' + $.map(toks[0].split('').reverse(), function (elm, i) {
                 return [(i % 3 === 0 && i > 0 ? ',' : ''), elm];
             }).reverse().join('') + '.' + toks[1];
@@ -287,4 +316,16 @@ define(function () {
 
         return value;
     };
+
+    function formatPercent(value) {
+        if (value != null) {
+            fval = parseFloat(value);
+            if (Math.abs(fval) < 1)
+                fval *= 100;
+
+            return (fval < 0 ? '-' : '') + fval.toFixed(1) + '%';
+        }
+
+        return value;
+    }
 });
