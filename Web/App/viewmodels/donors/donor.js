@@ -58,6 +58,9 @@
                 .then(function (data) {
                     var items = data;   //for purposes of debugging
                     getActivities();
+                })
+                .fail(function (error) {
+                    console.log(error);
                 });
 
             ga('send', 'pageview', { 'page': window.location.href, 'title': document.title });

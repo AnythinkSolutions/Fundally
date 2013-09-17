@@ -112,6 +112,7 @@
                             <i class="icon-check" title="Mark Incomplete" data-bind="visible: isComplete(), click: $root.completeTask" style="margin-right: 10px;"></i>
                         </span>
                         <span data-bind="text: subject" style="vertical-align: top; font-weight: bold;"></span>
+                        <span data-bind="if: contact() != null">&nbsp;<a href="#" data-bind="    attr: { href: '/#contacts/' + contact().id() }"><span style="font-style:italic;" data-bind="    text: contact().fullName"></span></a></span>
                         <div data-bind="if: dueDate() != null" style="display: inline;">
                             <span data-bind="text: 'by ' + moment(dueDate()).format('M/D/YYYY')"></span>
                             <!--<input type="checkbox" data-bind="checked: isComplete" class="pull-right" title="Mark this task Complete/Incomplete" />-->

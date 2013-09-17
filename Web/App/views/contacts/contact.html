@@ -24,17 +24,17 @@
                     <h3 style="margin-top: 5px; margin-bottom: 20px;">
                         <span data-bind="    text: contactType().name"></span>
                         at 
-                <a href="#" data-bind="attr: { href: '/#donors/' + donor().id() }">
-                    <span data-bind="text: donor().name"></span>
-                </a>
+                        <a href="#" data-bind="attr: { href: '/#donors/' + donor().id() }">
+                            <span data-bind="text: donor().name"></span>
+                        </a>
                     </h3>
                 </div>
                 <div id="infoEditing" data-bind="if: isEditing">
-                    <h3 style="margin-top: 5px; margin-bottom: 20px;">
+                    <h4 style="margin-top: 5px; margin-bottom: 20px;">
                         <select data-bind="options: $root.contactTypes, optionsText: 'name', value: contactType, optionsCaption: 'Choose Role...'"></select>&nbsp
                 at 
                 <span data-bind="text: donor().name"></span>
-                    </h3>
+                    </h4>
                 </div>
             </div>
 
