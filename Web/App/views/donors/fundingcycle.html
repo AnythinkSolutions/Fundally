@@ -44,6 +44,22 @@
                         <span class="value" data-bind="text: moment(cycle().endDate()).format('M/D/YYYY')"></span><br />
                     </td>
                 </tr>
+                <tr>
+                    <td class="always">
+                        <span>Requested: </span>
+                    </td>
+                    <td class="always">
+                        <span class="value" data-bind="text: cycle().formattedRequestedAmount"></span><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="always">
+                        <span>Granted: </span>
+                    </td>
+                    <td class="always">
+                        <span class="value" data-bind="text: cycle().formattedGrantedAmount"></span><br />
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -72,6 +88,22 @@
                     </td>
                     <td class="always">
                         <input type="text" class="span2" data-bind="datepicker: cycle.endDate, datepickerOptions: { format: 'M/D/YYYY' }" style="width: 80px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="always">
+                        <span>Amount Requested: </span>
+                    </td>
+                    <td class="always">
+                        <input type="text" class="span2" data-bind="value: cycle().formattedRequestedAmount">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="always">
+                        <span>Amount Granted: </span>
+                    </td>
+                    <td class="always">
+                        <input type="text" class="span2" data-bind="value: cycle().formattedGrantedAmount">
                     </td>
                 </tr>
             </tbody>

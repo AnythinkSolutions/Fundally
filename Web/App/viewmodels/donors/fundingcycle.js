@@ -3,13 +3,13 @@
     var uow = unitofwork.create();
 
     var viewModel = {
+        self: this,
         //donor: ko.observable(),
         cycle: ko.observable(),
         activityTypes: ko.observableArray(),
         fundingAreas: ko.observableArray(),
         grantStatuses: ko.observableArray(),
         defaultActivityType: null,
-
         canActivate: canActivate,
         activate: activate,
 
@@ -24,7 +24,7 @@
         saveActivity: saveActivity,
 
         addFundingArea: addFundingArea,
-        deleteFundingArea: deleteFundingArea
+        deleteFundingArea: deleteFundingArea,
     }
 
     return viewModel;
@@ -36,6 +36,8 @@
         return uow.fundingcycles.withIdIncluding(params.cycleid, "Donor, Donor.Contacts, FundingAreas, FundingAreas.AreaType, GrantStatus, Activities, Activities.ActivityType")
             .then(function (data) {
                 self.cycle(data[0]);
+                //self.cycle().amountRequested.extend({money: 2});
+                //self.cycle().amountGranted.money();
                 return true;
             })
             .fail(function (error) {

@@ -180,6 +180,9 @@ define(function () {
         this.isEditing = ko.observable(false);
     }
 
+    //var initializeFundingCycle = function (cycle) {
+    //}
+
     var initializeFundingCycle = function (cycle) {
         cycle.daysUntilDue = ko.computed(function () {
             if (cycle.dueDate() != null){
@@ -192,6 +195,37 @@ define(function () {
 
             return -999;
         }, this);
+
+        //cycle.formattedRequestedAmount = ko.computed({
+        //    read: function () {
+        //        if (cycle.amountRequested() != null) {
+        //            return format(cycle.amountRequested());
+        //        }
+        //    },
+        //    write: function (value) {
+        //        var stripped = value.replace(/[^0-9.-]/g, '');
+        //        cycle.amountRequested(parseFloat(stripped));
+        //    },
+        //    owner: this
+        //}, this)
+
+        cycle.formattedRequestedAmount = getFormattedMoney(cycle.amountRequested, this);
+        cycle.formattedGrantedAmount = getFormattedMoney(cycle.amountGranted, this);
+        //this.amountRequested.money();
+        //this.amountGranted.money();
+
+        function format(value) {
+            if (value != null) {
+                toks = value.toFixed(2).replace('-', '').split('.');
+                var display = '$' + $.map(toks[0].split('').reverse(), function (elm, i) {
+                    return [(i % 3 === 0 && i > 0 ? ',' : ''), elm];
+                }).reverse().join('') + '.' + toks[1];
+
+                return value < 0 ? '-' + display : display;
+            }
+
+            return value;
+        };
     }
 
     //Define the object to return
@@ -223,4 +257,34 @@ define(function () {
         return new ModelBuilder();
     }
 
+    function getFormattedMoney(prop, context) {
+        return ko.computed({
+            read: function () {
+                if (prop() != null) {
+                    return formatMoney(prop());
+                }
+            },
+            write: function (value) {
+                var stripped = value.replace(/[^0-9.-]/g, '');
+                if (stripped == '')
+                    prop(null);
+                else
+                    prop(parseFloat(stripped));
+            },
+            owner: context
+        }, context)
+    }
+
+    function formatMoney(value) {
+        if (value != null) {
+            toks = value.toFixed(2).replace('-', '').split('.');
+            var display = '$' + $.map(toks[0].split('').reverse(), function (elm, i) {
+                return [(i % 3 === 0 && i > 0 ? ',' : ''), elm];
+            }).reverse().join('') + '.' + toks[1];
+
+            return value < 0 ? '-' + display : display;
+        }
+
+        return value;
+    };
 });
