@@ -52,6 +52,14 @@
             if(activity.dueDate() != null){
 
                 var event = new calendar.event(activity.dueDate(), activity.subject(), getActivityTooltip(activity));
+                
+                //need to get the actual Activity from my UOW, can't use the one passed in from the event because
+                // it may (likely will) come from a different uow.
+                viewModel.uow.activities.withIdIncluding(activity.id(), "ActivityType")
+                    .then(function(data){
+                        event.activity = data[0];
+                    });
+
                 calendar.addEvent(event);
 
                 var now = new Date();
