@@ -104,8 +104,17 @@
 </div>
 
 <div id="centerColumn" class="pull-left" style="width:50%;">
+    <div id="donorGiftChart" data-bind="ifnot: donor().isEditing">
+        <h4 class="section-header" style="margin-top:0px" data-bind="visible: !hasGiftHistory()">
+            Gift History
+        </h4>
+        <div id="giftChartContainer">
+            <span style="margin-top:10px;margin-left:auto;margin-right:auto;width:50%;" data-bind="visible: !hasGiftHistory()">No Gift History for this Donor</span>
+            <div id="giftChart" style="height:200px;width:95%;" data-bind="visible: hasGiftHistory"></div>
+        </div>
+    </div>
     <div id="donorNotes" data-bind="ifnot: donor().isEditing, attr: { title: 'donor: ' + donor().name() }">
-        <h4 class="section-header" style="margin-top:0px;">
+        <h4 class="section-header">
             <i class="icon-file-text space-right-small"></i>
             Notes
         </h4>
@@ -285,13 +294,13 @@
             </h4>
             <ul class="list-unstyled" data-bind="foreach: activeCycles">
                 <li data-bind="css: { 'alert-danger': daysUntilDue() < 15 && daysUntilDue() > 0, 'alert-warning': daysUntilDue() <= 45 && daysUntilDue() > 0 }">
-                    <h4 style="margin-bottom:0px;">
+                    <h5 style="margin-bottom:0px;">
                         <a href="#" data-bind="attr: { href: '/#donors/' + $root.donor().id() + '/cycles/' + id() }">
                             <span data-bind="text: name"></span>
                         </a>
-                        <a href="#" data-bind="click: $root.editFundingCycle"><i class="icon-edit"></i></a>
+                        <a href="#" data-bind="click: $root.editFundingCycle" style="font-size:12px;margin-left:15px;"><i class="icon-edit"></i></a>
                         <span style="font-size: 14px;" class="pull-right" data-bind="text: moment(dueDate()).format('M/D/YYYY')" />
-                    </h4>
+                    </h5>
                     
                     <span data-bind="visible: notes() != null, text: notes"></span>
                 </li>

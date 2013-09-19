@@ -23,6 +23,8 @@ namespace Fundally.Web {
           .Include("~/Scripts/moment.js")
           .Include("~/Scripts/moment-datepicker.js")
           .Include("~/Scripts/moment-datepicker-ko.js")
+		  .Include("~/Scripts/jqPlot/jquery.jqplot.js")
+		  .Include("~/Scripts/jqPlot/jqplot.dateAxisRenderer.js")
 		);
 
 	  bundles.Add(
@@ -36,6 +38,7 @@ namespace Fundally.Web {
           .Include("~/Content/datepicker.css")
 		  .Include("~/Content/fundally-bootstrap.css")
 		  .Include("~/Content/fundally.css")
+		  .Include("~/Content/jquery.jqplot.css")
 		);
 
 	  bundles.Add(

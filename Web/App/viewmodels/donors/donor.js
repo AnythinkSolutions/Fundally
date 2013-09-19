@@ -21,6 +21,7 @@
         defaultContactType: null,
         defaultActivityType: null,
         defaultGrantStatus: null,
+        hasGiftHistory: ko.observable(true),
 
         canActivate: function (params) {
             var self = this;
@@ -87,17 +88,7 @@
                     alert(error);
                 });
 
-
-            //Subscribe to new tasks being created
-            //app.on('activity:new').then(function (activity) {
-            //    if (activity.donor() != null && activity.donor().id() == viewModel.donor().id()) {
-
-            //        //was it sent from here?
-            //        if (!isOperatingOnActivity) {
-                        
-            //        }
-            //    }
-            //});
+            drawChart();
         },
 
         editDonor: editDonor,
@@ -139,6 +130,62 @@
 
     return viewModel;
 
+    var giftChart = null;
+
+    function drawChart() {
+        //Build the jqPlot chart
+        var requestData = [];
+        var grantData = [];
+        var index = 1;
+        var cycles = viewModel.donor().fundingCycles().slice();
+        sortCycles(cycles, true);
+
+        $.each(cycles, function (i, val) {
+            if (val.amountRequested() != null)
+                requestData.push([val.endDate(), val.amountRequested()]);
+            if (val.amountGranted() != null)
+                grantData.push([val.endDate(), val.amountGranted()]);
+            index++;
+        });
+
+        createChart(requestData, grantData);
+    }
+
+    function createChart(requestData, grantData) {
+
+        var chartOptions = {
+            title: 'Gift History',
+            axes: {
+                xaxis: {
+                    renderer: $.jqplot.DateAxisRenderer,
+                    tickOptions: { formatString: '%b, %Y' },
+                    //min: 'Jan 1, 2000',
+                    //max: 'Dec 31, 2100'
+                },
+                yaxis: {
+                    tickOptions: { formatString: "$%'d" },
+                }
+            },
+            series: [{ lineWidth: 3 }],
+            legend: { show: true, labels: ['Requested', 'Gifted'], location: 'se', background: '#00FFFFFF' },
+        };
+
+        if (grantData.length > 0 || requestData.length > 0) {
+            viewModel.hasGiftHistory(true);
+            if (grantData.length > 0 && requestData.length > 0)
+                giftChart = $.jqplot('donorGiftChart', [requestData, grantData], chartOptions);
+            else if (grantData.length > 0)
+                giftChart = $.jqplot('donorGiftChart', [grantData], chartOptions);
+            else if (requestData.length > 0)
+                giftChart = $.jqplot('donorGiftChart', [requestData], chartOptions);
+        }
+        else {    //viewModel.hasGiftHistory(false);
+            viewModel.hasGiftHistory(false);
+            //var emptySeries = [0, 0];
+            //giftChart = $.jqplot('donorGiftChart', [emptySeries, emptySeries], chartOptions);
+        }
+    }
+
     function handlePropertyChanged(args) {
         if (args.propertyName == 'notes') {
             self.uow.commit();
@@ -157,7 +204,7 @@
                 viewModel.donor().isEditing(false);
 
                 getActiveFundingCycles();
-
+                drawChart();
             })
             .fail(function (error) {
                 toastr.error(error, 'Error', { timeOut: 0, positionClass: "toast-bottom-full-width" });
@@ -170,6 +217,7 @@
         viewModel.donor().isEditing(false);
 
         getActiveFundingCycles();
+        drawChart();
     }
 
     function addPhone() {
@@ -263,17 +311,28 @@
 
         if (cycles != null) {
 
+            sortCycles(cycles);
             //Sort them by due date
             //cycles.sortBy(function (c) { return c.dueDate; });
-            cycles.sort(function (left, right) {
-                var lDate = left.dueDate();
-                var rDate = right.dueDate();
-                return lDate > rDate ? -1 : lDate < rDate ? 1 : 0;
-            });
+            //cycles.sort(function (left, right) {
+            //    var lDate = left.dueDate();
+            //    var rDate = right.dueDate();
+            //    return lDate > rDate ? -1 : lDate < rDate ? 1 : 0;
+            //});
 
             viewModel.activeCycles(cycles);
         }
 
+    }
+
+    function sortCycles(cycles, isAscending) {
+        //Sort them descending by due date
+        cycles.sort(function (left, right) {
+            var lDate = left.dueDate();
+            var rDate = right.dueDate();
+            var sort = lDate > rDate ? -1 : lDate < rDate ? 1 : 0;
+            return isAscending ? sort * -1 : sort;
+        });
     }
 
     function deleteFundingCycle(cycle) {

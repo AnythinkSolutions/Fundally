@@ -336,6 +336,7 @@
     <Content Include="Content\ie10mobile.css" />
     <Content Include="Content\images\arrow.png" />
     <Content Include="Content\images\spinner.png" />
+    <Content Include="Content\jquery.jqplot.css" />
     <Content Include="Content\Stashy.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="favicon.ico" />
@@ -358,6 +359,12 @@
     <Content Include="Scripts\breeze.debug.js" />
     <Content Include="Scripts\breeze.js" />
     <Content Include="Scripts\breeze.min.js" />
+    <Content Include="Scripts\jqPlot\excanvas.js" />
+    <Content Include="Scripts\jqPlot\excanvas.min.js" />
+    <Content Include="Scripts\jqPlot\jqplot.dateAxisRenderer.js" />
+    <Content Include="Scripts\jqPlot\jqplot.dateAxisRenderer.min.js" />
+    <Content Include="Scripts\jqPlot\jquery.jqplot.js" />
+    <Content Include="Scripts\jqPlot\jquery.jqplot.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
