@@ -65,5 +65,8 @@ namespace Fundally.Domain.Model
 
         [DataMember]
         public virtual Definition GrantStatus { get; set; }
+
+        [DataMember]
+        public virtual IList<FundingCycleDate> CycleDates { get; set; }
 	}
 }

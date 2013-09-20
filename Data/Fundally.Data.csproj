@@ -84,6 +84,10 @@
     <Compile Include="Migrations\201309042345182_FundingCycleAreas.Designer.cs">
       <DependentUpon>201309042345182_FundingCycleAreas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201309200101264_CycleDates.cs" />
+    <Compile Include="Migrations\201309200101264_CycleDates.Designer.cs">
+      <DependentUpon>201309200101264_CycleDates.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repository.cs" />
@@ -110,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201309042345182_FundingCycleAreas.resx">
       <DependentUpon>201309042345182_FundingCycleAreas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201309200101264_CycleDates.resx">
+      <DependentUpon>201309200101264_CycleDates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

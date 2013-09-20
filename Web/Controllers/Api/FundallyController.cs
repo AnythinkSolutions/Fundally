@@ -66,6 +66,13 @@ namespace Fundally.Web.Controllers
 			return UnitOfWork.FundingCyclesRepository.All();
 		}
 
+        [HttpGet]
+        [Authorize(Roles = "User")]
+        public IQueryable<FundingCycleDate> FundingCycleDates()
+        {
+            return UnitOfWork.FundingCycleDatesRepository.All();
+        }
+
 		[HttpGet]
 		[Authorize(Roles = "User")]
 		public IQueryable<Activity> Activities()

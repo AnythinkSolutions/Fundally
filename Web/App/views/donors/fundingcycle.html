@@ -146,8 +146,52 @@
 </div>
 
 <div id="centerColumn" class="pull-left" style="width:50%;">
-    <div id="notes" data-bind="ifnot: cycle().isEditing">
+    <div id="dates">
         <h4 class="section-header" style="margin-top:0px;">
+            Cycle Dates
+        </h4>
+        <!--<table class="st-table table table-condensed" id="datesTable" data-bind="ifnot: cycle().isEditing">
+            <tbody foreach: cycle().cycleDates>
+                <tr data-bind="with: $data">
+                    <td class="always" style="text-align:left">
+                        <span data-bind="value: dateType().name"></span>
+                    </td>
+                    <td class="always" style="text-align:left;">
+                        <span data-bind="value: moment(date()).format('M/D/YYYY')"></span>
+                    </td>
+                    <td class="always" style="text-align:left">
+                        <span data-bind="value: notes" style="max-width:100%;text-wrap:normal"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>-->
+        <table class="st-table table table-condensed" id="Table3" data-bind="if: cycle().isEditing">
+            <tbody>
+                <!-- ko foreach: cycle().cycleDates -->
+                <tr data-bind="if: $root.cycle().isEditing">
+                    <td class="always" data-bind="if: $root.cycle().isEditing">
+                        <select data-bind="options: $root.cycleDateTypes, optionsText: 'name', value: dateType, optionsCaption: 'Choose...'"></select><br />
+                    </td>
+                    <td class="always" style="text-align:left;">
+                        <input type="text" data-bind="datepicker: date, datepickerOptions: { format: 'M/D/YYYY' }" placeholder="Date">
+                    </td>
+                    <td class="always" style="text-align:left">
+                        <textarea data-bind="value: notes" rows="2" cols="10"></textarea>
+                    </td>
+                </tr>
+                <!-- /ko -->
+                <tr>
+                    <td class="always" colspan="6">
+                        <button class="btn btn-mini" data-bind="click: addCycleDate">Add New...</button>
+                    </td>
+                    
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div id="notes" data-bind="ifnot: cycle().isEditing">
+        <h4 class="section-header">
             <i class="icon-file-text space-right-small"></i>
             Notes
         </h4>

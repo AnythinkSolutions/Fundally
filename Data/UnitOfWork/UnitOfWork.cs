@@ -37,6 +37,7 @@ namespace Fundally.Data.UnitOfWork
             FundingAreasRepository = new Repository<FundingArea>(contextProvider.Context);
 			FundingCyclesRepository = new Repository<FundingCycle>(contextProvider.Context);
 			ActivitiesRepository = new Repository<Activity>(contextProvider.Context);
+            FundingCycleDatesRepository = new Repository<FundingCycleDate>(contextProvider.Context);
         }
 
         /// <summary>
@@ -51,6 +52,7 @@ namespace Fundally.Data.UnitOfWork
 		public IRepository<Activity> ActivitiesRepository { get; private set; }
         public IRepository<FundingArea> FundingAreasRepository { get; private set; }
 		public IRepository<FundingCycle> FundingCyclesRepository { get; private set; }
+        public IRepository<FundingCycleDate> FundingCycleDatesRepository { get; private set; }
 
         /// <summary>
         /// Check if Database exists. 

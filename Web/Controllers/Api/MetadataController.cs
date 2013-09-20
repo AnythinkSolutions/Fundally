@@ -23,7 +23,8 @@ namespace Fundally.Web.Controllers
         [HttpGet]
         public string Metadata()
         {
-            return UnitOfWork.Metadata();
+            string metadata = UnitOfWork.Metadata();
+            return metadata;
         }
     }
 }

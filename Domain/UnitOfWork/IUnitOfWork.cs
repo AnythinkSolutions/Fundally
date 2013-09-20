@@ -28,6 +28,7 @@ namespace Fundally.Domain.UnitOfWork
         IRepository<UserProfile> UserProfileRepository { get; }
         IRepository<FundingArea> FundingAreasRepository { get; }
 		IRepository<FundingCycle> FundingCyclesRepository { get; }
+        IRepository<FundingCycleDate> FundingCycleDatesRepository { get; }
 
         bool DatabaseExists();
         void DatabaseInitialize();

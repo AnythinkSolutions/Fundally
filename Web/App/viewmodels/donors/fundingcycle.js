@@ -9,6 +9,7 @@
         activityTypes: ko.observableArray(),
         fundingAreas: ko.observableArray(),
         grantStatuses: ko.observableArray(),
+        cycleDateTypes: ko.observable(),
         defaultActivityType: null,
         canActivate: canActivate,
         activate: activate,
@@ -25,6 +26,9 @@
 
         addFundingArea: addFundingArea,
         deleteFundingArea: deleteFundingArea,
+
+        addCycleDate: addCycleDate,
+        deleteCycleDate: deleteCycleDate
     }
 
     return viewModel;
@@ -33,7 +37,7 @@
     function canActivate(params) {
         var self = this;
 
-        return uow.fundingcycles.withIdIncluding(params.cycleid, "Donor, Donor.Contacts, FundingAreas, FundingAreas.AreaType, GrantStatus, Activities, Activities.ActivityType")
+        return uow.fundingcycles.withIdIncluding(params.cycleid, "Donor, Donor.Contacts, FundingAreas, FundingAreas.AreaType, GrantStatus, Activities, Activities.ActivityType, CycleDates, CycleDates.DateType")
             .then(function (data) {
                 self.cycle(data[0]);
                 //self.cycle().amountRequested.extend({money: 2});
@@ -54,6 +58,7 @@
                 self.activityTypes(utils.getDefinitions(data, 'activity_type'));
                 self.fundingAreas(utils.getDefinitions(data, 'funding_area'));
                 self.grantStatuses(utils.getDefinitions(data, 'grant_status'));
+                self.cycleDateTypes(utils.getDefinitions(data, 'funding_cycle_date'));
 
                 self.defaultActivityType = utils.getDefaultDefinition(self.activityTypes());
             });
@@ -91,6 +96,18 @@
 
     function deleteFundingArea(area) {
         deleteItem(area, viewModel.cycle().fundingAreas, 'Funding Area');
+    }
+
+    //------- Funding Cycle Dates -----
+    function addCycleDate() {
+        var self = this;
+
+        var fundingCycleDate = uow.fundingcycledates.create();
+        viewModel.cycle().cycleDates.push(fundingCycleDate);
+    }
+
+    function deleteCycleDate(cycleDate) {
+        deleteItem(cycleDate, viewModel.cycle().cycleDates, 'Funding Cycle Date');
     }
 
     //------- Activities -----

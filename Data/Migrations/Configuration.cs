@@ -101,6 +101,13 @@ namespace Fundally.Data.Migrations
                 context.Definitions.Add(new Definition("grant_status", "denied", "Denied"));
             }
 
+            if (!context.Definitions.Any(d => d.ItemType == "funding_cycle_date"))
+            {
+                context.Definitions.Add(new Definition("funding_cycle_date", "loi", "LOI Due Date") { ItemSubType = "a" });
+                context.Definitions.Add(new Definition("funding_cycle_date", "rfp", "RFP Due Date") { ItemSubType = "b" });
+                context.Definitions.Add(new Definition("funding_cycle_date", "gift", "Gift Award Date") { ItemSubType = "c" });
+            }
+
             if (context.HasAnyChanges())
             {
                 context.SaveChanges();
