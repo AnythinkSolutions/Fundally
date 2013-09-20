@@ -150,21 +150,21 @@
         <h4 class="section-header" style="margin-top:0px;">
             Cycle Dates
         </h4>
-        <!--<table class="st-table table table-condensed" id="datesTable" data-bind="ifnot: cycle().isEditing">
-            <tbody foreach: cycle().cycleDates>
-                <tr data-bind="with: $data">
+        <table class="st-table table table-condensed" id="datesTable" data-bind="ifnot: cycle().isEditing">
+            <tbody data-bind="foreach: cycle().cycleDates">
+                <tr>
                     <td class="always" style="text-align:left">
-                        <span data-bind="value: dateType().name"></span>
+                        <span data-bind="text: dateType().name"></span>
                     </td>
                     <td class="always" style="text-align:left;">
-                        <span data-bind="value: moment(date()).format('M/D/YYYY')"></span>
+                        <span data-bind="text: moment(date()).format('M/D/YYYY')"></span>
                     </td>
                     <td class="always" style="text-align:left">
-                        <span data-bind="value: notes" style="max-width:100%;text-wrap:normal"></span>
+                        <span data-bind="text: notes" style="max-width:100%;text-wrap:normal"></span>
                     </td>
                 </tr>
             </tbody>
-        </table>-->
+        </table>
         <table class="st-table table table-condensed" id="Table3" data-bind="if: cycle().isEditing">
             <tbody>
                 <!-- ko foreach: cycle().cycleDates -->

@@ -40,8 +40,12 @@
         return uow.fundingcycles.withIdIncluding(params.cycleid, "Donor, Donor.Contacts, FundingAreas, FundingAreas.AreaType, GrantStatus, Activities, Activities.ActivityType, CycleDates, CycleDates.DateType")
             .then(function (data) {
                 self.cycle(data[0]);
-                //self.cycle().amountRequested.extend({money: 2});
-                //self.cycle().amountGranted.money();
+                self.cycle().cycleDates().sort(function (left, right) {
+                    var l = left.date();
+                    var r = right.date();
+                    return l < r ? -1 : (l == r ? 0 : 1);
+                });
+                
                 return true;
             })
             .fail(function (error) {
